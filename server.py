@@ -3,8 +3,6 @@ import tornado.web
 import json
 import os
 
-games = [...]
-
 class HomeHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('index.html')
