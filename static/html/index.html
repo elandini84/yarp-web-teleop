@@ -13,10 +13,9 @@
         <link rel="stylesheet" href="../static/css/layout.style.css">
         <script src="../static/js/mdl/material.min.js"></script>
         <script src="../static/js/jquery-3.6.0.min.js"></script>
-        <script src="../static/js/eventFunctions.js"></script>
     </head>
 
-    <body>
+    <body onload="init()">
         <div class="mdl-layout mdl-js-layout container">
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row mdl-color--purple-900 mdl-color-text--purple-100">
@@ -64,10 +63,18 @@
                 </div>
                 <div class="stream-info-gridI gridI-content">
                     <div class="mdl-card stream-info-card gridI-content mdl-shadow--2dp through mdl-shadow--8dp mdl-color--red-100 info-card info-wide-gridL">
-                        <div id="clickXLbl" class="mdl-textfield__label mdl-color-text--red-900">X: </div>
-                        <div id="clickXTxt" class="mdl-textfield__label mdl-color-text--red-900">0.0</div>
-                        <div id="clickYLbl" class="mdl-textfield__label mdl-color-text--red-900">Y: </div>
-                        <div id="clickYTxt" class="mdl-textfield__label mdl-color-text--red-900">0.0</div>
+                        <div id="xLbl-div">
+                            <p id="clickXLbl" class="mdl-color-text--red-900">X: </p>
+                        </div>
+                        <div id="xTxt-div">
+                            <p id="clickXTxt" class="mdl-color-text--red-900">0.0</p>
+                        </div>
+                        <div id="yLbl-div">
+                            <p id="clickYLbl" class="mdl-color-text--red-900">Y: </p>
+                        </div>
+                        <div id="yTxt-div">
+                            <p id="clickYTxt" class="mdl-color-text--red-900">0.0</p>
+                        </div>
                     </div>
                 </div>
                 <div class="map-info-gridI gridI-content">
@@ -76,5 +83,7 @@
                 </div>
             </div>
         </div>
+
+        <script src="../static/js/eventFunctions.js"></script>
     </body>
 </html>
