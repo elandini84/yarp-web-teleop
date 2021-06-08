@@ -9,10 +9,11 @@
         <meta name="author" content="Ettore Landini">
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="css/mdl/material.min.css">
-        <link rel="stylesheet" href="css/layout.style.css">
-        <script src="js/mdl/material.min.js"></script>
-        <script src="js/eventFunctions.js"></script>
+        <link rel="stylesheet" href="../static/css/mdl/material.min.css">
+        <link rel="stylesheet" href="../static/css/layout.style.css">
+        <script src="../static/js/mdl/material.min.js"></script>
+        <script src="../static/js/jquery-3.6.0.min.js"></script>
+        <script src="../static/js/eventFunctions.js"></script>
     </head>
 
     <body>
@@ -32,7 +33,7 @@
                     <a class="mdl-navigation__link mdl-color-text--purple-900" href="#">Place holder 5</a>
                 </nav>
             </div>
-            <div class="webview-gridL">
+            <div id="mainGrid" class="webview-gridL">
                 <div class="stream-gridI gridI-content">
                     <div class="mdl-card mdl-color--red-900 mdl-shadow--2dp through mdl-shadow--8dp img-card gridI-content">
                         <div class="mdl-layout__header-row meta meta--fill  mdl-color-text--red-100">
@@ -43,7 +44,7 @@
                                 <span class="visuallyhidden">Take a snapshot</span>
                             </button>
                         </div>
-                        <!----><img id="camera_img" class="stream-img" src="http://192.168.1.12:10006/?ac"><!---->
+                        <!----><img id="camera_img" class="stream-img" src="http://{{porta1}}/?ac"><!---->
                         <!--<img class="camera_img" class="stream-img" src="https://cdn.pixabay.com/photo/2021/04/28/21/59/kingfisher-6215073_960_720.jpg">-->
                     </div>
                 </div>
@@ -57,12 +58,16 @@
                                 <span class="visuallyhidden">Take a snapshot</span>
                             </button>
                         </div>
-                        <!----><img id="map_img" class="stream-img" src="http://192.168.1.12:10005/?ac"><!---->
+                        <!----><img id="map_img" class="stream-img" src="http://{{porta2}}/?ac"><!---->
                         <!--<img id="map_img" class="stream-img" src="https://cdn.pixabay.com/photo/2021/04/28/21/59/kingfisher-6215073_960_720.jpg">-->
                     </div>
                 </div>
                 <div class="stream-info-gridI gridI-content">
-                    <div class="mdl-card stream-info-card gridI-content mdl-shadow--2dp through mdl-shadow--8dp mdl-color--red-100 info-card">
+                    <div class="mdl-card stream-info-card gridI-content mdl-shadow--2dp through mdl-shadow--8dp mdl-color--red-100 info-card info-wide-gridL">
+                        <div id="clickXLbl" class="mdl-textfield__label mdl-color-text--red-900">X: </div>
+                        <div id="clickXTxt" class="mdl-textfield__label mdl-color-text--red-900">0.0</div>
+                        <div id="clickYLbl" class="mdl-textfield__label mdl-color-text--red-900">Y: </div>
+                        <div id="clickYTxt" class="mdl-textfield__label mdl-color-text--red-900">0.0</div>
                     </div>
                 </div>
                 <div class="map-info-gridI gridI-content">
