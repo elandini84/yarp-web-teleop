@@ -1,6 +1,13 @@
+.mdl-layout__header, .mdl-layout__drawer, .mdl-layout__drawer-button{
+    position: fixed;
+}
 #main-container{
     max-width: 100%;
     max-height: 100%;
+}
+#mainGrid{
+    position: relative;
+    top: 60px;
 }
 .img-card {
     /*width: fit-content;*/
@@ -24,7 +31,7 @@
     grid-column: 1/span 5;
     grid-row: 1/span 5;
     max-width: inherit;
-    max-height: inherit;
+    max-height: 875px;
     width: auto;
     height: auto;
 }
@@ -111,18 +118,22 @@
 .bold-text{
     font-weight: bold;
 }
+@font-face {
+    font-family: "light";
+    src: url("../font/Nunito/Nunito-Light.ttf");
+}
 .common-text{
-    font-family: "Courier";
+    font-family: "light";
 }
 @media (max-width: 1000px) {
     .webview-gridL {
         grid-template-columns: repeat(4, auto);
     }
     .titles {
-        font-size: 20px;
+        font-size: 25px;
     }
     .data-text{
-        font-size: 15px;
+        font-size: 20px;
     }
     .info-wide-gridL {
         grid-template-columns: repeat(2, auto);

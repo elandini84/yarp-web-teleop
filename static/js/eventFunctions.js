@@ -64,4 +64,7 @@ function showNatSize() {
     var map = $("#map_img");
     $("#clickXTxt").html(camera.prop("naturalWidth")+"x"+camera.prop("naturalHeight"));
     $("#clickYTxt").html(map.prop("naturalWidth")+"x"+map.prop("naturalHeight"));
+    console.log("MERDEEEEE");
+    console.log(document.body.clientHeight);
+    console.log($("#mainGrid").height());
 }
