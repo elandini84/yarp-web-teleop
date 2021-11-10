@@ -1,0 +1,262 @@
+FROM ubuntu:focal as web_core
+LABEL maintainer="Konstantinos Karapas based on marco.randazzo@iit.it"
+
+# Non-interactive installation mode
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DOCKER_UPDATED_ON=20_09_2021
+
+# Install essentials
+RUN apt-get update && apt-get install -y apt-utils software-properties-common sudo psmisc lsb-release \
+    tmux nano geany tilde wget curl build-essential git gitk cmake cmake-curses-gui \
+    libedit-dev libxml2-dev autoconf \
+    net-tools terminator \
+    libjpeg-dev ffmpeg apt-transport-https ca-certificates gnupg\
+    epstool transfig tilde python3-setuptools python3-pip python3-tornado swig
+
+RUN pip3 install numpy jupyter
+
+# Install graphics
+RUN apt-get update && apt-get install -y xfce4 xfce4-goodies xserver-xorg-video-dummy xserver-xorg-legacy
+
+RUN sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
+
+# We need the most recent x11vnc
+RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list && apt-get update
+RUN git clone https://github.com/LibVNC/x11vnc.git /opt/x11vnc && \
+    cd /opt/x11vnc && \
+    apt-get build-dep -y x11vnc && \
+    autoreconf -fiv && \
+    ./configure && \
+    make -j11 && \
+    rm /opt/x11vnc -Rf
+
+# Install yarp dependencies
+RUN echo "deb http://www.icub.org/ubuntu `lsb_release -cs` contrib/science" > /etc/apt/sources.list.d/icub.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 57A5ACB6110576A6
+RUN apt-get update && apt-get install -y icub-common libopencv-dev
+
+# Install Qt patch for Xfce
+RUN apt-get install -y qml-module-qt-labs-folderlistmodel qml-module-qt-labs-settings
+
+# other utilites
+RUN apt-get install -y lsof iftop iputils-ping gdb bash-completion
+
+# Select branch + build type
+ARG BUILD_TYPE=Release
+
+# ROS installation
+RUN sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+RUN apt-get update && apt-get install -y ros-noetic-desktop-full  \
+                   locate mercurial ros-noetic-teleop-tools ros-noetic-teleop-twist-joy ros-noetic-teleop-twist-keyboard  \
+                   ros-noetic-nav-core ros-noetic-map-server ros-noetic-gmapping ros-noetic-amcl ros-noetic-octomap-server ros-noetic-rtabmap-ros \
+                   ros-noetic-rtabmap ros-noetic-mapviz ros-noetic-move-base python3-rosdep python3-rosinstall python3-rosinstall-generator \
+                   python3-wstool ros-noetic-tf2-sensor-msgs ros-noetic-octomap-ros
+RUN rosdep init
+
+#FROM web_core as web_yarp
+# create another user called user1
+USER root
+RUN useradd -l -u 33334 -G sudo -md /home/user1 -s /bin/bash -p user1 user1 && \
+    # passwordless sudo for users in the 'sudo' group
+    sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers
+
+# ROS installation (part2)
+USER user1
+RUN sudo rosdep fix-permissions && rosdep update && echo "source /opt/ros/noetic/setup.bash" >> /home/user1/.bashrc && /bin/bash -c "source /home/user1/.bashrc"
+
+# set install_folder
+USER user1
+RUN mkdir /home/user1/robotology
+ENV robotology_install_user user1
+ENV user1_home /home/$robotology_install_user
+ENV robotology_install_folder $user1_home/robotology
+
+#gazebo models
+RUN mkdir -p $user1_home/.gazebo && git clone https://github.com/osrf/gazebo_models $user1_home/.gazebo/models
+
+FROM web_core as web_yarp
+
+# Build ycm
+USER $robotology_install_user
+WORKDIR $robotology_install_folder
+RUN git clone https://github.com/robotology/ycm.git -b master
+RUN cd ycm && mkdir build && cd build && \
+    cmake .. \
+    -DCMAKE_BUILD_TYPE=$BUILD_TYPE && \
+    make -j11
+
+# Build yarp
+USER $robotology_install_user
+WORKDIR $robotology_install_folder
+RUN git clone https://github.com/robotology/yarp.git -b master
+RUN cd yarp && mkdir build && cd build && \
+    cmake .. \
+    -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+    -DYARP_COMPILE_libYARP_math=ON \
+    -DYARP_COMPILE_GUIS=ON \
+    -DYARP_COMPILE_DEVICE_PLUGINS=ON \
+    -DENABLE_yarpcar_mjpeg=ON \
+    -DENABLE_yarpcar_depthimage=ON \
+    -DENABLE_yarpcar_depthimage2=ON \
+    -DENABLE_yarpcar_segmentationimage=ON \
+    -DENABLE_yarpcar_portmonitor=ON \
+    -DENABLE_yarpmod_portaudio=ON \
+    -DENABLE_yarpmod_portaudioPlayer=ON \
+    -DENABLE_yarpmod_portaudioRecorder=ON \
+    -DENABLE_yarpmod_fakeAnalogSensor=ON \
+    -DENABLE_yarpmod_fakeBattery=ON  \
+    -DENABLE_yarpmod_fakeDepthCamera=ON \
+    -DENABLE_yarpmod_fakeIMU=ON  \
+    -DENABLE_yarpmod_fakeLaser=ON  \
+    -DENABLE_yarpmod_fakeLocalizer=ON \
+    -DENABLE_yarpmod_fakeMicrophone=ON  \
+    -DENABLE_yarpmod_fakeMotionControl=ON  \
+    -DENABLE_yarpmod_fakeNavigation=ON  \
+    -DENABLE_yarpmod_fakeSpeaker=ON  \
+    -DENABLE_yarpmod_fakebot=ON \
+    -DENABLE_yarpmod_laserFromDepth=ON \
+    -DENABLE_yarpmod_laserFromExternalPort=ON \
+    -DENABLE_yarpmod_laserFromDepth=ON \
+    -DENABLE_yarpmod_laserFromPointCloud=ON \
+    -DENABLE_yarpmod_laserFromRosTopic=ON \
+    -DENABLE_yarppm_soundfilter_resample=ON \
+    -DENABLE_yarppm_bottle_compression_zlib=ON \
+    -DENABLE_yarppm_depthimage_compression_zlib=ON \
+    -DENABLE_yarppm_depthimage_to_mono=ON \
+    -DYARP_COMPILE_BINDINGS=ON \
+    -DCREATE_PYTHON=ON \
+    -DENABLE_yarppm_depthimage_to_rgb=ON && \
+    make -j11
+ENV YARP_ROOT=$robotology_install_folder/yarp
+ENV YARP_DIR=$robotology_install_folder/yarp/build
+
+# Install yarp completion
+RUN sudo ln -s /usr/local/share/bash-completion/completions/yarp /usr/share/bash-completion/completions
+
+# Build icub-main
+USER $robotology_install_user
+WORKDIR $robotology_install_folder
+RUN git clone https://github.com/robotology/icub-main.git -b master
+RUN cd icub-main && mkdir build && cd build && \
+    cmake .. \
+    -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+    -DENABLE_icubmod_cartesiancontrollerserver=ON \
+    -DENABLE_icubmod_cartesiancontrollerclient=ON \
+    -DENABLE_icubmod_gazecontrollerclient=ON && \
+    make -j11
+ENV ICUB_ROOT=$robotology_install_folder/icub-main
+ENV ICUB_DIR=$robotology_install_folder/icub-main/build
+
+# Build robots-configuration devel
+USER $robotology_install_user
+WORKDIR $robotology_install_folder
+RUN git clone https://github.com/robotology/robots-configuration.git -b master
+
+# Install glpk
+RUN sudo apt-get install -y glpk-doc glpk-utils libglpk-dev libglpk40
+ENV GLPK_INCLUDE_DIR=/usr/include
+
+# Build navigation
+USER $robotology_install_user
+WORKDIR $robotology_install_folder
+RUN git clone https://github.com/robotology/navigation.git -b master
+RUN cd navigation && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE && make -j11 && sudo make
+ENV navigation_ROOT=$robotology_install_folder/navigation
+ENV navigation_DIR=$robotology_install_folder/navigation/build
+
+# gazebo plugins stuff
+USER $robotology_install_user
+WORKDIR $robotology_install_folder
+RUN git clone https://github.com/robotology/gazebo-yarp-plugins.git -b master
+RUN cd gazebo-yarp-plugins && mkdir build && cd build && \
+    cmake .. \
+    -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+    -DGAZEBO_YARP_PLUGINS_DISABLE_IMPLICIT_NETWORK_WRAPPERS=ON && \
+    make -j11
+ENV GazeboYARPPlugins_ROOT=$robotology_install_folder/gazebo-yarp-plugins
+ENV GazeboYARPPlugins_DIR=$robotology_install_folder/gazebo-yarp-plugins/build
+
+# CER stuff
+USER $robotology_install_user
+WORKDIR $robotology_install_folder
+RUN git clone https://github.com/robotology/cer.git -b devel
+RUN cd cer && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_cermod_cerDoubleLidar=ON -DENABLE_cermod_tripodMotionControl=OFF -DGAZEBO_TRIPOD_PLUGIN=OFF && make -j11
+ENV CER_ROOT=$robotology_install_folder/cer
+ENV CER_DIR=$robotology_install_folder/cer/build
+
+# CER-sim stuff
+USER $robotology_install_user
+WORKDIR $robotology_install_folder
+RUN git clone https://github.com/DatSpace/cer-sim -b laser_20m_rp3-devel
+
+# Build icub-contrib-common
+USER $robotology_install_user
+WORKDIR $robotology_install_folder
+RUN git clone https://github.com/robotology/icub-contrib-common.git
+RUN cd icub-contrib-common && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=$robotology_install_folder/iCubContrib && sudo make -j11 install
+ENV ICUBcontrib_DIR=$robotology_install_folder/iCubContrib/build
+
+USER $robotology_install_user
+
+FROM web_yarp as web_env_conf
+
+# Set up .bashrc
+RUN echo "PS1='\[\e]0;\u \w\a\]\[\033[01;32m\]\u\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] \$ '" >> /home/$robotology_install_user/.bashrc
+ENV PATH=$PATH:$YARP_DIR/bin:$navigation_DIR/bin:$CER_DIR/bin:$ICUBcontrib_DIR/bin
+
+# Set environmental variables
+ENV DISPLAY=:1
+ENV YARP_DATA_DIRS=$YARP_DIR/share/yarp:$ICUB_DIR/share/iCub:$navigation_DIR/share/navigation:$user1_home/tour-guide-robot/build/share/behavior-tour-robot:$CER_DIR/share/CER:$ICUBcontrib_DIR/share/ICUBcontrib
+ENV LD_LIBRARY_PATH=$robotology_install_folder/yarp/build/lib/yarp/
+ENV GAZEBO_PLUGIN_PATH=$GazeboYARPPlugins_DIR/lib
+ENV GAZEBO_MODEL_PATH=$robotology_install_folder/cer-sim/gazebo/
+ENV YARP_COLORED_OUTPUT=1
+ENV PYTHONPATH=$PYTHONPATH:$YARP_DIR/lib/python3
+
+# Manage x11vnc port
+EXPOSE 5901
+
+# Manage yarp port
+EXPOSE 10000/tcp 10000/udp
+
+# Launch bash from $robotology_install_folder
+USER $robotology_install_user
+RUN sudo chown -R $robotology_install_user:$robotology_install_user /opt/ros && sudo chown -R $robotology_install_user:$robotology_install_user /home/$robotology_install_user/.ros
+
+# Konstantinos Karapas stuff only
+RUN mkdir -p ~/catkin_ws/src
+RUN /bin/bash -c '. /opt/ros/noetic/setup.bash; cd ~/catkin_ws; catkin_make'
+RUN echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+RUN /bin/bash -c 'source ~/.bashrc'
+WORKDIR /home/user1/catkin_ws/src
+RUN git clone https://github.com/rst-tu-dortmund/costmap_prohibition_layer
+RUN git clone https://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@github.com/robotology-dependencies/r1-navigation
+RUN git clone https://github.com/DatSpace/ros-speckle-filter
+RUN /bin/bash -c '. /opt/ros/noetic/setup.bash; cd ~/catkin_ws; catkin_make install -DCMAKE_BUILD_TYPE=Release'
+ENV YARP_CLOCK=/clock
+WORKDIR /home/user1
+RUN git clone https://github.com/DatSpace/yarp-ros-port-bridge
+RUN cd yarp-ros-port-bridge && mkdir build && cd build && /bin/bash -c '. /opt/ros/noetic/setup.bash; cmake .. -DCMAKE_BUILD_TYPE=Release' && make -j11
+
+# Yarp-web-teleop related commands
+WORKDIR /home/user1
+RUN git clone https://github.com/elandini84/yarp-web-teleop
+EXPOSE 16001
+
+
+# R1 NETWORK CONFIG
+RUN yarp namespace /r1-sim
+RUN yarp conf 172.17.0.1 10000
+ENV ROS_MASTER_URI=http://172.17.0.1:11311
+ENV GAZEBO_MASTER_URI=http://172.17.0.1:11345
+
+# Not needed unless running on network
+RUN echo "export ROS_IP=\`ifconfig | grep 172.17.0. | cut -d\" \" -f10\`" >> ~/.bashrc
+
+#cleanup
+RUN sudo apt-get clean && sudo apt-get update
+WORKDIR /home/user1/tour-guide-robot
+RUN sudo updatedb
+
+CMD ["bash"]
