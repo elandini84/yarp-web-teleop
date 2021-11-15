@@ -29,12 +29,12 @@ if __name__ == "__main__":
 
     CLICKPORTNAME = RESFINDER.find("click_port").asString() if RESFINDER.check("click_port") else CLICKPORTNAME
     if RESFINDER.check("camera_port"):
-        CAMERAPORTNAME = RESFINDER.find("camera_port").asString()
+        CAMERAPORTNAME = RESFINDER.find("camera_port").toString()
     else:
         print("Error! Camera port not found")
         sys.exit()
     if RESFINDER.check("map_port"):
-        MAPPORTNAME = RESFINDER.find("map_port").asString()
+        MAPPORTNAME = RESFINDER.find("map_port").toString()
     else:
         print("Error! Map port not found")
         sys.exit()
