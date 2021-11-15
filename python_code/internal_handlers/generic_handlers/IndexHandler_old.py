@@ -3,12 +3,10 @@ import os
 
 class IndexHandler(RequestHandler):
 
-    def initialize(self,inputNetwork,cameraPort,mapPort,cameraHost,resFinder,absPath,mapHost=None):
+    def initialize(self,inputNetwork,cameraPort,mapPort,resFinder,absPath):
         self.yarpNet = inputNetwork
         self.cameraPort = cameraPort
-        self.cameraHost = cameraHost
         self.mapPort = mapPort
-        self.mapHost = mapHost if mapHost is not None else cameraHost
         self.resFinder = resFinder
         self.absPath = absPath
 
@@ -17,5 +15,5 @@ class IndexHandler(RequestHandler):
         contactCamera = self.yarpNet.queryName(self.resFinder.find("camera_port").asString() if self.resFinder.check("camera_port") else self.cameraPort)
         contactMap = self.yarpNet.queryName(self.resFinder.find("map_port").asString() if self.resFinder.check("map_port") else self.mapPort)
         self.render(self.absPath + '{0}static{0}html{0}index.html'.format(os.sep),
-                    porta1 = self.cameraHost+":"+str(self.cameraPort),
-                    porta2 = self.mapHost+":"+str(self.mapPort))
+                    porta1 = contactCamera.getHost()+":"+str(contactCamera.getPort()),
+                    porta2 = contactMap.getHost()+":"+str(contactMap.getPort()))
