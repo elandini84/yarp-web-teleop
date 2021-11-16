@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>YARP BASED Remote SURVEILLANCE</title>
+    <meta name="description" content="Logout page">
+    <meta name="author" content="Ettore Landini">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../static/css/mdl/material.min.css">
+    <link rel="stylesheet" href="../static/css/layout.style.css">
+    <link rel="stylesheet" href="../static/css/login.style.css">
+    <script src="../static/js/mdl/material.min.js"></script>
+    <script src="../static/js/jquery-3.6.0.min.js"></script>
+</head>
+
+<body onload="init()" onresize="showNatSize()">
+<div class="mdl-layout mdl-js-layout container" id="main-container">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row mdl-color--purple-900 mdl-color-text--purple-100">
+            <span class="mdl-layout-title titles common-text bold-text">Logout page</span>
+        </div>
+    </header>
+    <div class="mdl-layout__drawer mdl-color--purple-100 mdl-color-text--purple-600">
+        <span class="mdl-layout-title common-text">App menu</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link mdl-color-text--purple-900" href="/">Main page</a>
+            <a class="mdl-navigation__link mdl-color-text--purple-900" href="#">Log out</a>
+            <a class="mdl-navigation__link mdl-color-text--purple-900" href="/register">Register</a>
+        </nav>
+    </div>
+    <div id ="logout">
+        <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">User logout</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                Current logged user
+                <form action="/logout" method="post">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label class="mdl-textfield__label">{{user}}</label>
+                    </div>
+                <!-- FAB button with ripple -->
+                <div id="next">
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" type="submit" >
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

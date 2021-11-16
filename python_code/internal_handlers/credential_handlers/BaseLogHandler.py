@@ -1,12 +1,10 @@
-import tornado
-import tornado.web
-from tornado.ioloop import IOLoop
-import sqlite3 as sl
+from tornado.web import RequestHandler
 
-class BaseLogHandler(tornado.web.RequestHandler):
+class BaseLogHandler(RequestHandler):
 
-    def initialize(self, my_db=None):
+    def initialize(self, absPath, myPage, my_db=None):
         self.my_db = my_db
+        self.absPath = absPath + "/" + myPage
 
 
     def getAllFromQuery(self, query):

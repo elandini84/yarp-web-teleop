@@ -9,11 +9,15 @@ class SkelServer(object):
         self.handlers = handlers
         self.port = port
         self.autoReload = autoreload
+        self.tornadoApp = None
+
+
+    def configApp(self):
+        self.tornadoApp = Application(self.handlers, autoreload=self.autoReload)
 
 
     def start(self):
-
-        self.tornadoApp = Application(self.handlers, autoreload=self.autoReload)
+        self.configApp()
         self.tornadoApp.listen(self.port)
         IOLoop.instance().start()
 
