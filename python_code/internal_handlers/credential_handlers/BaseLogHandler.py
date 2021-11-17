@@ -13,8 +13,6 @@ class BaseLogHandler(RequestHandler):
         cursor.execute(*query)
         result = cursor.fetchall()
 
-        print(result)
-
         return result
 
 
@@ -44,7 +42,6 @@ class BaseLogHandler(RequestHandler):
 
     def getEntry(self, name):
         if not self.checkUser(name):
-            print(self.getAllFromQuery(['''SELECT * FROM users WHERE name=?''', (name,)]))
             return None
         entry = self.getAllFromQuery(['''SELECT * FROM users WHERE name=?''', (name,)])
 

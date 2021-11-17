@@ -8,12 +8,6 @@ class RegisterHandler(BaseLogHandler):
     def get(self):
 
         self.render(self.absPath,logaction = "Log out" if self.current_user else "Log in")
-        #self.write('<html><body><form action="/register" method="post">'
-        #           'Name: <input type="text" name="name">'
-        #           '<br/>'
-        #           'Password: <input type="password" name="passw">'
-        #           '<input type="submit" value="Register">'
-        #           '</form></body></html>')
 
 
     def post(self):

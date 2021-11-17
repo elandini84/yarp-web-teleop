@@ -18,8 +18,6 @@ class IndexHandler(RequestHandler):
 
 
     def get(self):
-        contactCamera = self.yarpNet.queryName(self.resFinder.find("camera_port").asString() if self.resFinder.check("camera_port") else self.cameraPort)
-        contactMap = self.yarpNet.queryName(self.resFinder.find("map_port").asString() if self.resFinder.check("map_port") else self.mapPort)
         if not self.current_user:
             self.redirect("/login")
             return
