@@ -6,7 +6,6 @@ class RegisterHandler(BaseLogHandler):
         BaseLogHandler.initialize(self, absPath, myPage, my_db)
 
     def get(self):
-
         self.render(self.absPath,logaction = "Log out" if self.current_user else "Log in")
 
 

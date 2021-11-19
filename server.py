@@ -12,6 +12,7 @@ from python_code.internal_handlers.generic_handlers.IndexHandler import IndexHan
 from python_code.internal_handlers.credential_handlers.LoginHandler import LoginHandler
 from python_code.internal_handlers.credential_handlers.RegisterHandler import RegisterHandler
 from python_code.internal_handlers.credential_handlers.LogoutHandler import LogoutHandler
+from python_code.internal_handlers.credential_handlers.AuthHandler import AuthHandler
 from python_code.utils.cookieServer import CookieServer
 
 ABSPATH = os.path.dirname(os.path.realpath(__file__))
@@ -75,6 +76,7 @@ if __name__ == "__main__":
                                          "resFinder": RESFINDER,
                                          "absPath": ABSPATH,
                                          "mapHost": MAPHOST}),
+                    (r'/auth',AuthHandler),
                     (r'/login', LoginHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                     (r'/logout', LogoutHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                     (r'/register', RegisterHandler,{"absPath": ABSPATH,"my_db": loginDb}),
