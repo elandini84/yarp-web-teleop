@@ -22,12 +22,14 @@ class SkelServer(object):
 
     def start(self):
         self.configApp()
-        http_server = tornado.httpserver.HTTPServer(self.tornadoApp, ssl_options={
-            "certfile": os.path.join(self.cert_path,"{0}.crt".format(self.cert_name)),
-            "keyfile": os.path.join(self.cert_path,"{0}.key".format(self.cert_name)),
-        })
-        http_server.listen(self.port)
-        #self.tornadoApp.listen(self.port)
+        if self.cert_path is not None:
+            http_server = tornado.httpserver.HTTPServer(self.tornadoApp, ssl_options={
+                    "certfile": os.path.join(self.cert_path,"{0}.crt".format(self.cert_name)),
+                    "keyfile": os.path.join(self.cert_path,"{0}.key".format(self.cert_name)),
+                })
+            http_server.listen(self.port)
+        else:
+            self.tornadoApp.listen(self.port)
         IOLoop.instance().start()
 
 

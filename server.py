@@ -53,8 +53,12 @@ if __name__ == "__main__":
     createUsersTable(loginDb)
 
     CLICKPORTNAME = RESFINDER.find("click_port").asString() if RESFINDER.check("click_port") else CLICKPORTNAME
-    certificates_folder = RESFINDER.find("certificates_path").asString() if RESFINDER.check("certificates_path") else certificates_folder
-    certificates_name = RESFINDER.find("certificates_name").asString() if RESFINDER.check("certificates_name") else certificates_name
+    if RESFINDER.check("no_ssl"):
+        certificates_folder = None
+        certificates_name = None
+    else:
+        certificates_folder = RESFINDER.find("certificates_path").asString() if RESFINDER.check("certificates_path") else certificates_folder
+        certificates_name = RESFINDER.find("certificates_name").asString() if RESFINDER.check("certificates_name") else certificates_name
     if RESFINDER.check("server_port"):
         SERVERPORT = RESFINDER.find("server_port").asInt32()
     if RESFINDER.check("camera_port"):
