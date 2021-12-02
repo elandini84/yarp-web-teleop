@@ -1,7 +1,7 @@
 let positionX = -1
 let positionY = -1
 let drag = false;
-let ws = new WebSocket("ws://"+window.location.host+"/ws");
+let ws = new WebSocket("wss://"+window.location.host+"/ws");
 console.log(window.location.host);
 
 function convertMousePos(x,y){

@@ -1,14 +1,18 @@
 from tornado.ioloop import IOLoop
 from tornado.web import Application
+import tornado.httpserver
+import os
 
 
 class SkelServer(object):
 
-    def __init__(self,handlers,port,autoreload=False):
+    def __init__(self,handlers,port,cert_path,cert_name,autoreload=False):
 
         self.handlers = handlers
         self.port = port
         self.autoReload = autoreload
+        self.cert_path = cert_path
+        self.cert_name = cert_name
         self.tornadoApp = None
 
 
@@ -18,7 +22,12 @@ class SkelServer(object):
 
     def start(self):
         self.configApp()
-        self.tornadoApp.listen(self.port)
+        http_server = tornado.httpserver.HTTPServer(self.tornadoApp, ssl_options={
+            "certfile": os.path.join(self.cert_path,"{0}.crt".format(self.cert_name)),
+            "keyfile": os.path.join(self.cert_path,"{0}.key".format(self.cert_name)),
+        })
+        http_server.listen(self.port)
+        #self.tornadoApp.listen(self.port)
         IOLoop.instance().start()
 
 

@@ -1,4 +1,5 @@
 from tornado.web import StaticFileHandler
+import tornado.httpserver
 from yarp import Port, Network, Bottle, ResourceFinder
 from threading import Lock
 import sqlite3 as sl
@@ -24,6 +25,8 @@ CLICKPORTNAME = "/webview/click:o"
 WEBLOCK = Lock()
 dirname = os.path.dirname(__file__)
 dbPath = os.path.join(dirname, "static/sql_db/users.db")
+certificates_folder = os.path.join(dirname, "resources/certificates")
+certificates_name = "host"
 loginDb = sl.connect(dbPath)
 
 
@@ -50,6 +53,8 @@ if __name__ == "__main__":
     createUsersTable(loginDb)
 
     CLICKPORTNAME = RESFINDER.find("click_port").asString() if RESFINDER.check("click_port") else CLICKPORTNAME
+    certificates_folder = RESFINDER.find("certificates_path").asString() if RESFINDER.check("certificates_path") else certificates_folder
+    certificates_name = RESFINDER.find("certificates_name").asString() if RESFINDER.check("certificates_name") else certificates_name
     if RESFINDER.check("server_port"):
         SERVERPORT = RESFINDER.find("server_port").asInt32()
     if RESFINDER.check("camera_port"):
@@ -86,5 +91,5 @@ if __name__ == "__main__":
                     (r"/static/(.*)", StaticFileHandler,{'path':'static'}),
                     (r"/ws", NavClickHandler, {"webLock": WEBLOCK,
                                                "clickPort": CLICKPORT})]
-    server = CookieServer(handlersList,SERVERPORT,True,secrets.token_urlsafe())
+    server = CookieServer(handlersList,SERVERPORT,certificates_folder,certificates_name,True,secrets.token_urlsafe())
     server.start()

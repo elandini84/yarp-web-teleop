@@ -4,9 +4,9 @@ from .skelServer import SkelServer
 
 class CookieServer(SkelServer):
 
-    def __init__(self,handlers,port,autoreload,cookie_secret,key_version=None):
+    def __init__(self,handlers,port,cert_path,cert_name,autoreload,cookie_secret,key_version=None):
 
-        SkelServer.__init__(self,handlers,port,autoreload)
+        SkelServer.__init__(self,handlers,port,cert_path,cert_name,autoreload)
         self.cookieSecret = cookie_secret
         self.keyVersion = key_version
 
