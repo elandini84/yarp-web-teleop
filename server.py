@@ -1,11 +1,11 @@
-from tornado.web import RequestHandler, StaticFileHandler
-from tornado.websocket import WebSocketHandler
+from tornado.web import StaticFileHandler
 from yarp import Port, Network, Bottle, ResourceFinder
 from threading import Lock
 import sqlite3 as sl
 import json
 import os
 import sys
+import secrets
 
 from python_code.internal_handlers.generic_handlers.NavClickHandler import NavClickHandler
 from python_code.internal_handlers.generic_handlers.IndexHandler import IndexHandler
@@ -16,6 +16,7 @@ from python_code.internal_handlers.credential_handlers.AuthHandler import AuthHa
 from python_code.utils.cookieServer import CookieServer
 
 ABSPATH = os.path.dirname(os.path.realpath(__file__))
+SERVERPORT = 16001
 NETWORK = None
 RESFINDER = None
 CLICKPORT = None
@@ -49,6 +50,8 @@ if __name__ == "__main__":
     createUsersTable(loginDb)
 
     CLICKPORTNAME = RESFINDER.find("click_port").asString() if RESFINDER.check("click_port") else CLICKPORTNAME
+    if RESFINDER.check("server_port"):
+        SERVERPORT = RESFINDER.find("server_port").asInt32()
     if RESFINDER.check("camera_port"):
         CAMERAPORTNAME = RESFINDER.find("camera_port").toString()
     else:
@@ -83,5 +86,5 @@ if __name__ == "__main__":
                     (r"/static/(.*)", StaticFileHandler,{'path':'static'}),
                     (r"/ws", NavClickHandler, {"webLock": WEBLOCK,
                                                "clickPort": CLICKPORT})]
-    server = CookieServer(handlersList,16001,True,{1:"firsttry",2:"secondtry"},1)
+    server = CookieServer(handlersList,SERVERPORT,True,secrets.token_urlsafe())
     server.start()

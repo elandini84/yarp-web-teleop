@@ -4,7 +4,7 @@ from .skelServer import SkelServer
 
 class CookieServer(SkelServer):
 
-    def __init__(self,handlers,port,autoreload,cookie_secret,key_version):
+    def __init__(self,handlers,port,autoreload,cookie_secret,key_version=None):
 
         SkelServer.__init__(self,handlers,port,autoreload)
         self.cookieSecret = cookie_secret
@@ -13,7 +13,12 @@ class CookieServer(SkelServer):
 
     def configApp(self):
 
-        self.tornadoApp = Application(self.handlers,
-                                      cookie_secret=self.cookieSecret,
-                                      key_version=self.keyVersion,
-                                      autoreload=self.autoReload)
+        if self.keyVersion is not None:
+            self.tornadoApp = Application(self.handlers,
+                                          cookie_secret=self.cookieSecret,
+                                          key_version=self.keyVersion,
+                                          autoreload=self.autoReload)
+        else:
+            self.tornadoApp = Application(self.handlers,
+                                          cookie_secret=self.cookieSecret,
+                                          autoreload=self.autoReload)
