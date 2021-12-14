@@ -4,24 +4,33 @@ import json
 
 class NavClickHandler(WebSocketHandler):
 
-    def initialize(self, webLock, clickPort):
+    def initialize(self, webLock, navPort, headPort, mapPort):
         self.webLock = webLock
-        self.clickPort = clickPort
+        self.navPort = navPort
+        self.headPort = headPort
+        self.mapPort = mapPort
 
 
     def on_message(self,message):
 
         self.webLock.acquire()
+        print("Received: {0}", message)
         options = json.loads(message)
         b = Bottle()
-        if len(options.keys()) > 2:
+        if len(options.keys()) > 4:
             b.addInt(int(options["x-start"]))
             b.addInt(int(options["y-start"]))
             b.addInt(int(options["x-end"]))
             b.addInt(int(options["y-end"]))
         else:
-            print("NOT FULLY SUPPORTED: {0}", message)
             b.addInt(int(options["x"]))
             b.addInt(int(options["y"]))
-        self.clickPort.write(b)
+        if options["button"] == 0:
+            if options["is_robot"]:
+                self.navPort.write(b)
+            else:
+                self.mapPort.write(b)
+        elif options["button"] == 2:
+            if options["is_robot"]:
+                self.headPort.write(b)
         self.webLock.release()

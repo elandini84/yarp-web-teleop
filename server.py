@@ -20,8 +20,12 @@ ABSPATH = os.path.dirname(os.path.realpath(__file__))
 SERVERPORT = 16001
 NETWORK = None
 RESFINDER = None
-CLICKPORT = None
-CLICKPORTNAME = "/webview/click:o"
+NAVCLICKPORT = None
+HEADCLICKPORT = None
+MAPCLICKPORT = None
+NAVCLICKPORTNAME = "/webview/navClick:o"
+HEADCLICKPORTNAME = "/webview/headClick:o"
+MAPCLICKPORTNAME = "/webview/mapClick:o"
 WEBLOCK = Lock()
 dirname = os.path.dirname(__file__)
 dbPath = os.path.join(dirname, "static/sql_db/users.db")
@@ -49,10 +53,14 @@ if __name__ == "__main__":
     NETWORK.init()
     RESFINDER = ResourceFinder()
     RESFINDER.configure(sys.argv)
-    CLICKPORT = Port()
+    NAVCLICKPORT = Port()
+    MAPCLICKPORT = Port()
+    HEADCLICKPORT = Port()
     createUsersTable(loginDb)
 
-    CLICKPORTNAME = RESFINDER.find("click_port").asString() if RESFINDER.check("click_port") else CLICKPORTNAME
+    NAVCLICKPORTNAME = RESFINDER.find("nav_click_port").asString() if RESFINDER.check("nav_click_port") else NAVCLICKPORTNAME
+    MAPCLICKPORTNAME = RESFINDER.find("map_click_port").asString() if RESFINDER.check("map_click_port") else MAPCLICKPORTNAME
+    HEADCLICKPORTNAME = RESFINDER.find("head_click_port").asString() if RESFINDER.check("head_click_port") else HEADCLICKPORTNAME
     if RESFINDER.check("no_ssl"):
         certificates_folder = None
         certificates_name = None
@@ -80,7 +88,9 @@ if __name__ == "__main__":
         MAPHOST = RESFINDER.find("map_host").asString()
     else:
         MAPHOST = None
-    CLICKPORT.open(CLICKPORTNAME)
+    NAVCLICKPORT.open(NAVCLICKPORTNAME)
+    MAPCLICKPORT.open(MAPCLICKPORTNAME)
+    HEADCLICKPORT.open(HEADCLICKPORTNAME)
     handlersList = [(r'/', IndexHandler,{"inputNetwork": NETWORK,
                                          "cameraPort": CAMERAPORTNAME,
                                          "mapPort": MAPPORTNAME,
@@ -94,6 +104,8 @@ if __name__ == "__main__":
                     (r'/register', RegisterHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                     (r"/static/(.*)", StaticFileHandler,{'path':'static'}),
                     (r"/ws", NavClickHandler, {"webLock": WEBLOCK,
-                                               "clickPort": CLICKPORT})]
+                                               "navPort": NAVCLICKPORT,
+                                               "headPort": HEADCLICKPORT,
+                                               "mapPort": MAPCLICKPORT})]
     server = CookieServer(handlersList,SERVERPORT,certificates_folder,certificates_name,True,secrets.token_urlsafe())
     server.start()
