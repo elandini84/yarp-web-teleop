@@ -21,6 +21,7 @@ from python_code.utils.cookieServer import CookieServer
 # python3 server.py --simulate --no_ssl
 
 ABSPATH = os.path.dirname(os.path.realpath(__file__))
+ADMINKEY = "1234qwer"
 SERVERPORT = 16001
 NETWORK = None
 RESFINDER = None
@@ -83,7 +84,7 @@ if __name__ == "__main__":
                         (r'/auth',AuthHandler),
                         (r'/login', LoginHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"my_db": loginDb}),
-                        (r'/register', RegisterHandler,{"absPath": ABSPATH,"my_db": loginDb}),
+                        (r'/register', RegisterHandler,{"absPath": ABSPATH,"my_db": loginDb,"adminkey": ADMINKEY}),
                         (r"/static/(.*)", StaticFileHandler,{'path':'static'})]
     else:
         if RESFINDER.check("server_port"):
@@ -121,7 +122,7 @@ if __name__ == "__main__":
                         (r'/auth',AuthHandler),
                         (r'/login', LoginHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"my_db": loginDb}),
-                        (r'/register', RegisterHandler,{"absPath": ABSPATH,"my_db": loginDb}),
+                        (r'/register', RegisterHandler,{"absPath": ABSPATH,"my_db": loginDb,"adminkey": ADMINKEY}),
                         (r"/static/(.*)", StaticFileHandler,{'path':'static'}),
                         (r"/ws", NavClickHandler, {"webLock": WEBLOCK,
                                                    "navPort": NAVCLICKPORT,
