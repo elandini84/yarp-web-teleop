@@ -19,6 +19,7 @@ from python_code.utils.cookieServer import CookieServer
 ## Execution example
 # python3 server.py --camera_port 10009 --camera_host 192.168.92.109 --map_port 10014 --nav_click_port /click --no_ssl
 # python3 server.py --simulate --no_ssl
+# python3 server.py --simulate
 
 ABSPATH = os.path.dirname(os.path.realpath(__file__))
 ADMINKEY = "1234qwer"
@@ -66,6 +67,11 @@ if __name__ == "__main__":
     NAVCLICKPORTNAME = RESFINDER.find("nav_click_port").asString() if RESFINDER.check("nav_click_port") else NAVCLICKPORTNAME
     MAPCLICKPORTNAME = RESFINDER.find("map_click_port").asString() if RESFINDER.check("map_click_port") else MAPCLICKPORTNAME
     HEADCLICKPORTNAME = RESFINDER.find("head_click_port").asString() if RESFINDER.check("head_click_port") else HEADCLICKPORTNAME
+
+    NAVCLICKPORT.open(NAVCLICKPORTNAME)
+    MAPCLICKPORT.open(MAPCLICKPORTNAME)
+    HEADCLICKPORT.open(HEADCLICKPORTNAME)
+
     if RESFINDER.check("no_ssl"):
         certificates_folder = None
         certificates_name = None
@@ -85,7 +91,11 @@ if __name__ == "__main__":
                         (r'/login', LoginHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"my_db": loginDb,"adminkey": ADMINKEY}),
-                        (r"/static/(.*)", StaticFileHandler,{'path':'static'})]
+                        (r"/static/(.*)", StaticFileHandler,{'path':'static'}),
+                        (r"/ws", NavClickHandler, {"webLock": WEBLOCK,
+                                                   "navPort": NAVCLICKPORT,
+                                                   "headPort": HEADCLICKPORT,
+                                                   "mapPort": MAPCLICKPORT})]
     else:
         if RESFINDER.check("server_port"):
             SERVERPORT = RESFINDER.find("server_port").asInt32()
@@ -108,9 +118,6 @@ if __name__ == "__main__":
             MAPHOST = RESFINDER.find("map_host").asString()
         else:
             MAPHOST = None
-        NAVCLICKPORT.open(NAVCLICKPORTNAME)
-        MAPCLICKPORT.open(MAPCLICKPORTNAME)
-        HEADCLICKPORT.open(HEADCLICKPORTNAME)
         handlersList = [(r'/', IndexHandler,{"inputNetwork": NETWORK,
                                              "cameraPort": CAMERAPORTNAME,
                                              "mapPort": MAPPORTNAME,
