@@ -72,7 +72,7 @@ if __name__ == "__main__":
     MAPCLICKPORT.open(MAPCLICKPORTNAME)
     HEADCLICKPORT.open(HEADCLICKPORTNAME)
 
-    if RESFINDER.check("no_ssl"):
+    if RESFINDER.check("no_ssl") or RESFINDER.check("traefik"):
         certificates_folder = None
         certificates_name = None
     else:
@@ -86,7 +86,8 @@ if __name__ == "__main__":
                                              "resFinder": None,
                                              "absPath": ABSPATH,
                                              "mapHost": "",
-                                             "simulate":True}),
+                                             "simulate":True,
+                                             "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik")}),
                         (r'/auth',AuthHandler),
                         (r'/login', LoginHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"my_db": loginDb}),
@@ -125,7 +126,8 @@ if __name__ == "__main__":
                                              "resFinder": RESFINDER,
                                              "absPath": ABSPATH,
                                              "mapHost": MAPHOST,
-                                             "simulate":False}),
+                                             "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik"),
+                                             "simulate": False}),
                         (r'/auth',AuthHandler),
                         (r'/login', LoginHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"my_db": loginDb}),

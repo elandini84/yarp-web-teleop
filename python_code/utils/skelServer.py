@@ -23,6 +23,7 @@ class SkelServer(object):
     def start(self):
         self.configApp()
         if self.cert_path is not None:
+            print("HTTPS enabled")
             http_server = tornado.httpserver.HTTPServer(self.tornadoApp, ssl_options={
                     "certfile": os.path.join(self.cert_path,"{0}.crt".format(self.cert_name)),
                     "keyfile": os.path.join(self.cert_path,"{0}.key".format(self.cert_name)),
