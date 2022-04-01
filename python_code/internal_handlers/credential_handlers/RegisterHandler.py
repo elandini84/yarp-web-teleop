@@ -7,7 +7,7 @@ class RegisterHandler(BaseLogHandler):
         self._adminKey = "" if adminkey is None else adminkey
 
     def get(self):
-        self.render(self.absPath,logaction = "Log out" if self.current_user else "Log in")
+        self.render(self.absPath,logaction = "Log out" if self.current_user else "Log in",loglink = "logout" if self.current_user else "login")
 
 
     def post(self):

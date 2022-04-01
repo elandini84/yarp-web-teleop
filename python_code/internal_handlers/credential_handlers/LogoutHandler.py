@@ -12,4 +12,4 @@ class LogoutHandler(BaseLogHandler):
         BaseLogHandler.initialize(self, absPath, myPage, my_db)
 
     def get(self):
-        self.render(self.absPath,user="{0}".format(self.current_user))
+        self.render(self.absPath,user="{0}".format(self.current_user.decode()))

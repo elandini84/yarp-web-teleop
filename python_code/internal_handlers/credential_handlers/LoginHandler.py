@@ -8,6 +8,7 @@ class LoginHandler(BaseLogHandler):
     def get(self):
         if self.current_user:
             self.redirect("/")
+            return
         self.render(self.absPath)
 
 
