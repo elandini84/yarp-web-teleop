@@ -1,0 +1,65 @@
+@font-face {
+    font-family: "light";
+    src: url("../font/Nunito/Nunito-Light.ttf");
+}
+.common-text{
+    font-family: "light";
+}
+
+.bold-text{
+    font-weight: bold;
+}
+
+.teleop-header{
+    background-color: #3b7991;
+}
+
+.teleop-header-text, .teleop-map-header-text, .teleop-camera-header, .teleop-shout-text{
+    color: #ffffff;
+}
+
+.mdl-layout__drawer {
+    background: #3b7991ee;
+    color: #ffffff;
+}
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link:hover {
+    color: #3b7991; // links
+}
+
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
+    color: #ffffff; // links
+}
+
+.box {
+    box-shadow:
+            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+            0 3.7px 2.3px rgba(0, 0, 0, 0.048),
+            0 3.5px 2.5px rgba(0, 0, 0, 0.06),
+            0 3.3px 4.9px rgba(0, 0, 0, 0.072),
+            0 10.8px 13.4px rgba(0, 0, 0, 0.086),
+            0 5px 10px rgba(0, 0, 0, 0.12);
+
+    /*min-height: 200px;
+    background: white;*/
+    width: 50vw;
+    margin: 20px auto;
+    border-radius: 5px;
+}
+
+@media (max-width: 1000px) {
+    .titles {
+        font-size: 25px;
+    }
+    .data-text{
+        font-size: 20px;
+    }
+
+}
+@media (min-width: 1000px) {
+    .titles {
+        font-size: 30px;
+    }
+    .data-text{
+        font-size: 20px;
+    }
+}

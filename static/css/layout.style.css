@@ -24,8 +24,14 @@
     max-height: inherit;
     width: auto;
     height: auto;
+    /*cursor: url(../images/outline_place_black_24dp.cur),auto;*/
+    /*cursor: url(../images/place_white_24dp.svg),auto;*/
 }
-.stream-gridI{
+.teleop-camera-header, .teleop-map-header{
+    background-color: #519ab8;
+}
+
+.map-gridI{
     padding: 10px;
     text-align: center;
     grid-column: 1/span 5;
@@ -35,7 +41,7 @@
     width: auto;
     height: auto;
 }
-.map-gridI {
+.camera-gridI {
     padding: 10px;
     text-align: center;
     max-width: inherit;
@@ -43,7 +49,7 @@
     width: auto;
     height: auto;
 }
-.map-info-gridI {
+.alarms-controls-gridI {
     padding: inherit;
     text-align: center;
     align-self: start;
@@ -64,29 +70,40 @@
     max-width: 100%;
     max-height: 100%;
 }
+
 .info-wide-gridL {
-    padding: 1px;
+    padding: 10px;
     display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-areas: "s a a a a a a b";
+    align-items: center;
     max-width: inherit;
     max-height: inherit;
     height: auto;
     width: auto;
+    background-color: #519ab8;
 }
-.box {
-    box-shadow:
-            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-            0 3.7px 2.3px rgba(0, 0, 0, 0.048),
-            0 3.5px 2.5px rgba(0, 0, 0, 0.06),
-            0 3.3px 4.9px rgba(0, 0, 0, 0.072),
-            0 10.8px 13.4px rgba(0, 0, 0, 0.086),
-            0 5px 10px rgba(0, 0, 0, 0.12);
+.shout-btn {
+    grid-area: b;
+    justify-self: end;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+.shout-btn:hover {
+    color: #b7d5e1;
+    background-color: #3b7991;
+}
+.shout-list{
+    grid-area: a;
+    justify-self: start;
+    width: 100%;
+}
 
-    /*min-height: 200px;
-    background: white;*/
-    width: 50vw;
-    margin: 20px auto;
-    border-radius: 5px;
+.shout-spacer{
+    grid-area: s;
+    justify-self: start;
 }
+
 #xLbl-div, #xTxt-div, #yLbl-div, #yTxt-div {
     padding: 10px;
     width: 75%;
@@ -115,34 +132,15 @@
     width: auto;
     height: auto;
 }
-.bold-text{
-    font-weight: bold;
-}
-@font-face {
-    font-family: "light";
-    src: url("../font/Nunito/Nunito-Light.ttf");
-}
-.common-text{
-    font-family: "light";
-}
 @media (max-width: 1000px) {
     .webview-gridL {
         grid-template-columns: repeat(4, auto);
     }
-    .titles {
-        font-size: 25px;
-    }
-    .data-text{
-        font-size: 20px;
-    }
-    .info-wide-gridL {
-        grid-template-columns: repeat(2, auto);
-    }
-    .map-gridI {
+    .camera-gridI {
         grid-column: 1/span 5;
         grid-row: 7/span 2;
     }
-    .map-info-gridI {
+    .alarms-controls-gridI {
         grid-column: 1/span 5;
         grid-row: 9/span 2;
     }
@@ -151,20 +149,11 @@
     .webview-gridL {
         grid-template-columns: repeat(6, auto);
     }
-    .titles {
-        font-size: 30px;
-    }
-    .data-text{
-        font-size: 20px;
-    }
-    .info-wide-gridL {
-        grid-template-columns: repeat(2, auto);
-    }
-    .map-gridI {
+    .camera-gridI {
         grid-column: 6/span 2;
         grid-row: 1/span 2;
     }
-    .map-info-gridI {
+    .alarms-controls-gridI {
         grid-column: 6/span 2;
         grid-row: 3/span 2;
     }

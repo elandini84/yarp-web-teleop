@@ -19,8 +19,7 @@ function convertMousePos(x,y,elem){
 function updateMousePos(isRobot,btnPressed) {
     pressed = false;
     drag = false;
-    $("#clickXTxt").html(positionX);
-    $("#clickYTxt").html(positionY);
+    //$(".stream-img").css("cursor","url(static/images/place_white_24dp.svg),auto");
     var msg = {"x":positionX,
                "y":positionY,
                "button":btnPressed,
@@ -32,6 +31,7 @@ function updateMousePos(isRobot,btnPressed) {
 function manageDrag(e,elem) {
     pressed = false;
     drag = false;
+    //$(".stream-img").css("cursor","url(static/images/place_white_24dp.svg),auto");
     var posX = elem.offset().left
     var posY = elem.offset().top;
     var cursorX = e.pageX - posX;
@@ -42,11 +42,9 @@ function manageDrag(e,elem) {
     if (diffX < 5 && diffY < 5) 
     {
         updateMousePos(elem.prop("id")===ROBOT,e.button);
-    } else 
+    }
+    else
     {
-        $("#clickXTxt").html(positionX+" to "+cursors.x);
-        $("#clickYTxt").html(positionY+" to "+cursors.y);
-
         var msg = {"x-start":positionX,
                    "y-start":positionY,
                    "x-end":cursors.x,
@@ -60,6 +58,7 @@ function manageDrag(e,elem) {
 function simpleDown(e,elem) {
     drag = false;
     pressed = true;
+    //$(".stream-img").css("cursor","url(static/images/place_red_36dp.png),auto");
     console.log("simpleDown "+e.button+" called from: "+elem.prop("id"));
     var posX = elem.offset().left
     var posY = elem.offset().top;
@@ -87,11 +86,7 @@ function init() {
     map.mouseup((e) => drag ? manageDrag(e,map) : updateMousePos(false,e.button));
 }
 
-function showNatSize() {
-    var camera = $("#camera_img");
-    var map = $("#map_img");
-    $("#clickXTxt").html(camera.prop("naturalWidth")+"x"+camera.prop("naturalHeight"));
-    $("#clickYTxt").html(map.prop("naturalWidth")+"x"+map.prop("naturalHeight"));
-    console.log(document.body.clientHeight);
-    console.log($("#mainGrid").height());
+function shout_out(){
+    var shout_list = document.getElementById("shout-select");
+    window.alert(shout_list[shout_list.selectedIndex].textContent+"\n"+shout_list.value);
 }

@@ -9,20 +9,21 @@
 }
 
 .mdl-button {
-    color: #4a148c;
-    background-color: #e1bee7;
-    margin-left: 10px ;
+    grid-area: b;
+    justify-self: end;
+    color: #3b7991;
+    background-color: #b7d5e1;
 }
 
 .mdl-button:hover {
-    color: #e1bee7;
-    background-color: #4a148c;
+    color: #b7d5e1;
+    background-color: #3b7991;
 }
 
 .demo-card-wide > .mdl-card__title {
-    color: #e1bee7;
+    color: #3b7991;
     height: 64px;
-    background-color:#4a148c;
+    background-color:#b7d5e1;
 }
 
 .mdl-card__title-text {
@@ -30,13 +31,21 @@
     top: 6px;
 }
 
-.demo-card-wide > .mdl-card__menu {
-    color: #fff;
-}
-
 #login, #logout, #register {
     margin: auto;
     width: fit-content;
     padding: 10px;
     diplay: flex;
+}
+
+#next{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-areas: "a a a a a a a a a b";
+}
+
+.log-card-title {
+    background-color: #b7d5e1;
+    color: #3b7991;
 }

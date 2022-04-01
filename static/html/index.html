@@ -11,32 +11,33 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="../static/css/mdl/material.min.css">
         <link rel="stylesheet" href="../static/css/layout.style.css">
+        <link rel="stylesheet" href="../static/css/common.style.css">
         <script src="../static/js/mdl/material.min.js"></script>
         <script src="../static/js/jquery-3.6.0.min.js"></script>
     </head>
 
-    <body onload="init()" onresize="showNatSize()">
+    <body onload="init()">
         <div class="mdl-layout mdl-js-layout container" id="main-container">
             <header class="mdl-layout__header">
-                <div class="mdl-layout__header-row mdl-color--purple-900 mdl-color-text--purple-100">
-                    <span class="mdl-layout-title titles common-text bold-text">YARP BASED Remote SURVEILLANCE</span>
+                <div class="mdl-layout__header-row teleop-header">
+                    <span class="mdl-layout-title titles common-text teleop-header-text bold-text">YARP BASED Remote SURVEILLANCE</span>
                 </div>
             </header>
-            <div class="mdl-layout__drawer mdl-color--purple-100 mdl-color-text--purple-600">
+            <div class="mdl-layout__drawer teleop-menu">
                 <span class="mdl-layout-title common-text">App menu</span>
                 <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link mdl-color-text--purple-900" href="#">Main page</a>
-                    <a class="mdl-navigation__link mdl-color-text--purple-900" href="/logout">Log out</a>
-                    <a class="mdl-navigation__link mdl-color-text--purple-900" href="/register">Register</a>
+                    <a class="mdl-navigation__link common-text" href="#">Main page</a>
+                    <a class="mdl-navigation__link common-text" href="/logout">Log out</a>
+                    <a class="mdl-navigation__link common-text" href="/register">Register</a>
                 </nav>
             </div>
             <div id="mainGrid" class="webview-gridL">
-                <div class="stream-gridI">
-                    <div class="mdl-card mdl-color--red-900 mdl-shadow--2dp through mdl-shadow--8dp img-card">
-                        <div class="mdl-layout__header-row meta meta--fill  mdl-color-text--red-100">
+                <div class="camera-gridI">
+                    <div class="mdl-card teleop-camera-header mdl-shadow--2dp through mdl-shadow--8dp img-card">
+                        <div class="mdl-layout__header-row meta meta--fill  teleop-camera-header-text">
                             <span class="mdl-layout-title titles common-text bold-text">Camera stream</span>
                             <div class="mdl-layout-spacer"></div>
-                            <button id="stream-snapbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" onclick="save2();">
+                            <button id="camera-snapbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" onclick="save2();">
                                 <i class="material-icons" role="presentation">camera_alt</i>
                                 <span class="visuallyhidden">Take a snapshot</span>
                             </button>
@@ -45,8 +46,8 @@
                     </div>
                 </div>
                 <div class="map-gridI">
-                    <div class="mdl-card mdl-color--blue-900 mdl-shadow--2dp through mdl-shadow--8dp img-card">
-                        <div class="mdl-layout__header-row meta meta--fill  mdl-color-text--blue-100">
+                    <div class="mdl-card teleop-map-header mdl-shadow--2dp through mdl-shadow--8dp img-card">
+                        <div class="mdl-layout__header-row meta meta--fill  teleop-map-header-text">
                             <span class="mdl-layout-title titles common-text bold-text">Navigation map</span>
                             <div class="mdl-layout-spacer"></div>
                             <button id="map-snapbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
@@ -57,20 +58,20 @@
                         <img id="map_img" class="stream-img" src="{{porta2}}">
                     </div>
                 </div>
-                <div class="map-info-gridI">
-                    <div class="mdl-card info-card mdl-shadow--2dp through mdl-shadow--8dp mdl-color--blue-100 info-wide-gridL">
-                        <div id="xLbl-div" class="box mdl-color--blue-900">
-                            <p id="clickXLbl" class="mdl-color-text--red-100 data-text bold-text common-text">Clicked X coords.: </p>
+                <div class="alarms-controls-gridI">
+                    <div class="mdl-card info-card mdl-shadow--2dp through mdl-shadow--8dp info-wide-gridL">
+                        <div class="mdl-layout-spacer shout-spacer"></div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label shout-list">
+                            <select class="mdl-textfield__input bold-text teleop-shout-text data-text common-text" id="shout-select" name="shout-select">
+                                <option></option>
+                                <option value="FORBID">Scusate, questa zona é chiusa al pubblico</option>
+                                <option value="SECDIST">Per favore mantenete la distanza interpersonale di sicurezza.</option>
+                            </select>
+                            <label class="mdl-textfield__label" for="shout-select">Avviso</label>
                         </div>
-                        <div id="xTxt-div" class="box mdl-color--blue-900">
-                            <p id="clickXTxt" class="mdl-color-text--red-100 data-text common-text">0.0</p>
-                        </div>
-                        <div id="yLbl-div" class="box mdl-color--blue-900">
-                            <p id="clickYLbl" class="mdl-color-text--red-100 data-text bold-text common-text">Clicked Y coords.: </p>
-                        </div>
-                        <div id="yTxt-div" class="box mdl-color--blue-900">
-                            <p id="clickYTxt" class="mdl-color-text--red-100 data-text common-text">0.0</p>
-                        </div>
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect shout-btn" onclick="shout_out()">
+                            <i class="material-icons">volume_up</i>
+                        </button>
                     </div>
                 </div>
             </div>
