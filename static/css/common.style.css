@@ -6,6 +6,10 @@
     font-family: "light";
 }
 
+.menu-text {
+    font-size: 20px;
+}
+
 .bold-text{
     font-weight: bold;
 }

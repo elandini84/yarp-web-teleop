@@ -26,9 +26,9 @@
             <div class="mdl-layout__drawer teleop-menu">
                 <span class="mdl-layout-title common-text">App menu</span>
                 <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link common-text" href="#">Main page</a>
-                    <a class="mdl-navigation__link common-text" href="/logout">Log out</a>
-                    <a class="mdl-navigation__link common-text" href="/register">Register</a>
+                    <a class="mdl-navigation__link common-text menu-text" href="#">Main page</a>
+                    <a class="mdl-navigation__link common-text menu-text" href="/logout">Log out</a>
+                    <a class="mdl-navigation__link common-text menu-text" href="/register">Register</a>
                 </nav>
             </div>
             <div id="mainGrid" class="webview-gridL">
@@ -36,11 +36,11 @@
                     <div class="mdl-card teleop-camera-header mdl-shadow--2dp through mdl-shadow--8dp img-card">
                         <div class="mdl-layout__header-row meta meta--fill  teleop-camera-header-text">
                             <span class="mdl-layout-title titles common-text bold-text">Camera stream</span>
-                            <div class="mdl-layout-spacer"></div>
+                            <!-- <div class="mdl-layout-spacer"></div>
                             <button id="camera-snapbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" onclick="save2();">
                                 <i class="material-icons" role="presentation">camera_alt</i>
                                 <span class="visuallyhidden">Take a snapshot</span>
-                            </button>
+                            </button> -->
                         </div>
                         <img id="camera_img" class="stream-img" src="{{porta1}}">
                     </div>
@@ -49,11 +49,11 @@
                     <div class="mdl-card teleop-map-header mdl-shadow--2dp through mdl-shadow--8dp img-card">
                         <div class="mdl-layout__header-row meta meta--fill  teleop-map-header-text">
                             <span class="mdl-layout-title titles common-text bold-text">Navigation map</span>
-                            <div class="mdl-layout-spacer"></div>
+                            <!-- <div class="mdl-layout-spacer"></div>
                             <button id="map-snapbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
                                 <i class="material-icons" role="presentation">camera_alt</i>
                                 <span class="visuallyhidden">Take a snapshot</span>
-                            </button>
+                            </button> -->
                         </div>
                         <img id="map_img" class="stream-img" src="{{porta2}}">
                     </div>

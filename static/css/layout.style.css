@@ -34,12 +34,17 @@
 .map-gridI{
     padding: 10px;
     text-align: center;
-    grid-column: 1/span 5;
-    grid-row: 1/span 5;
+    grid-area: a;
     max-width: inherit;
     max-height: 875px;
     width: auto;
     height: auto;
+}
+.camera-gridI {
+    grid-area: b;
+}
+.alarms-controls-gridI {
+    grid-area: c;
 }
 .camera-gridI {
     padding: 10px;
@@ -134,27 +139,25 @@
 }
 @media (max-width: 1000px) {
     .webview-gridL {
-        grid-template-columns: repeat(4, auto);
-    }
-    .camera-gridI {
-        grid-column: 1/span 5;
-        grid-row: 7/span 2;
-    }
-    .alarms-controls-gridI {
-        grid-column: 1/span 5;
-        grid-row: 9/span 2;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-areas:
+                "a a a a"
+                "a a a a"
+                "a a a a"
+                "a a a a"
+                "b b b b"
+                "b b b b"
+                "b b b b"
+                "c c c c";
     }
 }
 @media (min-width: 1000px) {
     .webview-gridL {
-        grid-template-columns: repeat(6, auto);
-    }
-    .camera-gridI {
-        grid-column: 6/span 2;
-        grid-row: 1/span 2;
-    }
-    .alarms-controls-gridI {
-        grid-column: 6/span 2;
-        grid-row: 3/span 2;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-areas:
+                "a a a a b b b"
+                "a a a a b b b"
+                "a a a a b b b"
+                "a a a a c c c";
     }
 }
