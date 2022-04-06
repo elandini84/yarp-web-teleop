@@ -55,22 +55,9 @@ def createUsersTable(inputDb):
 
 if __name__ == "__main__":
 
-    NETWORK = Network()
-    NETWORK.init()
     RESFINDER = ResourceFinder()
     RESFINDER.configure(sys.argv)
-    NAVCLICKPORT = Port()
-    MAPCLICKPORT = Port()
-    HEADCLICKPORT = Port()
     createUsersTable(loginDb)
-
-    NAVCLICKPORTNAME = RESFINDER.find("nav_click_port").asString() if RESFINDER.check("nav_click_port") else NAVCLICKPORTNAME
-    MAPCLICKPORTNAME = RESFINDER.find("map_click_port").asString() if RESFINDER.check("map_click_port") else MAPCLICKPORTNAME
-    HEADCLICKPORTNAME = RESFINDER.find("head_click_port").asString() if RESFINDER.check("head_click_port") else HEADCLICKPORTNAME
-
-    NAVCLICKPORT.open(NAVCLICKPORTNAME)
-    MAPCLICKPORT.open(MAPCLICKPORTNAME)
-    HEADCLICKPORT.open(HEADCLICKPORTNAME)
 
     if RESFINDER.check("no_ssl") or RESFINDER.check("traefik"):
         certificates_folder = None
@@ -98,6 +85,20 @@ if __name__ == "__main__":
                                                    "headPort": HEADCLICKPORT,
                                                    "mapPort": MAPCLICKPORT})]
     else:
+        NETWORK = Network()
+        NETWORK.init()
+        NAVCLICKPORT = Port()
+        MAPCLICKPORT = Port()
+        HEADCLICKPORT = Port()
+
+        NAVCLICKPORTNAME = RESFINDER.find("nav_click_port").asString() if RESFINDER.check("nav_click_port") else NAVCLICKPORTNAME
+        MAPCLICKPORTNAME = RESFINDER.find("map_click_port").asString() if RESFINDER.check("map_click_port") else MAPCLICKPORTNAME
+        HEADCLICKPORTNAME = RESFINDER.find("head_click_port").asString() if RESFINDER.check("head_click_port") else HEADCLICKPORTNAME
+
+        NAVCLICKPORT.open(NAVCLICKPORTNAME)
+        MAPCLICKPORT.open(MAPCLICKPORTNAME)
+        HEADCLICKPORT.open(HEADCLICKPORTNAME)
+        
         if RESFINDER.check("server_port"):
             SERVERPORT = RESFINDER.find("server_port").asInt32()
         if RESFINDER.check("camera_port"):
