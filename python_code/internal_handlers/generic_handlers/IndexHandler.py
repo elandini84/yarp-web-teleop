@@ -25,8 +25,8 @@ class IndexHandler(RequestHandler):
             return
         if self.simulate:
             self.render(self.absPath + '{0}static{0}html{0}index.html'.format(os.sep),
-                        porta1="https://cdn.pixabay.com/photo/2022/03/18/19/09/blue-throat-7077261_960_720.jpg",
-                        porta2="https://cdn.pixabay.com/photo/2021/04/28/21/59/kingfisher-6215073_960_720.jpg",
+                        porta1="../images/camera.png",
+                        porta2="../images/map.png",
                         wsType="wss://" if self._ssl else "ws://")
         else:
             self.render(self.absPath + '{0}static{0}html{0}index.html'.format(os.sep),
