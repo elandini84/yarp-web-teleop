@@ -1,14 +1,24 @@
 .mdl-layout__header, .mdl-layout__drawer, .mdl-layout__drawer-button{
     position: fixed;
 }
+
 #main-container{
     max-width: 100%;
     max-height: 100%;
 }
+
 #mainGrid{
     position: relative;
     top: 60px;
 }
+
+.webview-gridL {
+    display: grid;
+    padding: 5px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
 .img-card {
     /*width: fit-content;*/
     max-width: inherit;
@@ -16,6 +26,7 @@
     width: auto;
     height: auto;
 }
+
 .stream-img{
     display: block;
     /*max-width:640px;
@@ -27,6 +38,7 @@
     /*cursor: url(../images/outline_place_black_24dp.cur),auto;*/
     /*cursor: url(../images/place_white_24dp.svg),auto;*/
 }
+
 .teleop-camera-header, .teleop-map-header{
     background-color: #519ab8;
 }
@@ -40,40 +52,24 @@
     width: auto;
     height: auto;
 }
-.camera-gridI {
-    grid-area: b;
-}
-.alarms-controls-gridI {
-    grid-area: c;
-}
+
 .camera-gridI {
     padding: 10px;
     text-align: center;
     max-width: inherit;
     max-height: inherit;
+    grid-area: b;
     width: auto;
     height: auto;
 }
-.alarms-controls-gridI {
-    padding: inherit;
-    text-align: center;
-    align-self: start;
-    max-width: inherit;
-    max-height: inherit;
-    width: auto;
-    height: auto;
-}
+
+/*  AUDIO CONTROLS PART ---------------------------- START */
+
 .info-card {
     max-height: inherit;
     max-width: inherit;
     width: auto;
     height: auto;
-}
-.webview-gridL {
-    display: grid;
-    padding: 5px;
-    max-width: 100%;
-    max-height: 100%;
 }
 
 .info-wide-gridL {
@@ -88,16 +84,30 @@
     width: auto;
     background-color: #519ab8;
 }
+
+.alarms-controls-gridI {
+    grid-area: c;
+    padding: inherit;
+    text-align: center;
+    align-self: start;
+    max-width: inherit;
+    max-height: inherit;
+    width: auto;
+    height: auto;
+}
+
 .shout-btn {
     grid-area: b;
     justify-self: end;
     color: #3b7991;
     background-color: #b7d5e1;
 }
+
 .shout-btn:hover {
     color: #b7d5e1;
     background-color: #3b7991;
 }
+
 .shout-list{
     grid-area: a;
     justify-self: start;
@@ -109,34 +119,10 @@
     justify-self: start;
 }
 
-#xLbl-div, #xTxt-div, #yLbl-div, #yTxt-div {
-    padding: 10px;
-    width: 75%;
-    height: auto;
-    align-content: center;
-}
-#xLbl-div {
-    grid-column: 1/ span 1;
-    grid-row: 1/ span 1;
-}
-#xTxt-div {
-    grid-column: 2/span 1;
-    grid-row: 1/span 1;
-}
-#yLbl-div {
-    grid-column: 1/span 1;
-    grid-row: 2/span 1;
-}
-#yTxt-div {
-    grid-column: 2/span 1;
-    grid-row: 2/span 1;
-}
-#clickXLbl, #clickYLbl, #clickXTxt, #clickYTxt {
-    max-width: inherit;
-    max-height: inherit;
-    width: auto;
-    height: auto;
-}
+/*  AUDIO CONTROLS PART ---------------------------- END */
+
+/*  MEDIA SIZE PART ---------------------------- START */
+
 @media (max-width: 1000px) {
     .webview-gridL {
         grid-template-columns: repeat(4, 1fr);
@@ -151,6 +137,7 @@
                 "c c c c";
     }
 }
+
 @media (min-width: 1000px) {
     .webview-gridL {
         grid-template-columns: repeat(7, 1fr);
@@ -161,3 +148,5 @@
                 "a a a a c c c";
     }
 }
+
+/*  MEDIA SIZE PART ---------------------------- END */
