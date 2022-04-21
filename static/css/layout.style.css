@@ -2,58 +2,33 @@
     position: fixed;
 }
 
+.teleop-camera-header, .teleop-map-header{
+    background-color: #519ab8;
+}
+
 #main-container{
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
 }
 
 #mainGrid{
     position: relative;
     top: 60px;
-}
-
-.webview-gridL {
     display: grid;
-    padding: 5px;
+    padding: 10px;
     max-width: 100%;
     max-height: 100%;
 }
 
-.img-card {
-    /*width: fit-content;*/
-    max-width: inherit;
-    max-height: inherit;
-    width: auto;
-    height: auto;
+#main-spacer{
+    grid-area: s;
+    justify-self: start;
+    width: 100%;
 }
 
-.stream-img{
-    display: block;
-    /*max-width:640px;
-    max-height:480px;*/
-    max-width: inherit;
-    max-height: inherit;
-    width: auto;
-    height: auto;
-    /*cursor: url(../images/outline_place_black_24dp.cur),auto;*/
-    /*cursor: url(../images/place_white_24dp.svg),auto;*/
-}
+/*  CAMERA STREAM PART ---------------------------- START */
 
-.teleop-camera-header, .teleop-map-header{
-    background-color: #519ab8;
-}
-
-.map-gridI{
-    padding: 10px;
-    text-align: center;
-    grid-area: a;
-    max-width: inherit;
-    max-height: 875px;
-    width: auto;
-    height: auto;
-}
-
-.camera-gridI {
+#camera-gridI {
     padding: 10px;
     text-align: center;
     max-width: inherit;
@@ -62,6 +37,65 @@
     width: auto;
     height: auto;
 }
+
+#camera_card {
+    /*width: fit-content;*/
+    max-width: inherit;
+    max-height: inherit;
+    width: auto;
+    height: auto;
+}
+
+#camera_img{
+    display: block;
+    /*max-width:640px;
+    max-height:480px;*/
+    max-width: inherit;
+    max-height: inherit;
+    width: auto;
+    height: auto;
+    aspect-ratio: initial;
+    /*cursor: url(../images/outline_place_black_24dp.cur),auto;*/
+    /*cursor: url(../images/place_white_24dp.svg),auto;*/
+}
+
+/*  CAMERA STREAM PART ---------------------------- END */
+
+/*  MAP STREAM PART ---------------------------- START */
+
+#map-gridI{
+    padding: 10px;
+    text-align: center;
+    grid-area: a;
+    max-width: inherit;
+    max-height: inherit;
+    width: auto;
+    height: auto;
+}
+
+#map_card {
+    /*width: fit-content;*/
+    max-width: inherit;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    overflow: visible;
+}
+
+#map_img{
+    display: block;
+    /*max-width:640px;
+    max-height:480px;*/
+    max-width: inherit;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    aspect-ratio: initial;
+    /*cursor: url(../images/outline_place_black_24dp.cur),auto;*/
+    /*cursor: url(../images/place_white_24dp.svg),auto;*/
+}
+
+/*  MAP STREAM PART ---------------------------- END */
 
 /*  AUDIO CONTROLS PART ---------------------------- START */
 
@@ -75,8 +109,8 @@
 .info-wide-gridL {
     padding: 10px;
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-areas: "s a a a a a a b";
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-areas: "sb a a a a a a sm b sa";
     align-items: center;
     max-width: inherit;
     max-height: inherit;
@@ -85,7 +119,7 @@
     background-color: #519ab8;
 }
 
-.alarms-controls-gridI {
+#alarms-controls-gridI {
     grid-area: c;
     padding: inherit;
     text-align: center;
@@ -115,8 +149,19 @@
 }
 
 .shout-spacer{
-    grid-area: s;
     justify-self: start;
+}
+
+#shout_before{
+    grid-area: sb;
+}
+
+#shout_after{
+    grid-area: sa;
+}
+
+#shout_middle{
+    grid-area: sm;
 }
 
 /*  AUDIO CONTROLS PART ---------------------------- END */
@@ -124,28 +169,41 @@
 /*  MEDIA SIZE PART ---------------------------- START */
 
 @media (max-width: 1000px) {
-    .webview-gridL {
+    #mainGrid {
         grid-template-columns: repeat(4, 1fr);
         grid-template-areas:
-                "a a a a"
-                "a a a a"
-                "a a a a"
-                "a a a a"
                 "b b b b"
                 "b b b b"
                 "b b b b"
-                "c c c c";
+                "a a a a"
+                "a a a a"
+                "a a a a"
+                "a a a a"
+                "c c c c"
+                "s s s s";
+    }
+    #map-gridI{
+        height: 95%;
     }
 }
 
 @media (min-width: 1000px) {
-    .webview-gridL {
-        grid-template-columns: repeat(7, 1fr);
+    #mainGrid {
+        grid-template-rows: 1fr 1fr auto;
+        /*grid-template-columns: repeat(8, 1fr);
         grid-template-areas:
-                "a a a a b b b"
-                "a a a a b b b"
-                "a a a a b b b"
-                "a a a a c c c";
+                "a a a a b b b s"
+                "a a a a b b b s"
+                "a a a a b b b s"
+                "a a a a c c c s";*/
+        grid-template-columns: auto auto;
+        grid-template-areas:
+                "a b"
+                "a c"
+                "a .";
+    }
+    #map-gridI{
+        height: 100%;
     }
 }
 

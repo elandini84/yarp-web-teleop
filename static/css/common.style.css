@@ -51,7 +51,7 @@
 }
 
 @media (max-width: 1000px) {
-    .titles {
+    .titles, .midtitles {
         font-size: 25px;
     }
     .data-text{
@@ -62,6 +62,9 @@
 @media (min-width: 1000px) {
     .titles {
         font-size: 30px;
+    }
+    .midtitles {
+        font-size: 27px;
     }
     .data-text{
         font-size: 20px;

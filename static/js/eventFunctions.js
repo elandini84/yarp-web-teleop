@@ -2,6 +2,7 @@ let positionX = -1
 let positionY = -1
 let drag = false;
 let pressed = false;
+let resized = false;
 let ws = new WebSocket(wsType+window.location.host+"/ws");
 const LEFT_BTN = 0;
 const RIGHT_BTN = 2;
@@ -20,6 +21,12 @@ function updateMousePos(isRobot,btnPressed) {
     pressed = false;
     drag = false;
     //$(".stream-img").css("cursor","url(static/images/place_white_24dp.svg),auto");
+
+    if (!isRobot && btnPressed===2){
+        resizeMap();
+        return;
+    }
+
     var msg = {"x":positionX,
                "y":positionY,
                "button":btnPressed,
@@ -89,4 +96,13 @@ function init() {
 function shout_out(){
     var shout_list = document.getElementById("shout-select");
     window.alert(shout_list[shout_list.selectedIndex].textContent+"\n"+shout_list.value);
+}
+
+function resizeMap(){
+    var map = $("#map_img");
+    var card = document.getElementById("map_card");
+    var grid = document.getElementById("map-gridI");
+    var main_grid = $("#mainGrid");
+    map.height(main_grid.height()-10);
+    map.width(map.height()*(map.prop("naturalWidth")/map.prop("naturalHeight")));
 }
