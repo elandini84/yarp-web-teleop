@@ -3,6 +3,7 @@ let positionY = -1
 let drag = false;
 let pressed = false;
 let resized = false;
+let righty = false;
 let ws = new WebSocket(wsType+window.location.host+"/ws");
 const LEFT_BTN = 0;
 const RIGHT_BTN = 2;
@@ -20,10 +21,10 @@ function convertMousePos(x,y,elem){
 function updateMousePos(isRobot,btnPressed) {
     pressed = false;
     drag = false;
-    //$(".stream-img").css("cursor","url(static/images/place_white_24dp.svg),auto");
+    $(".stream-img").css("cursor","auto");
 
     if (!isRobot && btnPressed===2){
-        resizeMap();
+        //resizeMap();
         return;
     }
 
@@ -38,7 +39,7 @@ function updateMousePos(isRobot,btnPressed) {
 function manageDrag(e,elem) {
     pressed = false;
     drag = false;
-    //$(".stream-img").css("cursor","url(static/images/place_white_24dp.svg),auto");
+    $(".stream-img").css("cursor","auto");
     var posX = elem.offset().left
     var posY = elem.offset().top;
     var cursorX = e.pageX - posX;
@@ -65,7 +66,16 @@ function manageDrag(e,elem) {
 function simpleDown(e,elem) {
     drag = false;
     pressed = true;
-    //$(".stream-img").css("cursor","url(static/images/place_red_36dp.png),auto");
+    if (e.button===2) {
+        if (elem.prop("id")==="camera_img") {
+            elem.css("cursor", "url(static/images/eye_pointer_36_green.png) 18 18,auto");
+            righty = true;
+        }
+    }
+    else{
+        $(".stream-img").css("cursor","url(static/images/click_pointer_36_green.png) 18 0,auto");
+        righty = false;
+    }
     console.log("simpleDown "+e.button+" called from: "+elem.prop("id"));
     var posX = elem.offset().left
     var posY = elem.offset().top;
@@ -85,17 +95,34 @@ function init() {
     map.on("contextmenu",function() { return false; });
 
     camera.mousedown((e) => simpleDown(e,camera));
-    camera.mousemove(function(){if(pressed) drag = true;});
+    camera.mousemove((e) => manageDragging(e, true));
     camera.mouseup((e) => drag ? manageDrag(e,camera) : updateMousePos(true,e.button));
 
     map.mousedown((e) => simpleDown(e,map));
-    map.mousemove(function(){if(pressed) drag = true;});
+    map.mousemove((e) => manageDragging(e, false));
     map.mouseup((e) => drag ? manageDrag(e,map) : updateMousePos(false,e.button));
 }
 
 function shout_out(){
     var shout_list = document.getElementById("shout-select");
     window.alert(shout_list[shout_list.selectedIndex].textContent+"\n"+shout_list.value);
+}
+
+function manageDragging(e,isRobot){
+    if(pressed) {
+        drag = true;
+        if (righty) {
+            if (isRobot)
+                $(".stream-img").css("cursor", "url(static/images/eye_pointer_36_red.png) 18 18,auto");
+        } else {
+            if (isRobot) {
+                $(".stream-img").css("cursor", "url(static/images/rotat_pointer_36_red.png) 18 18,auto");
+            }
+            else{
+                $(".stream-img").css("cursor", "url(static/images/place_red_36dp.png) 18 18,auto");
+            }
+        }
+    }
 }
 
 function resizeMap(){
