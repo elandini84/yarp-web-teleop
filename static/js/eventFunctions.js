@@ -87,6 +87,7 @@ function simpleDown(e,elem) {
 }
 
 function init() {
+    resizeMap(false);
     var camera = $("#camera_img");
     var map = $("#map_img");
     camera.on("dragstart",function() { return false; });
@@ -125,11 +126,42 @@ function manageDragging(e,isRobot){
     }
 }
 
-function resizeMap(){
+function resizeMap(onResize){
+    var height = (window.innerHeight > 0) ? window.innerHeight : screen.height;
     var map = $("#map_img");
-    var card = document.getElementById("map_card");
-    var grid = document.getElementById("map-gridI");
+    var tall = map.prop("naturalWidth") < map.prop("naturalHeight");
+    console.log("Madonna troia on resize " + onResize);
+    if ((map.height() < height && !onResize) || !tall){
+        return;
+    }
+    console.log("Madonna puttana");
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    var card = $("#map_card");
+    var grid = $("#map-gridI");
+    var spacer = $("#main-spacer");
     var main_grid = $("#mainGrid");
-    map.height(main_grid.height()-10);
-    map.width(map.height()*(map.prop("naturalWidth")/map.prop("naturalHeight")));
+    var camera = $("#camera_img");
+    var camera_card = $("#camera_card");
+    var shout_card = $(".info-card");
+    if (width > 1000) {
+        map.height(height - 150);
+        card.height(map.height());
+        map.width(map.height() * (map.prop("naturalWidth") / map.prop("naturalHeight")));
+        card.width(map.width());
+        spacer.width(600);
+    }
+    else{
+        card.width('auto');
+        map.width('auto');
+        map.height('auto');
+    }
+    console.log("Canedio height card: " + camera_card.height());
+    console.log("Canedio height img: " + camera.height());
+    camera.width(camera.height() * (camera.prop("naturalWidth") / camera.prop("naturalHeight")));
+    camera_card.width(camera.width());
+    shout_card.width(camera.width()-20);
+}
+
+function windowResized(){
+    resizeMap(true);
 }

@@ -16,7 +16,7 @@
         <script src="../static/js/jquery-3.6.0.min.js"></script>
     </head>
 
-    <body onload="init()">
+    <body onload="init()" onresize="windowResized()">
         <div class="mdl-layout mdl-js-layout container" id="main-container">
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row teleop-header">
@@ -32,10 +32,10 @@
                 </nav>
             </div>
             <div id="mainGrid" class="webview-gridL">
-                <div id="main-spacer" class="mdl-layout-spacer"></div>
+                <div id="main-spacer" class="mdl-card"></div>
                 <div id="camera-gridI">
                     <div id="camera_card" class="mdl-card teleop-camera-header mdl-shadow--2dp through mdl-shadow--8dp img-card">
-                        <div class="mdl-layout__header-row meta meta--fill  teleop-camera-header-text">
+                        <div class="mdl-card__title  teleop-camera-header-text">
                             <span class="mdl-layout-title midtitles common-text bold-text">Camera stream</span>
                             <!-- <div class="mdl-layout-spacer"></div>
                             <button id="camera-snapbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" onclick="save2();">
@@ -47,8 +47,8 @@
                     </div>
                 </div>
                 <div id="map-gridI">
-                    <div id="map_card" class="mdl-card teleop-map-header mdl-shadow--2dp through mdl-shadow--8dp img-card">
-                        <div class="mdl-layout__header-row meta meta--fill  teleop-map-header-text">
+                    <div id="map_card" class="mdl-card teleop-map-header mdl-shadow--2dp through mdl-shadow--8dp img-card mdl-typography--text-left">
+                        <div class="mdl-card__title  teleop-map-header-text">
                             <span class="mdl-layout-title midtitles common-text bold-text">Navigation map</span>
                             <!-- <div class="mdl-layout-spacer"></div>
                             <button id="map-snapbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">

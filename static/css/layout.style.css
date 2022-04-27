@@ -189,18 +189,20 @@
 
 @media (min-width: 1000px) {
     #mainGrid {
-        grid-template-rows: 1fr 1fr auto;
-        /*grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: 1fr 1fr 1fr auto;
+        /*grid-template-columns: repeat(8, 1fr);*/
+        grid-template-columns: repeat(8, auto);
         grid-template-areas:
                 "a a a a b b b s"
                 "a a a a b b b s"
-                "a a a a b b b s"
-                "a a a a c c c s";*/
-        grid-template-columns: auto auto;
+                "a a a a c c c s"
+                "a a a a . . . s";
+        /*grid-template-columns: auto auto;
+        grid-template-rows: 1fr 1fr auto;
         grid-template-areas:
                 "a b"
                 "a c"
-                "a .";
+                "a .";*/
     }
     #map-gridI{
         height: 100%;

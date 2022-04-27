@@ -18,8 +18,9 @@
     background-color: #3b7991;
 }
 
-.teleop-header-text, .teleop-map-header-text, .teleop-camera-header, .teleop-shout-text{
+.teleop-header-text, .teleop-map-header-text, .teleop-camera-header-text, .teleop-camera-header, .teleop-shout-text{
     color: #ffffff;
+    position: relative;
 }
 
 .mdl-layout__drawer {
