@@ -26,7 +26,7 @@ class IndexHandler(RequestHandler):
         if self.simulate:
             self.render(self.absPath + '{0}static{0}html{0}index.html'.format(os.sep),
                         porta1='..{0}static{0}images{0}camera.png'.format(os.sep),
-                        porta2='..{0}static{0}images{0}map2.png'.format(os.sep),
+                        porta2='..{0}static{0}images{0}map.png'.format(os.sep),
                         wsType="wss://" if self._ssl else "ws://")
         else:
             self.render(self.absPath + '{0}static{0}html{0}index.html'.format(os.sep),

@@ -130,38 +130,66 @@ function resizeMap(onResize){
     var height = (window.innerHeight > 0) ? window.innerHeight : screen.height;
     var map = $("#map_img");
     var tall = map.prop("naturalWidth") < map.prop("naturalHeight");
-    console.log("Madonna troia on resize " + onResize);
+    console.log("On resize " + onResize);
     if ((map.height() < height && !onResize) || !tall){
         return;
     }
-    console.log("Madonna puttana");
     var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-    var card = $("#map_card");
-    var grid = $("#map-gridI");
+    var map_card = $("#map_card");
     var spacer = $("#main-spacer");
-    var main_grid = $("#mainGrid");
     var camera = $("#camera_img");
     var camera_card = $("#camera_card");
-    var shout_card = $(".info-card");
+    var shout_card = $("#shout_card");
+    var padding = $("#mainGrid").css("padding");
     if (width > 1000) {
-        map.height(height - 150);
-        card.height(map.height());
-        map.width(map.height() * (map.prop("naturalWidth") / map.prop("naturalHeight")));
-        card.width(map.width());
-        spacer.width(600);
+        /* MANAGING MAP SIZE */
+        map_card.css("height",(height - $("#main_header").height()*3));
+        map.height(map_card.height() - $("#map_card_title").height());
+        map_card.width(map.height() * (map.prop("naturalWidth") / map.prop("naturalHeight")));
+        map.width(map_card.width());
+
+        console.log("Checking screen height: " + screen.width);
+        console.log("Checking height: " + height);
+        console.log("Checking width: " + width);
+        console.log("Checking header: " + $("#main_header").height());
+        console.log("Checking height map_card: " + map_card.height());
+        console.log("Checking height map: " + map.height());
+
+        /* ADAPTING CAMERA COLUMN TO MAP SIZE */
+        shout_card.css("height",100);
+        shout_card.css("max-height",100);
+        camera_card.height(map_card.height() - shout_card.height() - padding);
+        camera.height(camera.width() * (camera.prop("naturalHeight") / camera.prop("naturalWidth")));
+        if (camera.height() !== (camera_card.height()-$("#camera_card_title").height())){
+            camera.height(camera_card.height()-$("#camera_card_title").height()-20);
+        }
+        camera_card.width(camera.height() * (camera.prop("naturalWidth") / camera.prop("naturalHeight")));
+        camera.width(camera_card.width());
+        console.log("Checking max width camera: " + camera.css("max-width"));
+        console.log("Checking height camera_card: " + camera_card.height());
+        console.log("Checking height camera: " + camera.height());
+        console.log("Checking width camera_card: " + camera_card.width());
+        console.log("Checking width camera: " + camera.width());
+        console.log("Checking height shout_card: " + shout_card.height());
+        shout_card.width(camera.width()-20);
+
+        spacer.width(width - camera_card.width() - map_card.width() - padding*2);
     }
     else{
-        card.width('auto');
+        map_card.width('auto');
+        map_card.height('auto')
         map.width('auto');
         map.height('auto');
+        camera_card.css("width",'auto');
+        camera_card.height('auto')
+        camera.css("width",'auto');
+        camera.height('auto');
+        shout_card.width('auto');
+        shout_card.height('auto');
     }
-    console.log("Canedio height card: " + camera_card.height());
-    console.log("Canedio height img: " + camera.height());
-    camera.width(camera.height() * (camera.prop("naturalWidth") / camera.prop("naturalHeight")));
-    camera_card.width(camera.width());
-    shout_card.width(camera.width()-20);
 }
 
 function windowResized(){
+    location.reload();
     resizeMap(true);
 }

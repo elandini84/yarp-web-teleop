@@ -14,11 +14,19 @@
         <link rel="stylesheet" href="../static/css/common.style.css">
         <script src="../static/js/mdl/material.min.js"></script>
         <script src="../static/js/jquery-3.6.0.min.js"></script>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="../static/images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="../static/images/favicon/site.webmanifest">
+        <link rel="mask-icon" href="../static/images/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
     </head>
 
     <body onload="init()" onresize="windowResized()">
         <div class="mdl-layout mdl-js-layout container" id="main-container">
-            <header class="mdl-layout__header">
+            <header id="main_header" class="mdl-layout__header">
                 <div class="mdl-layout__header-row teleop-header">
                     <span class="mdl-layout-title titles common-text teleop-header-text bold-text">YARP BASED Remote SURVEILLANCE</span>
                 </div>
@@ -35,7 +43,7 @@
                 <div id="main-spacer" class="mdl-card"></div>
                 <div id="camera-gridI">
                     <div id="camera_card" class="mdl-card teleop-camera-header mdl-shadow--2dp through mdl-shadow--8dp img-card">
-                        <div class="mdl-card__title  teleop-camera-header-text">
+                        <div id="camera_card_title" class="mdl-card__title  teleop-camera-header-text">
                             <span class="mdl-layout-title midtitles common-text bold-text">Camera stream</span>
                             <!-- <div class="mdl-layout-spacer"></div>
                             <button id="camera-snapbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" onclick="save2();">
@@ -48,7 +56,7 @@
                 </div>
                 <div id="map-gridI">
                     <div id="map_card" class="mdl-card teleop-map-header mdl-shadow--2dp through mdl-shadow--8dp img-card mdl-typography--text-left">
-                        <div class="mdl-card__title  teleop-map-header-text">
+                        <div id="map_card_title" class="mdl-card__title  teleop-map-header-text">
                             <span class="mdl-layout-title midtitles common-text bold-text">Navigation map</span>
                             <!-- <div class="mdl-layout-spacer"></div>
                             <button id="map-snapbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
@@ -60,7 +68,7 @@
                     </div>
                 </div>
                 <div id="alarms-controls-gridI">
-                    <div class="mdl-card info-card mdl-shadow--2dp through mdl-shadow--8dp info-wide-gridL">
+                    <div id="shout_card" class="mdl-card info-card mdl-shadow--2dp through mdl-shadow--8dp info-wide-gridL">
                         <div id="shout_before" class="mdl-layout-spacer shout-spacer"></div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label shout-list">
                             <select class="mdl-textfield__input bold-text teleop-shout-text data-text common-text" id="shout-select" name="shout-select">
