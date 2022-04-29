@@ -130,10 +130,10 @@ function resizeMap(onResize){
     var height = (window.innerHeight > 0) ? window.innerHeight : screen.height;
     var map = $("#map_img");
     var tall = map.prop("naturalWidth") < map.prop("naturalHeight");
-    console.log("On resize " + onResize);
-    if ((map.height() < height && !onResize) || !tall){
-        return;
-    }
+    var wider = map.prop("naturalHeight") < map.prop("naturalWidth");
+    var widerer = (map.prop("naturalWidth")/map.prop("naturalHeight")) > 1.3;
+    console.log("On resize " + onResize + " wider: " + wider + " widerer: " + widerer);
+
     var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     var map_card = $("#map_card");
     var spacer = $("#main-spacer");
@@ -141,19 +141,19 @@ function resizeMap(onResize){
     var camera_card = $("#camera_card");
     var shout_card = $("#shout_card");
     var padding = $("#mainGrid").css("padding");
-    if (width > 1000) {
+    if (width > 1000 && !(wider && widerer)) {
         /* MANAGING MAP SIZE */
         map_card.css("height",(height - $("#main_header").height()*3));
         map.height(map_card.height() - $("#map_card_title").height());
         map_card.width(map.height() * (map.prop("naturalWidth") / map.prop("naturalHeight")));
         map.width(map_card.width());
 
-        console.log("Checking screen height: " + screen.width);
+        /*console.log("Checking screen height: " + screen.width);
         console.log("Checking height: " + height);
         console.log("Checking width: " + width);
         console.log("Checking header: " + $("#main_header").height());
         console.log("Checking height map_card: " + map_card.height());
-        console.log("Checking height map: " + map.height());
+        console.log("Checking height map: " + map.height());*/
 
         /* ADAPTING CAMERA COLUMN TO MAP SIZE */
         shout_card.css("height",100);
@@ -165,12 +165,12 @@ function resizeMap(onResize){
         }
         camera_card.width(camera.height() * (camera.prop("naturalWidth") / camera.prop("naturalHeight")));
         camera.width(camera_card.width());
-        console.log("Checking max width camera: " + camera.css("max-width"));
+        /*console.log("Checking max width camera: " + camera.css("max-width"));
         console.log("Checking height camera_card: " + camera_card.height());
         console.log("Checking height camera: " + camera.height());
         console.log("Checking width camera_card: " + camera_card.width());
         console.log("Checking width camera: " + camera.width());
-        console.log("Checking height shout_card: " + shout_card.height());
+        console.log("Checking height shout_card: " + shout_card.height());*/
         shout_card.width(camera.width()-20);
 
         spacer.width(width - camera_card.width() - map_card.width() - padding*2);
