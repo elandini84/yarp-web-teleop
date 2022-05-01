@@ -9,6 +9,8 @@ const LEFT_BTN = 0;
 const RIGHT_BTN = 2;
 const ROBOT = "camera_img";
 const MAP = "map_img";
+const LIGHTCOL = "#b7d5e1";
+const DARKCOL = "#3b7991";
 console.log(window.location.host);
 
 function convertMousePos(x,y,elem){
@@ -87,6 +89,9 @@ function simpleDown(e,elem) {
 }
 
 function init() {
+    $("#shout_card").hide();
+    $("#rotate_card").hide();
+
     resizeMap(false);
     var camera = $("#camera_img");
     var map = $("#map_img");
@@ -187,6 +192,54 @@ function resizeMap(onResize){
         shout_card.width('auto');
         shout_card.height('auto');
     }
+}
+
+function clickedAlarm(){
+    var headBtn = $("#headBtn");
+    var alarmBtn = $("#alarmBtn");
+    var rotateBtn = $("#rotateBtn");
+
+    headBtn.css("color",DARKCOL);
+    alarmBtn.css("color",LIGHTCOL);
+    rotateBtn.css("color",DARKCOL);
+    headBtn.css("background-color",LIGHTCOL);
+    alarmBtn.css("background-color",DARKCOL);
+    rotateBtn.css("background-color",LIGHTCOL);
+
+    $("#shout_card").show();
+    $("#rotate_card").hide();
+}
+
+function clickedRotate(){
+    var headBtn = $("#headBtn");
+    var alarmBtn = $("#alarmBtn");
+    var rotateBtn = $("#rotateBtn");
+
+    headBtn.css("color",DARKCOL);
+    alarmBtn.css("color",DARKCOL);
+    rotateBtn.css("color",LIGHTCOL);
+    headBtn.css("background-color",LIGHTCOL);
+    alarmBtn.css("background-color",LIGHTCOL);
+    rotateBtn.css("background-color",DARKCOL);
+
+    $("#shout_card").hide();
+    $("#rotate_card").show();
+}
+
+function clickedHead(){
+    var headBtn = $("#headBtn");
+    var alarmBtn = $("#alarmBtn");
+    var rotateBtn = $("#rotateBtn");
+
+    headBtn.css("color",LIGHTCOL);
+    alarmBtn.css("color",DARKCOL);
+    rotateBtn.css("color",DARKCOL);
+    headBtn.css("background-color",DARKCOL);
+    alarmBtn.css("background-color",LIGHTCOL);
+    rotateBtn.css("background-color",LIGHTCOL);
+
+    $("#shout_card").hide();
+    $("#rotate_card").hide();
 }
 
 function windowResized(){

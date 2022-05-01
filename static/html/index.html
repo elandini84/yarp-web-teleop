@@ -68,21 +68,47 @@
                     </div>
                 </div>
                 <div id="alarms-controls-gridI">
-                    <div id="shout_card" class="mdl-card info-card mdl-shadow--2dp through mdl-shadow--8dp info-wide-gridL">
-                        <div id="shout_before" class="mdl-layout-spacer shout-spacer"></div>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label shout-list">
-                            <select class="mdl-textfield__input bold-text teleop-shout-text data-text common-text" id="shout-select" name="shout-select">
-                                <option></option>
-                                <option value="FORBID">Scusate, questa zona é chiusa al pubblico</option>
-                                <option value="SECDIST">Per favore mantenete la distanza interpersonale di sicurezza.</option>
-                            </select>
-                            <label class="mdl-textfield__label" for="shout-select">Avviso</label>
-                        </div>
-                        <div id="shout_middle" class="mdl-layout-spacer shout-spacer"></div>
-                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect shout-btn" onclick="shout_out()">
-                            <i class="material-icons">volume_up</i>
+                    <div id="alarms-controls-gridLO" class="mdl-card info-card mdl-shadow--2dp through mdl-shadow--8dp">
+                        <div id="alarm_after" class="mdl-layout-spacer shout-spacer"></div>
+                        <div id="alarm_before" class="mdl-layout-spacer shout-spacer"></div>
+                        <button id="alarmBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedAlarm()">
+                            AVVISI AUDIO
                         </button>
-                        <div id="shout_after" class="mdl-layout-spacer shout-spacer"></div>
+                        <button id="rotateBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedRotate()">
+                            RUOTA ROBOT
+                        </button>
+                        <div id="shout_card" class="info-wide-gridL">
+                            <div id="shout_before" class="mdl-layout-spacer shout-spacer"></div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label shout-list">
+                                <select class="mdl-textfield__input bold-text teleop-shout-text data-text common-text" id="shout-select" name="shout-select">
+                                    <option>Selezionare messaggio</option>
+                                    <option value="FORBID">Scusate, questa zona é chiusa al pubblico</option>
+                                    <option value="SECDIST">Per favore mantenete la distanza interpersonale di sicurezza.</option>
+                                </select>
+                                <label class="mdl-textfield__label" for="shout-select">Avviso</label>
+                            </div>
+                            <div id="shout_middle" class="mdl-layout-spacer shout-spacer"></div>
+                            <button id="shoutBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                                <i class="material-icons">volume_up</i>
+                            </button>
+                            <div id="shout_after" class="mdl-layout-spacer shout-spacer"></div>
+                        </div>
+                        <div id="rotate_card">
+                            <div id="rotate_before" class="mdl-layout-spacer shout-spacer"></div>
+                            <button id="leftFastBtn"  class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                                <i class="material-icons">keyboard_double_arrow_left</i>
+                            </button>
+                            <button id="leftBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                                <i class="material-icons">chevron_left</i>
+                            </button>
+                            <button id="rightBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                                <i class="material-icons">chevron_right</i>
+                            </button>
+                            <button id="rightFastBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                                <i class="material-icons">keyboard_double_arrow_right</i>
+                            </button>
+                            <div id="rotate_after" class="mdl-layout-spacer shout-spacer"></div>
+                        </div>
                     </div>
                 </div>
             </div>

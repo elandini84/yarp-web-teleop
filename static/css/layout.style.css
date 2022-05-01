@@ -99,18 +99,48 @@
 
 /*  AUDIO CONTROLS PART ---------------------------- START */
 
-.info-card {
+#alarm_after{
+    grid-area: sa;
+}
+
+#alarm_before{
+    grid-area: sb;
+}
+
+#alarms-controls-gridLO {
+    display: grid;
+    grid-template-columns: 10% 40% 40% 10%;
+    grid-template-areas:
+            "sb a b sa"
+            "d d d d";
+    align-items: center;
     max-height: inherit;
     max-width: inherit;
     width: auto;
     height: auto;
+    background-color: #519ab8;
 }
 
 .info-wide-gridL {
     padding: 10px;
+    grid-area: d;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-areas: "sb a a a a a a sm b sa";
+    align-items: center;
+    max-width: inherit;
+    max-height: inherit;
+    height: auto;
+    width: auto;
+    background-color: #519ab8;
+}
+
+#rotate_card {
+    padding: 10px;
+    grid-area: d;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas: "sb a b c d sa";
     align-items: center;
     max-width: inherit;
     max-height: inherit;
@@ -130,16 +160,58 @@
     height: auto;
 }
 
-.shout-btn {
+#leftFastBtn {
+    grid-area: a;
+    justify-self: end;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#leftBtn {
     grid-area: b;
     justify-self: end;
     color: #3b7991;
     background-color: #b7d5e1;
 }
 
-.shout-btn:hover {
+#rightBtn {
+    grid-area: c;
+    justify-self: end;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#rightFastBtn {
+    grid-area: d;
+    justify-self: end;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#shoutBtn {
+    grid-area: b;
+    justify-self: end;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#shoutBtn:hover, #leftFastBtn:hover, #leftBtn:hover, #rightBtn:hover, #rightFastBtn:hover {
     color: #b7d5e1;
     background-color: #3b7991;
+}
+
+#alarmBtn {
+    grid-area: a;
+    justify-self: start;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#rotateBtn {
+    grid-area: b;
+    justify-self: start;
+    color: #3b7991;
+    background-color: #b7d5e1;
 }
 
 .shout-list{
@@ -175,11 +247,11 @@
                 "b b b b"
                 "b b b b"
                 "b b b b"
-                "a a a a"
-                "a a a a"
-                "a a a a"
-                "a a a a"
                 "c c c c"
+                "a a a a"
+                "a a a a"
+                "a a a a"
+                "a a a a"
                 "s s s s";
     }
     #map-gridI{
