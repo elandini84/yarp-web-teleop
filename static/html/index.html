@@ -95,16 +95,16 @@
                         </div>
                         <div id="rotate_card">
                             <div id="rotate_before" class="mdl-layout-spacer shout-spacer"></div>
-                            <button id="leftFastBtn"  class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                            <button id="leftFastBtn"  class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onmousedown="pressedFastLeft()" onmouseup="releasedAll()">
                                 <i class="material-icons">keyboard_double_arrow_left</i>
                             </button>
-                            <button id="leftBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                            <button id="leftBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn"  onmousedown="pressedLeft()" onmouseup="releasedAll()">
                                 <i class="material-icons">chevron_left</i>
                             </button>
-                            <button id="rightBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                            <button id="rightBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn"  onmousedown="pressedRight()" onmouseup="releasedAll()">
                                 <i class="material-icons">chevron_right</i>
                             </button>
-                            <button id="rightFastBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                            <button id="rightFastBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn"  onmousedown="pressedFastRight()" onmouseup="releasedAll()">
                                 <i class="material-icons">keyboard_double_arrow_right</i>
                             </button>
                             <div id="rotate_after" class="mdl-layout-spacer shout-spacer"></div>

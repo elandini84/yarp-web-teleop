@@ -195,7 +195,7 @@
     background-color: #b7d5e1;
 }
 
-#shoutBtn:hover, #leftFastBtn:hover, #leftBtn:hover, #rightBtn:hover, #rightFastBtn:hover {
+#shoutBtn:active, #leftFastBtn:active, #leftBtn:active, #rightBtn:active, #rightFastBtn:active {
     color: #b7d5e1;
     background-color: #3b7991;
 }

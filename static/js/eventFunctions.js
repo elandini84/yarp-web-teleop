@@ -1,10 +1,15 @@
-let positionX = -1
 let positionY = -1
+let positionX = -1
 let drag = false;
 let pressed = false;
 let resized = false;
 let righty = false;
+let velMsgTimeRes = 100;
 let ws = new WebSocket(wsType+window.location.host+"/ws");
+let fastLeftOn = false;
+let leftOn = false;
+let rightOn = false;
+let fastRightOn = false;
 const LEFT_BTN = 0;
 const RIGHT_BTN = 2;
 const ROBOT = "camera_img";
@@ -112,6 +117,95 @@ function init() {
 function shout_out(){
     var shout_list = document.getElementById("shout-select");
     window.alert(shout_list[shout_list.selectedIndex].textContent+"\n"+shout_list.value);
+}
+
+function sendVelocityData(velLeft,velRight){
+    var msg = {"vel-right":velRight,
+        "vel-left":velLeft};
+    ws.send(JSON.stringify(msg));
+}
+
+function pressedFastLeft(){
+    //window.alert("Sent fast left");
+    fastLeftOn = true;
+    fastLeftLoop();
+}
+
+function fastLeftLoop(){
+    setTimeout(function() {
+        console.log('fast left');
+        sendVelocityData(100,0);
+        if (fastLeftOn) {
+            fastLeftLoop();
+        }
+    }, velMsgTimeRes);
+}
+
+function releasedAll(){
+    fastLeftOn = false;
+    leftOn = false;
+    rightOn = false;
+    fastRightOn = false;
+}
+
+function pressedLeft(){
+    //window.alert("Sent fast left");
+    leftOn = true;
+    leftLoop();
+}
+
+function leftLoop(){
+    setTimeout(function() {
+        console.log('left');
+        sendVelocityData(50,0);
+        if (leftOn) {
+            leftLoop();
+        }
+    }, velMsgTimeRes);
+}
+
+function releasedLeft(){
+    leftOn = false;
+}
+
+function pressedRight(){
+    //window.alert("Sent fast left");
+    rightOn = true;
+    rightLoop();
+}
+
+function rightLoop(){
+    setTimeout(function() {
+        console.log('right');
+        sendVelocityData(0,50);
+        if (rightOn) {
+            rightLoop();
+        }
+    }, velMsgTimeRes);
+}
+
+function releasedRight(){
+    rightOn = false;
+}
+
+function pressedFastRight(){
+    //window.alert("Sent fast left");
+    fastRightOn = true;
+    fastRightLoop()
+}
+
+function fastRightLoop(){
+    setTimeout(function() {
+        console.log('fast right');
+        sendVelocityData(0,100);
+        if (fastRightOn) {
+            fastRightLoop();
+        }
+    }, velMsgTimeRes)
+}
+
+function releasedFastRight(){
+    fastRightOn = false;
 }
 
 function manageDragging(e,isRobot){
