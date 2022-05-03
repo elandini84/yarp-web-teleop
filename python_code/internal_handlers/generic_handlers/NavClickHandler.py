@@ -1,6 +1,7 @@
 from tornado.websocket import WebSocketHandler
 from yarp import Bottle
 import json
+import subprocess
 
 class NavClickHandler(WebSocketHandler):
 
@@ -16,22 +17,19 @@ class NavClickHandler(WebSocketHandler):
 
         self.webLock.acquire()
         print("Received: {0}", message)
+        options = json.loads(message)
         if not self._simulating:
-            options = json.loads(message)
             b = Bottle()
-            if len(options.keys()) > 4:
-                b.addInt(int(options["x-start"]))
-                b.addInt(int(options["y-start"]))
-                b.addInt(int(options["x-end"]))
-                b.addInt(int(options["y-end"]))
-            elif len(options.keys()) == 2:
-                b.addString("base")
-                b.addInt(int(options["vel-left"]))
-                b.addInt(int(options["vel-right"]))
-            else:
-                b.addInt(int(options["x"]))
-                b.addInt(int(options["y"]))
-            if "button" in options.keys():
+            buttonInvolved = "button" in options.keys()
+            if buttonInvolved:
+                if len(options.keys()) > 4:
+                    b.addInt(int(options["x-start"]))
+                    b.addInt(int(options["y-start"]))
+                    b.addInt(int(options["x-end"]))
+                    b.addInt(int(options["y-end"]))
+                else:
+                    b.addInt(int(options["x"]))
+                    b.addInt(int(options["y"]))
                 if options["button"] == 0:
                     if options["is_robot"]:
                         self.navPort.write(b)
@@ -40,4 +38,22 @@ class NavClickHandler(WebSocketHandler):
                 elif options["button"] == 2:
                     if options["is_robot"]:
                         self.headPort.write(b)
+            else:
+                if len(options.keys()) == 2:
+                    b.addString("base")
+                    b.addInt(int(options["vel-left"]))
+                    b.addInt(int(options["vel-right"]))
+                    self.navPort.write(b)
+                elif len(options.keys()) == 1:
+                    if options["audio"] == "FORBID":
+                        subprocess.run(["ssh", "r1-user-vpn@r1-face aplay ~/forbid.mp3"])
+                    elif options["audio"] == "SECDIST":
+                        subprocess.run(["ssh", "r1-user-vpn@r1-face aplay ~/safety.mp3"])
+                    elif options["audio"] == "ALARM":
+                        subprocess.run(["ssh", "r1-user-vpn@r1-face aplay ~/alarm.mp3"])
+        else:
+            if len(options.keys()) == 1:
+                print("tutto")
+                subprocess.run(["ls", "-l"])
+
         self.webLock.release()

@@ -116,7 +116,11 @@ function init() {
 
 function shout_out(){
     var shout_list = document.getElementById("shout-select");
-    window.alert(shout_list[shout_list.selectedIndex].textContent+"\n"+shout_list.value);
+    //window.alert(shout_list[shout_list.selectedIndex].textContent+"\n"+shout_list.value);
+    if (shout_list.value !== "EMPTY") {
+        var msg = {"audio": shout_list.value};
+        ws.send(JSON.stringify(msg));
+    }
 }
 
 function sendVelocityData(velLeft,velRight){
