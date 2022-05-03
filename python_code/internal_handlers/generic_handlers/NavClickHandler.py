@@ -47,7 +47,7 @@ class NavClickHandler(WebSocketHandler):
                 elif len(options.keys()) == 1:
                     if options["audio"] == "FORBID":
                         subprocess.run(["ssh", "r1-user-vpn@r1-face aplay /home/r1-user-vpn/forbid.mp3"])
-                    elif options["audio"] == "SECDIST":
+                    elif options["audio"] == "SAFETY":
                         subprocess.run(["ssh", "r1-user-vpn@r1-face aplay /home/r1-user-vpn/safety.mp3"])
                     elif options["audio"] == "ALARM":
                         subprocess.run(["ssh", "r1-user-vpn@r1-face aplay /home/r1-user-vpn/alarm.mp3"])
