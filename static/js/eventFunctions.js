@@ -94,8 +94,6 @@ function simpleDown(e,elem) {
 }
 
 function init() {
-    $("#shout_card").hide();
-    $("#rotate_card").hide();
 
     resizeMap(false);
     var camera = $("#camera_img");
@@ -242,7 +240,7 @@ function resizeMap(onResize){
     var spacer = $("#main-spacer");
     var camera = $("#camera_img");
     var camera_card = $("#camera_card");
-    var shout_card = $("#shout_card");
+    var shout_card = $("#alarms-controls-gridLO");
     var padding = $("#mainGrid").css("padding");
     if (width > 1000 && !(wider && widerer)) {
         /* MANAGING MAP SIZE */
@@ -304,8 +302,8 @@ function clickedAlarm(){
     alarmBtn.css("background-color",DARKCOL);
     rotateBtn.css("background-color",LIGHTCOL);
 
-    $("#shout_card").show();
-    $("#rotate_card").hide();
+    $("#shout_card").css("visibility","visible");
+    $("#instructionCard").css("visibility","hidden");
 }
 
 function clickedRotate(){
@@ -320,8 +318,8 @@ function clickedRotate(){
     alarmBtn.css("background-color",LIGHTCOL);
     rotateBtn.css("background-color",DARKCOL);
 
-    $("#shout_card").hide();
-    $("#rotate_card").show();
+    $("#shout_card").css("visibility","hidden");
+    $("#instructionCard").css("visibility","visible");
 }
 
 function clickedHead(){

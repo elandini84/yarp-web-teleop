@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
 
-        <title>YARP BASED Remote SURVEILLANCE</title>
+        <title>YARP REMOTE SURVEILLANCE</title>
         <meta name="description" content="A YARP + Web based remote surveillance tool">
         <meta name="author" content="Ettore Landini">
 
@@ -28,7 +28,7 @@
         <div class="mdl-layout mdl-js-layout container" id="main-container">
             <header id="main_header" class="mdl-layout__header">
                 <div class="mdl-layout__header-row teleop-header">
-                    <span class="mdl-layout-title titles common-text teleop-header-text bold-text">YARP BASED Remote SURVEILLANCE</span>
+                    <span class="mdl-layout-title titles common-text teleop-header-text bold-text">YARP REMOTE SURVEILLANCE</span>
                 </div>
             </header>
             <div class="mdl-layout__drawer teleop-menu">
@@ -75,7 +75,7 @@
                             AVVISI AUDIO
                         </button>
                         <button id="rotateBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedRotate()">
-                            RUOTA ROBOT
+                            ISTRUZIONI
                         </button>
                         <div id="shout_card" class="info-wide-gridL">
                             <div id="shout_before" class="mdl-layout-spacer shout-spacer"></div>
@@ -86,7 +86,6 @@
                                     <option value="SAFETY">Per favore mantenete la distanza interpersonale di sicurezza.</option>
                                     <option value="ALARM">Scusate, il museo é chiuso. Non potete stare qui.</option>
                                 </select>
-                                <label class="mdl-textfield__label" for="shout-select">Avviso</label>
                             </div>
                             <div id="shout_middle" class="mdl-layout-spacer shout-spacer"></div>
                             <button id="shoutBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
@@ -109,6 +108,35 @@
                                 <i class="material-icons">keyboard_double_arrow_right</i>
                             </button>
                             <div id="rotate_after" class="mdl-layout-spacer shout-spacer"></div>
+                        </div>
+                        <div id="instructionCard">
+                            <ul id="legendList">
+                                <li class="bold-text common-text legend-text">Generico</li>
+                                <li>
+                                    <ul>
+                                        <li class="common-text legend-text">Pavimento con puntini verdi: zona raggiungibile dal robot</li>
+                                        <li class="common-text legend-text">Quando la zona raggiungibile diventa rossa il robot si sta muovendo</li>
+                                        <li class="common-text legend-text">Quando la zona raggiungibile torna verde il robot é fermo</li>
+                                        <li class="common-text legend-text">Le uniche zone della mappa valide sono quelle colorate di bianco</li>
+                                    </ul>
+                                </li>
+                                <li class="bold-text common-text legend-text">Tasto destro del mouse - Navigazione</li>
+                                <li>
+                                    <ul>
+                                        <li class="common-text legend-text">Click sul pavimento colorato in verde: vai verso quel punto</li>
+                                        <li class="common-text legend-text">Click su parte valida della mappa: vai verso quel punto</li>
+                                        <li class="common-text legend-text">Click ovunque nell'immagine durante il movimento: il robot si ferma</li>
+                                        <li class="common-text legend-text">Click e trascinamento ovunque sull'immagine: il robot si gira sul posto</li>
+                                    </ul>
+                                </li>
+                                <li class="bold-text common-text legend-text">Tasto sinistro del mouse - Testa</li>
+                                <li>
+                                    <ul>
+                                        <li class="common-text legend-text">Click e trascinamento ovunque sull'immagine: la testa si muove nella direzione del trascinamento</li>
+                                        <li class="common-text legend-text">Click ovunque nell'immagine: la testa torna alla posizione standard</li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

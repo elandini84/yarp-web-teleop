@@ -114,7 +114,7 @@
             "sb a b sa"
             "d d d d";
     align-items: center;
-    max-height: inherit;
+    max-height: 120px;
     max-width: inherit;
     width: auto;
     height: auto;
@@ -125,6 +125,7 @@
     padding: 10px;
     grid-area: d;
     display: grid;
+    visibility: hidden;
     grid-template-columns: repeat(10, 1fr);
     grid-template-areas: "sb a a a a a a sm b sa";
     align-items: center;
@@ -139,6 +140,7 @@
     padding: 10px;
     grid-area: d;
     display: grid;
+    visibility: hidden;
     grid-template-columns: repeat(6, 1fr);
     grid-template-areas: "sb a b c d sa";
     align-items: center;
@@ -147,6 +149,26 @@
     height: auto;
     width: auto;
     background-color: #519ab8;
+}
+
+#instructionCard {
+    padding: 10px;
+    grid-area: d;
+    visibility: visible;
+    max-width: inherit;
+    max-height: inherit;
+    height: auto;
+    width: auto;
+    text-align: left;
+    overflow: scroll;
+    background-color: #519ab8;
+}
+
+#legendList{
+    max-width: inherit;
+    max-height: inherit;
+    height: auto;
+    width: auto;
 }
 
 #alarms-controls-gridI {
@@ -210,8 +232,8 @@
 #rotateBtn {
     grid-area: b;
     justify-self: start;
-    color: #3b7991;
-    background-color: #b7d5e1;
+    color: #b7d5e1;
+    background-color: #3b7991;
 }
 
 .shout-list{
