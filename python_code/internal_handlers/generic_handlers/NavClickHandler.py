@@ -46,11 +46,11 @@ class NavClickHandler(WebSocketHandler):
                     self.navPort.write(b)
                 elif len(options.keys()) == 1:
                     if options["audio"] == "FORBID":
-                        subprocess.run(["ssh", "r1-user-vpn@10.8.0.30 aplay /home/r1-user-vpn/forbid.wav"])
+                        subprocess.run(["ssh", "r1-user-vpn@10.8.0.30", "aplay", "/home/r1-user-vpn/forbid.wav"])
                     elif options["audio"] == "SAFETY":
-                        subprocess.run(["ssh", "r1-user-vpn@10.8.0.30 aplay /home/r1-user-vpn/safety.wav"])
+                        subprocess.run(["ssh", "r1-user-vpn@10.8.0.30", "aplay", "/home/r1-user-vpn/safety.wav"])
                     elif options["audio"] == "ALARM":
-                        subprocess.run(["ssh", "r1-user-vpn@10.8.0.30 aplay /home/r1-user-vpn/alarm.wav"])
+                        subprocess.run(["ssh", "r1-user-vpn@10.8.0.30", "aplay", "/home/r1-user-vpn/alarm.wav"])
         else:
             if len(options.keys()) == 1:
                 print("tutto")
