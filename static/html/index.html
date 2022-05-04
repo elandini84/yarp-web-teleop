@@ -72,22 +72,22 @@
                         <div id="alarm_after" class="mdl-layout-spacer shout-spacer"></div>
                         <div id="alarm_before" class="mdl-layout-spacer shout-spacer"></div>
                         <button id="alarmBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedAlarm()">
-                            AVVISI AUDIO
+                            WARNING MESSAGES
                         </button>
                         <button id="rotateBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedRotate()">
-                            RUOTA IL ROBOT
+                            TURN THE ROBOT
                         </button>
                         <button id="instructionBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedInstruction()">
-                            ISTRUZIONI
+                            INSTRUCTIONS
                         </button>
                         <div id="shout_card" class="info-wide-gridL">
                             <div id="shout_before" class="mdl-layout-spacer shout-spacer"></div>
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label shout-list">
                                 <select class="mdl-textfield__input bold-text teleop-shout-text data-text common-text" id="shout-select" name="shout-select">
-                                    <option value="EMPTY">Selezionare messaggio</option>
-                                    <option value="FORBID">Scusate, questa zona é chiusa al pubblico</option>
-                                    <option value="SAFETY">Per favore mantenete la distanza interpersonale di sicurezza.</option>
-                                    <option value="ALARM">Scusate, il museo é chiuso. Non potete stare qui.</option>
+                                    <option value="EMPTY">Select a warning message</option>
+                                    <option value="FORBID">I'm sorry, this part of the museum is closed. Please get out</option>
+                                    <option value="SAFETY">Please, keep the interpersonal safety distance</option>
+                                    <option value="ALARM">The museum is closed. Nobody is allowed to be in here. Please exit the building.</option>
                                 </select>
                             </div>
                             <div id="shout_middle" class="mdl-layout-spacer shout-spacer"></div>
@@ -114,29 +114,29 @@
                         </div>
                         <div id="instructionCard">
                             <ul id="legendList">
-                                <li class="bold-text common-text legend-text">Generico</li>
+                                <li class="bold-text common-text legend-text">Generic</li>
                                 <li>
                                     <ul>
-                                        <li class="common-text legend-text">Pavimento con puntini verdi: zona raggiungibile dal robot</li>
-                                        <li class="common-text legend-text">Quando la zona raggiungibile diventa rossa il robot si sta muovendo</li>
-                                        <li class="common-text legend-text">Quando la zona raggiungibile torna verde il robot é fermo</li>
-                                        <li class="common-text legend-text">Le uniche zone della mappa valide sono quelle colorate di bianco</li>
+                                        <li class="common-text legend-text">Floor covered in green dots: the robot can reach that area</li>
+                                        <li class="common-text legend-text">When the reachable area turns red it means that the robot is navigating</li>
+                                        <li class="common-text legend-text">When the area turns green again it means that the navigation has ended</li>
+                                        <li class="common-text legend-text">The only areas on the map available for navigation are the white colored ones</li>
                                     </ul>
                                 </li>
-                                <li class="bold-text common-text legend-text">Tasto destro del mouse - Navigazione</li>
+                                <li class="bold-text common-text legend-text">Mouse left button - Navigation</li>
                                 <li>
                                     <ul>
-                                        <li class="common-text legend-text">Click sul pavimento colorato in verde: vai verso quel punto</li>
-                                        <li class="common-text legend-text">Click su parte valida della mappa: vai verso quel punto</li>
-                                        <li class="common-text legend-text">Click ovunque nell'immagine durante il movimento: il robot si ferma</li>
-                                        <li class="common-text legend-text">Click e trascinamento ovunque sull'immagine: il robot si gira sul posto</li>
+                                        <li class="common-text legend-text">Click on a point of the reachable area: The robot will navigate towards that point</li>
+                                        <li class="common-text legend-text">Click on a valid part of the map: Navigate towards that point</li>
+                                        <li class="common-text legend-text">Click anywhere on the camera image when navigating: The navigation will stop</li>
+                                        <li class="common-text legend-text">Click and drag anywhere on the image: The robot will turn</li>
                                     </ul>
                                 </li>
-                                <li class="bold-text common-text legend-text">Tasto sinistro del mouse - Testa</li>
+                                <li class="bold-text common-text legend-text">Mouse right button - Head movements</li>
                                 <li>
                                     <ul>
-                                        <li class="common-text legend-text">Click e trascinamento ovunque sull'immagine: la testa si muove nella direzione del trascinamento</li>
-                                        <li class="common-text legend-text">Click ovunque nell'immagine: la testa torna alla posizione standard</li>
+                                        <li class="common-text legend-text">Click and drag anywhere on the camera image: the robot head will move in the dragging direction</li>
+                                        <li class="common-text legend-text">Click anywhere on the camera image\: the robot head will go back to the starting position</li>
                                     </ul>
                                 </li>
                             </ul>
