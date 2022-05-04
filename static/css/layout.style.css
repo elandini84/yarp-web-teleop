@@ -97,7 +97,7 @@
 
 /*  MAP STREAM PART ---------------------------- END */
 
-/*  AUDIO CONTROLS PART ---------------------------- START */
+/*  CONTROLS PART ---------------------------- START */
 
 #alarm_after{
     grid-area: sa;
@@ -109,10 +109,10 @@
 
 #alarms-controls-gridLO {
     display: grid;
-    grid-template-columns: 10% 40% 40% 10%;
+    grid-template-columns: 5% 30% 30% 30% 5%;
     grid-template-areas:
-            "sb a b sa"
-            "d d d d";
+            "sb a b c sa"
+            "d d d d d";
     align-items: center;
     max-height: 120px;
     max-width: inherit;
@@ -223,15 +223,22 @@
 }
 
 #alarmBtn {
-    grid-area: a;
-    justify-self: start;
+    grid-area: c;
+    justify-self: center;
     color: #3b7991;
     background-color: #b7d5e1;
 }
 
 #rotateBtn {
     grid-area: b;
-    justify-self: start;
+    justify-self: center;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#instructionBtn {
+    grid-area: a;
+    justify-self: center;
     color: #b7d5e1;
     background-color: #3b7991;
 }
@@ -258,7 +265,7 @@
     grid-area: sm;
 }
 
-/*  AUDIO CONTROLS PART ---------------------------- END */
+/*  CONTROLS PART ---------------------------- END */
 
 /*  MEDIA SIZE PART ---------------------------- START */
 

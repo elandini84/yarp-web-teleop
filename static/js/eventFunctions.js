@@ -6,6 +6,7 @@ let resized = false;
 let righty = false;
 let velMsgTimeRes = 100;
 let ws = new WebSocket(wsType+window.location.host+"/ws");
+let wsb = new WebSocket(wsType+window.location.host+"/wsb");
 let fastLeftOn = false;
 let leftOn = false;
 let rightOn = false;
@@ -117,14 +118,14 @@ function shout_out(){
     //window.alert(shout_list[shout_list.selectedIndex].textContent+"\n"+shout_list.value);
     if (shout_list.value !== "EMPTY") {
         var msg = {"audio": shout_list.value};
-        ws.send(JSON.stringify(msg));
+        wsb.send(JSON.stringify(msg));
     }
 }
 
 function sendVelocityData(velLeft,velRight){
     var msg = {"vel-right":velRight,
         "vel-left":velLeft};
-    ws.send(JSON.stringify(msg));
+    wsb.send(JSON.stringify(msg));
 }
 
 function pressedFastLeft(){
@@ -291,51 +292,54 @@ function resizeMap(onResize){
 }
 
 function clickedAlarm(){
-    var headBtn = $("#headBtn");
+    var instructionBtn = $("#instructionBtn");
     var alarmBtn = $("#alarmBtn");
     var rotateBtn = $("#rotateBtn");
 
-    headBtn.css("color",DARKCOL);
+    instructionBtn.css("color",DARKCOL);
     alarmBtn.css("color",LIGHTCOL);
     rotateBtn.css("color",DARKCOL);
-    headBtn.css("background-color",LIGHTCOL);
+    instructionBtn.css("background-color",LIGHTCOL);
     alarmBtn.css("background-color",DARKCOL);
     rotateBtn.css("background-color",LIGHTCOL);
 
     $("#shout_card").css("visibility","visible");
     $("#instructionCard").css("visibility","hidden");
+    $("#rotate_card").css("visibility","hidden");
 }
 
 function clickedRotate(){
-    var headBtn = $("#headBtn");
+    var instructionBtn = $("#instructionBtn");
     var alarmBtn = $("#alarmBtn");
     var rotateBtn = $("#rotateBtn");
 
-    headBtn.css("color",DARKCOL);
+    instructionBtn.css("color",DARKCOL);
     alarmBtn.css("color",DARKCOL);
     rotateBtn.css("color",LIGHTCOL);
-    headBtn.css("background-color",LIGHTCOL);
+    instructionBtn.css("background-color",LIGHTCOL);
     alarmBtn.css("background-color",LIGHTCOL);
     rotateBtn.css("background-color",DARKCOL);
 
     $("#shout_card").css("visibility","hidden");
-    $("#instructionCard").css("visibility","visible");
+    $("#instructionCard").css("visibility","hidden");
+    $("#rotate_card").css("visibility","visible");
 }
 
-function clickedHead(){
-    var headBtn = $("#headBtn");
+function clickedInstruction(){
+    var instructionBtn = $("#instructionBtn");
     var alarmBtn = $("#alarmBtn");
     var rotateBtn = $("#rotateBtn");
 
-    headBtn.css("color",LIGHTCOL);
+    instructionBtn.css("color",LIGHTCOL);
     alarmBtn.css("color",DARKCOL);
     rotateBtn.css("color",DARKCOL);
-    headBtn.css("background-color",DARKCOL);
+    instructionBtn.css("background-color",DARKCOL);
     alarmBtn.css("background-color",LIGHTCOL);
     rotateBtn.css("background-color",LIGHTCOL);
 
-    $("#shout_card").hide();
-    $("#rotate_card").hide();
+    $("#shout_card").css("visibility","hidden");
+    $("#instructionCard").css("visibility","visible");
+    $("#rotate_card").css("visibility","hidden");
 }
 
 function windowResized(){

@@ -5,10 +5,11 @@ from threading import Lock
 import sqlite3 as sl
 import json
 import os
-import sys
+import signal, sys, threading
 import secrets
 
 from python_code.internal_handlers.generic_handlers.NavClickHandler import NavClickHandler
+from python_code.internal_handlers.generic_handlers.ButtonsHandler import ButtonsHandler
 from python_code.internal_handlers.generic_handlers.IndexHandler import IndexHandler
 from python_code.internal_handlers.credential_handlers.LoginHandler import LoginHandler
 from python_code.internal_handlers.credential_handlers.RegisterHandler import RegisterHandler
@@ -17,7 +18,8 @@ from python_code.internal_handlers.credential_handlers.AuthHandler import AuthHa
 from python_code.utils.cookieServer import CookieServer
 
 ## Execution example
-# python3 server.py --camera_port 10009 --camera_host 192.168.92.109 --map_port 10014 --nav_click_port /click --no_ssl
+# python3 server.py --camera_port 10009 --camera_host 192.168.92.109 --map_port 10014 --no_ssl
+# python3 server.py --camera_port 10010 --camera_host 192.168.20.162 --map_port 10010 --no_ssl
 # python3 server.py --simulate --no_ssl
 # python3 server.py --simulate
 
@@ -83,7 +85,9 @@ if __name__ == "__main__":
                         (r"/ws", NavClickHandler, {"webLock": WEBLOCK,
                                                    "navPort": NAVCLICKPORT,
                                                    "headPort": HEADCLICKPORT,
-                                                   "mapPort": MAPCLICKPORT})]
+                                                   "mapPort": MAPCLICKPORT}),
+                        (r"/wsb", ButtonsHandler, {"webLock": WEBLOCK,
+                                                   "navPort": NAVCLICKPORT})]
     else:
         NETWORK = Network()
         NETWORK.init()
@@ -137,6 +141,22 @@ if __name__ == "__main__":
                         (r"/ws", NavClickHandler, {"webLock": WEBLOCK,
                                                    "navPort": NAVCLICKPORT,
                                                    "headPort": HEADCLICKPORT,
-                                                   "mapPort": MAPCLICKPORT})]
+                                                   "mapPort": MAPCLICKPORT}),
+                        (r"/wsb", ButtonsHandler, {"webLock": WEBLOCK,
+                                                   "navPort": NAVCLICKPORT})]
     server = CookieServer(handlersList,SERVERPORT,certificates_folder,certificates_name,True,secrets.token_urlsafe())
+
+    def signal_handler(signal, frame):
+        print('exiting')
+        server.stop()
+        print('before exit')
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGHUP, signal_handler)
+
+    print('Running on port %d' % SERVERPORT)
+    print('Press Ctrl+C to stop')
+    #signal.pause()
     server.start()
