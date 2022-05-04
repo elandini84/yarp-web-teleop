@@ -97,6 +97,7 @@ function simpleDown(e,elem) {
 function init() {
 
     resizeMap(false);
+    document.getElementById("mainBody").addEventListener("keydown",(e)=>keyNavigation(e));
     var camera = $("#camera_img");
     var map = $("#map_img");
     camera.on("dragstart",function() { return false; });
@@ -290,6 +291,25 @@ function resizeMap(onResize){
         shout_card.height('auto');
     }
 }
+
+function keyNavigation(e) {;
+    var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+    if (charCode > 0) {
+        console.log("Typed character: " + String.fromCharCode(charCode));
+        if (String.fromCharCode(charCode) === "A"){
+            sendVelocityData(100,0);
+        }
+        else if (String.fromCharCode(charCode) === "D"){
+            sendVelocityData(0,100);
+        }
+        else if (String.fromCharCode(charCode) === "Q"){
+            sendVelocityData(50,0);
+        }
+        else if (String.fromCharCode(charCode) === "E"){
+            sendVelocityData(0,50);
+        }
+    }
+};
 
 function clickedAlarm(){
     var instructionBtn = $("#instructionBtn");
