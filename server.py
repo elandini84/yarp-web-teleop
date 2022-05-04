@@ -112,7 +112,7 @@ if __name__ == "__main__":
         CAMERAHOST = None
 
         if RESFINDER.check("camera_name"):
-            tempConn = yarp.NetworkBase_queryName(RESFINDER.find("camera_port").toString())
+            tempConn = yarp.NetworkBase_queryName(RESFINDER.find("camera_name").toString())
             CAMERAPORT = str(tempConn.getPort())
             CAMERAHOST = tempConn.getHost()
         if RESFINDER.check("map_name"):
