@@ -105,28 +105,45 @@ if __name__ == "__main__":
         
         if RESFINDER.check("server_port"):
             SERVERPORT = RESFINDER.find("server_port").asInt32()
+
+        MAPPORT = None
+        CAMERAPORT = None
+        MAPHOST = None
+        CAMERAHOST = None
+
+        if RESFINDER.check("camera_name"):
+            tempConn = yarp.NetworkBase_queryName(RESFINDER.find("camera_port").toString())
+            CAMERAPORT = str(tempConn.getPort())
+            CAMERAHOST = tempConn.getHost()
+        if RESFINDER.check("map_name"):
+            tempConn = yarp.NetworkBase_queryName(RESFINDER.find("map_name").toString())
+            MAPPORT = str(tempConn.getPort())
+            MAPHOST = tempConn.getHost()
+
         if RESFINDER.check("camera_port"):
-            CAMERAPORTNAME = RESFINDER.find("camera_port").toString()
+            CAMERAPORT = RESFINDER.find("camera_port").toString()
         else:
-            print("Error! Camera port not found")
-            sys.exit()
+            if CAMERAPORT is None:
+                print("Error! Camera port not found")
+                sys.exit()
         if RESFINDER.check("map_port"):
-            MAPPORTNAME = RESFINDER.find("map_port").toString()
+            MAPPORT = RESFINDER.find("map_port").toString()
         else:
-            print("Error! Map port not found")
-            sys.exit()
+            if MAPPORT is None:
+                print("Error! Map port not found")
+                sys.exit()
         if RESFINDER.check("camera_host"):
             CAMERAHOST = RESFINDER.find("camera_host").asString()
         else:
-            print("Error! Camera host not found")
-            sys.exit()
+            if CAMERAHOST is None:
+                print("Error! Camera host not found")
+                sys.exit()
         if RESFINDER.check("map_host"):
             MAPHOST = RESFINDER.find("map_host").asString()
-        else:
-            MAPHOST = None
+
         handlersList = [(r'/', IndexHandler,{"inputNetwork": NETWORK,
-                                             "cameraPort": CAMERAPORTNAME,
-                                             "mapPort": MAPPORTNAME,
+                                             "cameraPort": CAMERAPORT,
+                                             "mapPort": MAPPORT,
                                              "cameraHost": CAMERAHOST,
                                              "resFinder": RESFINDER,
                                              "absPath": ABSPATH,
