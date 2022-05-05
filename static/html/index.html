@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
 
-        <title>YARP BASED Remote SURVEILLANCE</title>
+        <title>YARP REMOTE SURVEILLANCE</title>
         <meta name="description" content="A YARP + Web based remote surveillance tool">
         <meta name="author" content="Ettore Landini">
 
@@ -24,11 +24,11 @@
         <meta name="theme-color" content="#ffffff">
     </head>
 
-    <body onload="init()" onresize="windowResized()">
+    <body id="mainBody" onload="init()" onresize="windowResized()">
         <div class="mdl-layout mdl-js-layout container" id="main-container">
             <header id="main_header" class="mdl-layout__header">
                 <div class="mdl-layout__header-row teleop-header">
-                    <span class="mdl-layout-title titles common-text teleop-header-text bold-text">YARP BASED Remote SURVEILLANCE</span>
+                    <span class="mdl-layout-title titles common-text teleop-header-text bold-text">YARP REMOTE SURVEILLANCE</span>
                 </div>
             </header>
             <div class="mdl-layout__drawer teleop-menu">
@@ -68,21 +68,82 @@
                     </div>
                 </div>
                 <div id="alarms-controls-gridI">
-                    <div id="shout_card" class="mdl-card info-card mdl-shadow--2dp through mdl-shadow--8dp info-wide-gridL">
-                        <div id="shout_before" class="mdl-layout-spacer shout-spacer"></div>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label shout-list">
-                            <select class="mdl-textfield__input bold-text teleop-shout-text data-text common-text" id="shout-select" name="shout-select">
-                                <option></option>
-                                <option value="FORBID">Scusate, questa zona é chiusa al pubblico</option>
-                                <option value="SECDIST">Per favore mantenete la distanza interpersonale di sicurezza.</option>
-                            </select>
-                            <label class="mdl-textfield__label" for="shout-select">Avviso</label>
-                        </div>
-                        <div id="shout_middle" class="mdl-layout-spacer shout-spacer"></div>
-                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect shout-btn" onclick="shout_out()">
-                            <i class="material-icons">volume_up</i>
+                    <div id="alarms-controls-gridLO" class="mdl-card info-card mdl-shadow--2dp through mdl-shadow--8dp">
+                        <div id="alarm_after" class="mdl-layout-spacer shout-spacer"></div>
+                        <div id="alarm_before" class="mdl-layout-spacer shout-spacer"></div>
+                        <button id="alarmBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedAlarm()">
+                            WARNING MESSAGES
                         </button>
-                        <div id="shout_after" class="mdl-layout-spacer shout-spacer"></div>
+                        <button id="rotateBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedRotate()">
+                            TURN THE ROBOT
+                        </button>
+                        <button id="instructionBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedInstruction()">
+                            INSTRUCTIONS
+                        </button>
+                        <div id="shout_card" class="info-wide-gridL">
+                            <div id="shout_before" class="mdl-layout-spacer shout-spacer"></div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label shout-list">
+                                <select class="mdl-textfield__input bold-text teleop-shout-text data-text common-text" id="shout-select" name="shout-select">
+                                    <option value="EMPTY">Select a warning message</option>
+                                    <option value="FORBID">I'm sorry, this part of the museum is closed. Please get out</option>
+                                    <option value="SAFETY">Please, keep the interpersonal safety distance</option>
+                                    <option value="ALARM">The museum is closed. Nobody is allowed to be in here. Please exit the building.</option>
+                                </select>
+                            </div>
+                            <div id="shout_middle" class="mdl-layout-spacer shout-spacer"></div>
+                            <button id="shoutBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                                <i class="material-icons">volume_up</i>
+                            </button>
+                            <div id="shout_after" class="mdl-layout-spacer shout-spacer"></div>
+                        </div>
+                        <div id="rotate_card">
+                            <div id="rotate_before" class="mdl-layout-spacer shout-spacer"></div>
+                            <button id="leftFastBtn"  class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onmousedown="pressedFastLeft()" onmouseup="releasedAll()">
+                                <i class="material-icons">keyboard_double_arrow_left</i>
+                            </button>
+                            <button id="leftBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn"  onmousedown="pressedLeft()" onmouseup="releasedAll()">
+                                <i class="material-icons">chevron_left</i>
+                            </button>
+                            <button id="forwardBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn"  onmousedown="pressedForward()" onmouseup="releasedAll()">
+                                <i class="material-icons">expand_less</i>
+                            </button>
+                            <button id="rightBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn"  onmousedown="pressedRight()" onmouseup="releasedAll()">
+                                <i class="material-icons">chevron_right</i>
+                            </button>
+                            <button id="rightFastBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn"  onmousedown="pressedFastRight()" onmouseup="releasedAll()">
+                                <i class="material-icons">keyboard_double_arrow_right</i>
+                            </button>
+                            <div id="rotate_after" class="mdl-layout-spacer shout-spacer"></div>
+                        </div>
+                        <div id="instructionCard">
+                            <ul id="legendList">
+                                <li class="bold-text common-text legend-text">Generic</li>
+                                <li>
+                                    <ul>
+                                        <li class="common-text legend-text">Floor covered in green dots: the robot can reach that area</li>
+                                        <li class="common-text legend-text">When the reachable area turns red it means that the robot is navigating</li>
+                                        <li class="common-text legend-text">When the area turns green again it means that the navigation has ended</li>
+                                        <li class="common-text legend-text">The only areas on the map available for navigation are the white colored ones</li>
+                                    </ul>
+                                </li>
+                                <li class="bold-text common-text legend-text">Mouse left button - Navigation</li>
+                                <li>
+                                    <ul>
+                                        <li class="common-text legend-text">Click on a point of the reachable area: The robot will navigate towards that point</li>
+                                        <li class="common-text legend-text">Click on a valid part of the map: Navigate towards that point</li>
+                                        <li class="common-text legend-text">Click anywhere on the camera image when navigating: The navigation will stop</li>
+                                        <li class="common-text legend-text">Click and drag anywhere on the image: The robot will turn</li>
+                                    </ul>
+                                </li>
+                                <li class="bold-text common-text legend-text">Mouse right button - Head movements</li>
+                                <li>
+                                    <ul>
+                                        <li class="common-text legend-text">Click and drag anywhere on the camera image: the robot head will move in the dragging direction</li>
+                                        <li class="common-text legend-text">Click anywhere on the camera image\: the robot head will go back to the starting position</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

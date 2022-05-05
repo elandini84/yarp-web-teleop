@@ -97,18 +97,35 @@
 
 /*  MAP STREAM PART ---------------------------- END */
 
-/*  AUDIO CONTROLS PART ---------------------------- START */
+/*  CONTROLS PART ---------------------------- START */
 
-.info-card {
-    max-height: inherit;
+#alarm_after{
+    grid-area: sa;
+}
+
+#alarm_before{
+    grid-area: sb;
+}
+
+#alarms-controls-gridLO {
+    display: grid;
+    grid-template-columns: 5% 30% 30% 30% 5%;
+    grid-template-areas:
+            "sb a b c sa"
+            "d d d d d";
+    align-items: center;
+    max-height: 120px;
     max-width: inherit;
     width: auto;
     height: auto;
+    background-color: #519ab8;
 }
 
 .info-wide-gridL {
     padding: 10px;
+    grid-area: d;
     display: grid;
+    visibility: hidden;
     grid-template-columns: repeat(10, 1fr);
     grid-template-areas: "sb a a a a a a sm b sa";
     align-items: center;
@@ -117,6 +134,41 @@
     height: auto;
     width: auto;
     background-color: #519ab8;
+}
+
+#rotate_card {
+    padding: 10px;
+    grid-area: d;
+    display: grid;
+    visibility: hidden;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-areas: "sb a b c d e sa";
+    align-items: center;
+    max-width: inherit;
+    max-height: inherit;
+    height: auto;
+    width: auto;
+    background-color: #519ab8;
+}
+
+#instructionCard {
+    padding: 10px;
+    grid-area: d;
+    visibility: visible;
+    max-width: inherit;
+    max-height: inherit;
+    height: auto;
+    width: auto;
+    text-align: left;
+    overflow: scroll;
+    background-color: #519ab8;
+}
+
+#legendList{
+    max-width: inherit;
+    max-height: inherit;
+    height: auto;
+    width: auto;
 }
 
 #alarms-controls-gridI {
@@ -130,14 +182,70 @@
     height: auto;
 }
 
-.shout-btn {
+#leftFastBtn {
+    grid-area: a;
+    justify-self: center;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#leftBtn {
+    grid-area: b;
+    justify-self: center;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#forwardBtn {
+    grid-area: c;
+    justify-self: center;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#rightBtn {
+    grid-area: d;
+    justify-self: center;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#rightFastBtn {
+    grid-area: e;
+    justify-self: center;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#shoutBtn {
     grid-area: b;
     justify-self: end;
     color: #3b7991;
     background-color: #b7d5e1;
 }
 
-.shout-btn:hover {
+#shoutBtn:active, #leftFastBtn:active, #leftBtn:active, #rightBtn:active, #rightFastBtn:active, #forwardBtn:active {
+    color: #b7d5e1;
+    background-color: #3b7991;
+}
+
+#alarmBtn {
+    grid-area: c;
+    justify-self: center;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#rotateBtn {
+    grid-area: b;
+    justify-self: center;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#instructionBtn {
+    grid-area: a;
+    justify-self: center;
     color: #b7d5e1;
     background-color: #3b7991;
 }
@@ -164,7 +272,7 @@
     grid-area: sm;
 }
 
-/*  AUDIO CONTROLS PART ---------------------------- END */
+/*  CONTROLS PART ---------------------------- END */
 
 /*  MEDIA SIZE PART ---------------------------- START */
 
@@ -175,11 +283,11 @@
                 "b b b b"
                 "b b b b"
                 "b b b b"
-                "a a a a"
-                "a a a a"
-                "a a a a"
-                "a a a a"
                 "c c c c"
+                "a a a a"
+                "a a a a"
+                "a a a a"
+                "a a a a"
                 "s s s s";
     }
     #map-gridI{

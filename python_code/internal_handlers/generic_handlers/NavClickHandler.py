@@ -1,6 +1,7 @@
 from tornado.websocket import WebSocketHandler
 from yarp import Bottle
 import json
+import subprocess
 
 class NavClickHandler(WebSocketHandler):
 
@@ -12,12 +13,17 @@ class NavClickHandler(WebSocketHandler):
         self._simulating = (self.navPort is None) or (self.headPort is None) or (self.navPort is None)
 
 
+    def innerPrint(self, message):
+
+        print("NavClickHandler: " + message)
+
+
     def on_message(self,message):
 
         self.webLock.acquire()
-        print("Received: {0}", message)
+        self.innerPrint("Received {0}".format(message))
+        options = json.loads(message)
         if not self._simulating:
-            options = json.loads(message)
             b = Bottle()
             if len(options.keys()) > 4:
                 b.addInt(int(options["x-start"]))
@@ -35,4 +41,6 @@ class NavClickHandler(WebSocketHandler):
             elif options["button"] == 2:
                 if options["is_robot"]:
                     self.headPort.write(b)
+
+
         self.webLock.release()
