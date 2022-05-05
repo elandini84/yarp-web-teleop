@@ -141,8 +141,8 @@
     grid-area: d;
     display: grid;
     visibility: hidden;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-areas: "sb a b c d sa";
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-areas: "sb a b c d e sa";
     align-items: center;
     max-width: inherit;
     max-height: inherit;
@@ -184,28 +184,35 @@
 
 #leftFastBtn {
     grid-area: a;
-    justify-self: end;
+    justify-self: center;
     color: #3b7991;
     background-color: #b7d5e1;
 }
 
 #leftBtn {
     grid-area: b;
-    justify-self: end;
+    justify-self: center;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#forwardBtn {
+    grid-area: c;
+    justify-self: center;
     color: #3b7991;
     background-color: #b7d5e1;
 }
 
 #rightBtn {
-    grid-area: c;
-    justify-self: end;
+    grid-area: d;
+    justify-self: center;
     color: #3b7991;
     background-color: #b7d5e1;
 }
 
 #rightFastBtn {
-    grid-area: d;
-    justify-self: end;
+    grid-area: e;
+    justify-self: center;
     color: #3b7991;
     background-color: #b7d5e1;
 }
@@ -217,7 +224,7 @@
     background-color: #b7d5e1;
 }
 
-#shoutBtn:active, #leftFastBtn:active, #leftBtn:active, #rightBtn:active, #rightFastBtn:active {
+#shoutBtn:active, #leftFastBtn:active, #leftBtn:active, #rightBtn:active, #rightFastBtn:active, #forwardBtn:active {
     color: #b7d5e1;
     background-color: #3b7991;
 }

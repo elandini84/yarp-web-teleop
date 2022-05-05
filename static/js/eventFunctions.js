@@ -9,6 +9,7 @@ let ws = new WebSocket(wsType+window.location.host+"/ws");
 let wsb = new WebSocket(wsType+window.location.host+"/wsb");
 let fastLeftOn = false;
 let leftOn = false;
+let forwardOn = false;
 let rightOn = false;
 let fastRightOn = false;
 const LEFT_BTN = 0;
@@ -123,10 +124,33 @@ function shout_out(){
     }
 }
 
-function sendVelocityData(velLeft,velRight){
+function sendVelocityData(velLeft,velRight,velForward=0.0){
     var msg = {"vel-right":velRight,
-        "vel-left":velLeft};
+        "vel-left":velLeft,
+        "vel-forward":velForward};
     wsb.send(JSON.stringify(msg));
+}
+
+function keyNavigation(e) {
+    var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+    if (charCode > 0) {
+        console.log("Typed character: " + String.fromCharCode(charCode));
+        if (String.fromCharCode(charCode) === "A"){
+            sendVelocityData(100,0);
+        }
+        else if (String.fromCharCode(charCode) === "D"){
+            sendVelocityData(0,100);
+        }
+        else if (String.fromCharCode(charCode) === "Q"){
+            sendVelocityData(50,0);
+        }
+        else if (String.fromCharCode(charCode) === "E"){
+            sendVelocityData(0,50);
+        }
+        else if (String.fromCharCode(charCode) === "W"){
+            sendVelocityData(0,0, 50);
+        }
+    }
 }
 
 function pressedFastLeft(){
@@ -150,6 +174,27 @@ function releasedAll(){
     leftOn = false;
     rightOn = false;
     fastRightOn = false;
+    forwardOn = false;
+}
+
+function pressedForward(){
+    //window.alert("Sent fast left");
+    forwardOn = true;
+    forwardLoop();
+}
+
+function forwardLoop(){
+    setTimeout(function() {
+        console.log('forward');
+        sendVelocityData(0,0, 100);
+        if (forwardOn) {
+            forwardLoop();
+        }
+    }, velMsgTimeRes);
+}
+
+function releasedForward(){
+    forwardOn = false;
 }
 
 function pressedLeft(){
@@ -291,25 +336,6 @@ function resizeMap(onResize){
         shout_card.height('auto');
     }
 }
-
-function keyNavigation(e) {;
-    var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-    if (charCode > 0) {
-        console.log("Typed character: " + String.fromCharCode(charCode));
-        if (String.fromCharCode(charCode) === "A"){
-            sendVelocityData(100,0);
-        }
-        else if (String.fromCharCode(charCode) === "D"){
-            sendVelocityData(0,100);
-        }
-        else if (String.fromCharCode(charCode) === "Q"){
-            sendVelocityData(50,0);
-        }
-        else if (String.fromCharCode(charCode) === "E"){
-            sendVelocityData(0,50);
-        }
-    }
-};
 
 function clickedAlarm(){
     var instructionBtn = $("#instructionBtn");
