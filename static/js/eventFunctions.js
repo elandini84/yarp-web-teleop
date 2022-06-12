@@ -20,6 +20,117 @@ const LIGHTCOL = "#b7d5e1";
 const DARKCOL = "#3b7991";
 console.log(window.location.host);
 
+// Gamepad related stuff -------------------------------------------------------------------------------------- START //
+var haveEvents = 'ongamepadconnected' in window;
+var controllers = {};
+var pressedButtons = [];
+var axesMoved = [];
+var scanInterval;
+var padNavInterval;
+var rAF = window.requestAnimationFrame;
+const axesThreshold = 0.1;
+const safeBreakButton = 7;
+const linearAxis = 1;
+const rotateAxis = 2;
+
+function connecthandler(e) {
+    addgamepad(e.gamepad);
+}
+
+function addgamepad(gamepad) {
+    //gamepad.addEventListener("change", test);
+    //setInterval(updateStatus,50);
+    let i;
+    for (i = 0; i < gamepad.buttons.length; i++) {
+        pressedButtons.push(gamepad.buttons[i].pressed);
+    }
+    for (i = 0; i < gamepad.axes.length; i++) {
+        axesMoved.push(gamepad.axes[i]);
+    }
+    controllers[gamepad.index] = gamepad;
+    //clearInterval(scanInterval);
+    rAF(updateStatus);
+}
+
+function test() {
+    console.log(controllers[0].buttons);
+}
+
+function disconnecthandler(e) {
+    removegamepad(e.gamepad);
+}
+
+function removegamepad(gamepad) {
+    delete controllers[gamepad.index];
+}
+
+function disconnecthandler(e) {
+    removegamepad(e.gamepad);
+}
+
+function updateStatus() {
+    let i = 0;
+    let j;
+
+    for (j in controllers) {
+        let controller = controllers[j];
+        for (i = 0; i < controller.buttons.length; i++) {
+            let val = controller.buttons[i].pressed;
+            if (pressedButtons[i] !== val){
+                console.log("Button "+i+" was "+pressedButtons[i]+" now is "+val);
+                if(i === safeBreakButton){
+                    if (val){
+                        padNavInterval = setInterval(padNavigation,50);
+                    }
+                    else{
+                        clearInterval(padNavInterval);
+                    }
+                }
+            }
+            pressedButtons[i] = val;
+        }
+        for (i = 0; i < controller.axes.length; i++) {
+            if (Math.abs(Math.abs(axesMoved[i])-Math.abs(controller.axes[i]))>=axesThreshold){
+                console.log("Axes "+i+" was "+axesMoved[i]+" now is "+controller.axes[i]);
+            }
+            axesMoved[i] = controller.axes[i];
+        }
+    }
+    rAF(updateStatus);
+}
+
+function scangamepads() {
+    let gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+    for (let i = 0; i < gamepads.length; i++) {
+        if (gamepads[i]) {
+            if (gamepads[i].index in controllers) {
+                controllers[gamepads[i].index] = gamepads[i];
+            } else {
+                addgamepad(gamepads[i]);
+            }
+        }
+    }
+}
+
+window.addEventListener("gamepadconnected", connecthandler);
+window.addEventListener("gamepaddisconnected", disconnecthandler);
+
+if (!haveEvents) {
+    scanInterval = setInterval(scangamepads, 50);
+}
+
+function padNavigation() {
+    let linearVel = -1*Math.round(axesMoved[linearAxis]*10)*10;
+    linearVel = linearVel > 30.0 ? linearVel : 0.0;
+    //let angularVel = Math.round(axesMoved[rotateAxis]*10-0.5)*10;
+    let leftVel = axesMoved[rotateAxis] < -0.3 ? Math.abs(Math.round(axesMoved[rotateAxis]*10)*10) : 0.0;
+    let rightVel = axesMoved[rotateAxis] > 0.3 ? Math.round(axesMoved[rotateAxis]*10)*10 : 0.0;
+
+    sendVelocityData(leftVel,rightVel,linearVel);
+}
+
+// Gamepad related stuff ---------------------------------------------------------------------------------------- END //
+
 function convertMousePos(x,y,elem){
     var conversionX = elem.prop("naturalWidth")/elem.width();
     var conversionY = elem.prop("naturalHeight")/elem.height();
