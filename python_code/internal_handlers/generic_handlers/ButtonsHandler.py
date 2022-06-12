@@ -25,10 +25,10 @@ class ButtonsHandler(WebSocketHandler):
             b = Bottle()
             if len(options.keys()) == 3:
                 b.addString("base")
-                b.addInt(int(options["vel-left"]))
-                b.addInt(int(options["vel-right"]))
-                b.addInt(int(options["vel-forward"]))
-                b.addInt(0)
+                b.addInt32(int(options["vel-left"]))
+                b.addInt32(int(options["vel-right"]))
+                b.addInt32(int(options["vel-forward"]))
+                b.addInt32(0)
                 self.navPort.write(b)
             elif len(options.keys()) == 1:
                 if options["audio"] == "FORBID":
