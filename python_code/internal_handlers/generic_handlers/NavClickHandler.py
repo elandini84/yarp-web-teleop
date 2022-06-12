@@ -26,13 +26,13 @@ class NavClickHandler(WebSocketHandler):
         if not self._simulating:
             b = Bottle()
             if len(options.keys()) > 4:
-                b.addInt(int(options["x-start"]))
-                b.addInt(int(options["y-start"]))
-                b.addInt(int(options["x-end"]))
-                b.addInt(int(options["y-end"]))
+                b.addInt32(int(options["x-start"]))
+                b.addInt32(int(options["y-start"]))
+                b.addInt32(int(options["x-end"]))
+                b.addInt32(int(options["y-end"]))
             else:
-                b.addInt(int(options["x"]))
-                b.addInt(int(options["y"]))
+                b.addInt32(int(options["x"]))
+                b.addInt32(int(options["y"]))
             if options["button"] == 0:
                 if options["is_robot"]:
                     self.navPort.write(b)
