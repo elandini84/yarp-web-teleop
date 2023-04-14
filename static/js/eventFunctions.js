@@ -49,16 +49,16 @@ function addgamepad(gamepad) {
     }
     controllers[gamepad.index] = gamepad;
     //clearInterval(scanInterval);
-    rAF(updateStatus);
+    //rAF(updateStatus);
 }
 
 function test() {
     console.log(controllers[0].buttons);
 }
 
-function disconnecthandler(e) {
-    removegamepad(e.gamepad);
-}
+//function disconnecthandler(e) {
+//    removegamepad(e.gamepad);
+//}
 
 function removegamepad(gamepad) {
     delete controllers[gamepad.index];
@@ -96,7 +96,7 @@ function updateStatus() {
             axesMoved[i] = controller.axes[i];
         }
     }
-    rAF(updateStatus);
+    //rAF(updateStatus);
 }
 
 function scangamepads() {
@@ -167,7 +167,7 @@ function manageDrag(e,elem) {
     var cursors = convertMousePos(cursorX,cursorY,elem);
     var diffX = Math.abs(positionX - cursors.x);
     var diffY = Math.abs(positionY - cursors.y);
-    if (diffX < 5 && diffY < 5) 
+    if (diffX < 5 && diffY < 5)
     {
         updateMousePos(elem.prop("id")===ROBOT,e.button);
     }
