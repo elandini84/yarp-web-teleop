@@ -11,7 +11,7 @@ import secrets
 from python_code.internal_handlers.generic_handlers.NavClickHandler import NavClickHandler
 from python_code.internal_handlers.generic_handlers.ButtonsHandler import ButtonsHandler
 from python_code.internal_handlers.generic_handlers.IndexHandler import IndexHandler
-from python_code.internal_handlers.credential_handlers.LoginHandler import LoginHandler
+from python_code.internal_handlers.credential_handlers.LoginHandler import LoginHandler, ActiveUsersRegister
 from python_code.internal_handlers.credential_handlers.RegisterHandler import RegisterHandler
 from python_code.internal_handlers.credential_handlers.LogoutHandler import LogoutHandler
 from python_code.internal_handlers.credential_handlers.AuthHandler import AuthHandler
@@ -60,6 +60,7 @@ if __name__ == "__main__":
     RESFINDER = yarp.ResourceFinder()
     RESFINDER.configure(sys.argv)
     createUsersTable(loginDb)
+    commonAUR = ActiveUsersRegister(True,True)
 
     if RESFINDER.check("no_ssl") or RESFINDER.check("traefik"):
         certificates_folder = None
@@ -78,7 +79,7 @@ if __name__ == "__main__":
                                              "simulate":True,
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik")}),
                         (r'/auth',AuthHandler),
-                        (r'/login', LoginHandler,{"absPath": ABSPATH,"my_db": loginDb}),
+                        (r'/login', LoginHandler,{"absPath": ABSPATH, "aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"my_db": loginDb,"adminkey": ADMINKEY}),
                         (r"/static/(.*)", StaticFileHandler,{'path':'static'}),
@@ -102,7 +103,7 @@ if __name__ == "__main__":
         NAVCLICKPORT.open(NAVCLICKPORTNAME)
         MAPCLICKPORT.open(MAPCLICKPORTNAME)
         HEADCLICKPORT.open(HEADCLICKPORTNAME)
-        
+
         if RESFINDER.check("server_port"):
             SERVERPORT = RESFINDER.find("server_port").asInt32()
 
@@ -151,7 +152,7 @@ if __name__ == "__main__":
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik"),
                                              "simulate": False}),
                         (r'/auth',AuthHandler),
-                        (r'/login', LoginHandler,{"absPath": ABSPATH,"my_db": loginDb}),
+                        (r'/login', LoginHandler,{"absPath": ABSPATH, "aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"my_db": loginDb,"adminkey": ADMINKEY}),
                         (r"/static/(.*)", StaticFileHandler,{'path':'static'}),
