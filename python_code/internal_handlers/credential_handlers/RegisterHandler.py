@@ -12,6 +12,9 @@ class RegisterHandler(BaseLogHandler):
 
     def post(self):
         if not self.checkUser(self.get_argument("name")):
+            if len(self.get_argument("name")) <= 0:
+                self.redirect("/register")
+                return
             if len(self.get_argument("password")) <= 0:
                 self.redirect("/register")
                 return

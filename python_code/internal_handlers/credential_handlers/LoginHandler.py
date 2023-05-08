@@ -13,7 +13,7 @@ class LoginHandler(BaseLogHandler):
         if self.current_user:
             self.redirect("/")
             return
-        self.render(self.absPath, userName="", pwdLabel="Password", pwdStatus="")
+        self.render(self.absPath, usrLabel="User name", userName="", pwdLabel="Password", pwdStatus="", secondaryBtnState="secondary-hidden")
 
 
     def post(self):
@@ -24,6 +24,6 @@ class LoginHandler(BaseLogHandler):
             self._aur.addUser(self.get_argument("name"))
             self.redirect("/")
         elif dbCheck == UNKNOWN_USER:
-            self.redirect("/register")
+            self.render(self.absPath, usrLabel="Unknown user. Go to the \"Register\" page", userName="", pwdLabel="Password", pwdStatus="unknown_input", secondaryBtnState="secondary-visible")
         else:
-            self.render(self.absPath, userName=self.get_argument("name"), pwdLabel="Password: Wrong password. Try again", pwdStatus="error_input")
+            self.render(self.absPath, usrLabel="User name", userName=self.get_argument("name"), pwdLabel="Password: Wrong password. Try again", pwdStatus="error_input", secondaryBtnState="secondary-hidden")
