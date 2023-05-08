@@ -3,6 +3,10 @@
     height: auto;
 }
 
+.error_input{
+    background-color: #ff000055;
+}
+
 .mdl-card__actions {
     outline: skyblue solid 5px;
     z-index: 4;

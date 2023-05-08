@@ -39,7 +39,7 @@
         </nav>
     </div>
     <div id ="login">
-        <div class="demo-card-wide mdl-card mdl-shadow--2dp through mdl-shadow--8dp">
+        <div class="demo-card-wide mdl-card mdl-shadow--2dp through mdl-shadow--8dp {{pwdStatus}}">
             <div class="mdl-card__title">
                 <h2 class="mdl-card__title-text">User login</h2>
             </div>
@@ -47,12 +47,12 @@
                 Insert your username and password
                 <form action="/login" method="post">
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" id="name" name="name"/>
-                        <label class="mdl-textfield__label" for="login">Login</label>
+                        <input class="mdl-textfield__input" id="name" name="name" value="{{userName}}"/>
+                        <label class="mdl-textfield__label" for="login">User name</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <input class="mdl-textfield__input" type="password" id="password" name="password"/>
-                        <label class="mdl-textfield__label" for="password">Password</label>
+                        <label class="mdl-textfield__label" for="password">{{pwdLabel}}</label>
                     </div>
                 <div id="next">
                     <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" type="submit" >

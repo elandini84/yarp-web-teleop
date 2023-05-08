@@ -13,15 +13,17 @@ class LoginHandler(BaseLogHandler):
         if self.current_user:
             self.redirect("/")
             return
-        self.render(self.absPath)
+        self.render(self.absPath, userName="", pwdLabel="Password", pwdStatus="")
 
 
     def post(self):
-        if self.checkPassword(self.get_argument("name"),self.get_argument("password")):
+        dbCheck = self.checkPassword(self.get_argument("name"),self.get_argument("password"))
+        if dbCheck == LOGIN_OK:
             self.set_secure_cookie("user", self.get_argument("name"))
             self.set_secure_cookie("pw", self.get_argument("password"))
             self._aur.addUser(self.get_argument("name"))
             self.redirect("/")
-
-        else:
+        elif dbCheck == UNKNOWN_USER:
             self.redirect("/register")
+        else:
+            self.render(self.absPath, userName=self.get_argument("name"), pwdLabel="Password: Wrong password. Try again", pwdStatus="error_input")

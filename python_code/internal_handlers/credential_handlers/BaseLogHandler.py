@@ -1,5 +1,7 @@
 from tornado.web import RequestHandler
 
+from .AliasesAndConstants import *
+
 class BaseLogHandler(RequestHandler):
 
     def initialize(self, absPath, myPage, my_db=None):
@@ -51,8 +53,8 @@ class BaseLogHandler(RequestHandler):
     def checkPassword(self, name, pw):
         userEntry = self.getEntry(name)
         if userEntry is not None:
-            return pw == userEntry[0][2]
-        return False
+            return LOGIN_OK if pw == userEntry[0][2] else WRONG_PWD
+        return UNKNOWN_USER
 
 
     def countUsers(self):
