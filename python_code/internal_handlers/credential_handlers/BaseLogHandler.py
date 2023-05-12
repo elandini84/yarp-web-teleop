@@ -1,10 +1,14 @@
 from tornado.web import RequestHandler
+from .AUR import *
 
 class BaseLogHandler(RequestHandler):
 
-    def initialize(self, absPath, myPage, my_db=None):
+    def initialize(self, absPath, aur, myPage, my_db=None):
         self.my_db = my_db
         self.absPath = absPath + "/" + myPage
+        if not isinstance(aur,ActiveUsersRegister):
+            raise TypeError("aur parameter has to be an ActiveUserRegister object")
+        self._aur = aur
 
 
     def getAllFromQuery(self, query):
@@ -51,8 +55,8 @@ class BaseLogHandler(RequestHandler):
     def checkPassword(self, name, pw):
         userEntry = self.getEntry(name)
         if userEntry is not None:
-            return pw == userEntry[0][2]
-        return False
+            return LOGIN_OK if pw == userEntry[0][2] else WRONG_PWD
+        return UNKNOWN_USER
 
 
     def countUsers(self):
