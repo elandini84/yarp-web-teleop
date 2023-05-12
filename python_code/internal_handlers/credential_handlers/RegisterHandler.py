@@ -2,8 +2,8 @@ from .BaseLogHandler import *
 
 class RegisterHandler(BaseLogHandler):
 
-    def initialize(self, absPath, myPage="/static/html/register.html", my_db=None,adminkey=None):
-        BaseLogHandler.initialize(self, absPath, myPage, my_db)
+    def initialize(self, absPath, aur, myPage="/static/html/register.html", my_db=None,adminkey=None):
+        BaseLogHandler.initialize(self, absPath, aur, myPage, my_db)
         self._adminKey = "" if adminkey is None else adminkey
 
     def get(self):
@@ -12,6 +12,9 @@ class RegisterHandler(BaseLogHandler):
 
     def post(self):
         if not self.checkUser(self.get_argument("name")):
+            if len(self.get_argument("name")) <= 0:
+                self.redirect("/register")
+                return
             if len(self.get_argument("password")) <= 0:
                 self.redirect("/register")
                 return
