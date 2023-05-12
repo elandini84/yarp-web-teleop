@@ -2,8 +2,8 @@ from .BaseLogHandler import *
 
 class RegisterHandler(BaseLogHandler):
 
-    def initialize(self, absPath, myPage="/static/html/register.html", my_db=None,adminkey=None):
-        BaseLogHandler.initialize(self, absPath, myPage, my_db)
+    def initialize(self, absPath, aur, myPage="/static/html/register.html", my_db=None,adminkey=None):
+        BaseLogHandler.initialize(self, absPath, aur, myPage, my_db)
         self._adminKey = "" if adminkey is None else adminkey
 
     def get(self):

@@ -3,11 +3,11 @@
     height: auto;
 }
 
-.error_input{
+.error_look{
     background-color: #ff000055;
 }
 
-.unknown_input{
+.unknown_look{
     background-color: #ff00aa55;
 }
 
@@ -84,8 +84,8 @@
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-areas:
-            "u u u u u u c i i i"
-            "p p p p p p j j j j"
+            "u u u u u u u h c i"
+            "p p p p p p p j j j"
             "k k k k k k k k k b";
 }
 

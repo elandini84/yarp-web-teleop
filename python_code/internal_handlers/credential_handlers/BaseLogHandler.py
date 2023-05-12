@@ -1,12 +1,14 @@
 from tornado.web import RequestHandler
-
-from .AliasesAndConstants import *
+from .AUR import *
 
 class BaseLogHandler(RequestHandler):
 
-    def initialize(self, absPath, myPage, my_db=None):
+    def initialize(self, absPath, aur, myPage, my_db=None):
         self.my_db = my_db
         self.absPath = absPath + "/" + myPage
+        if not isinstance(aur,ActiveUsersRegister):
+            raise TypeError("aur parameter has to be an ActiveUserRegister object")
+        self._aur = aur
 
 
     def getAllFromQuery(self, query):
