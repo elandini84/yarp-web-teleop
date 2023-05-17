@@ -218,13 +218,20 @@
 }
 
 #shoutBtn {
+    grid-area: a;
+    justify-self: end;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#quietBtn {
     grid-area: b;
     justify-self: end;
     color: #3b7991;
     background-color: #b7d5e1;
 }
 
-#shoutBtn:active, #leftFastBtn:active, #leftBtn:active, #rightBtn:active, #rightFastBtn:active, #forwardBtn:active {
+#shoutBtn:active, #quietBtn:active, #leftFastBtn:active, #leftBtn:active, #rightBtn:active, #rightFastBtn:active, #forwardBtn:active {
     color: #b7d5e1;
     background-color: #3b7991;
 }

@@ -82,17 +82,12 @@
                         </button>
                         <div id="shout_card" class="info-wide-gridL">
                             <div id="shout_before" class="mdl-layout-spacer shout-spacer"></div>
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label shout-list">
-                                <select class="mdl-textfield__input bold-text teleop-shout-text data-text common-text" id="shout-select" name="shout-select">
-                                    <option value="EMPTY">Select a warning message</option>
-                                    <option value="FORBID">I'm sorry, this part of the museum is closed. Please get out</option>
-                                    <option value="SAFETY">Please, keep the interpersonal safety distance</option>
-                                    <option value="ALARM">The museum is closed. Nobody is allowed to be in here. Please exit the building.</option>
-                                </select>
-                            </div>
-                            <div id="shout_middle" class="mdl-layout-spacer shout-spacer"></div>
-                            <button id="shoutBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
+                            <button id="shoutBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="pttChange()">
                                 <i class="material-icons">volume_up</i>
+                            </button>
+                            <div id="shout_middle" class="mdl-layout-spacer shout-spacer"></div>
+                            <button id="quietBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn">
+                                <i class="material-icons">volume_down</i>
                             </button>
                             <div id="shout_after" class="mdl-layout-spacer shout-spacer"></div>
                         </div>
@@ -153,5 +148,6 @@
             let wsType="{{wsType}}";
         </script>
         <script src="../static/js/eventFunctions.js"></script>
+        <script src="../static/js/audioInMng.js"></script>
     </body>
 </html>

@@ -56,7 +56,7 @@ function manageDrag(e,elem) {
     var cursors = convertMousePos(cursorX,cursorY,elem);
     var diffX = Math.abs(positionX - cursors.x);
     var diffY = Math.abs(positionY - cursors.y);
-    if (diffX < 5 && diffY < 5) 
+    if (diffX < 5 && diffY < 5)
     {
         updateMousePos(elem.prop("id")===ROBOT,e.button);
     }
@@ -352,6 +352,8 @@ function clickedAlarm(){
     $("#shout_card").css("visibility","visible");
     $("#instructionCard").css("visibility","hidden");
     $("#rotate_card").css("visibility","hidden");
+
+    openMicrophone();
 }
 
 function clickedRotate(){
