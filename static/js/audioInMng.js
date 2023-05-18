@@ -63,12 +63,12 @@ function openMicrophone(){
         var downsample_offset = 0
         function process_samples(){
             while(downsample_offset > 320) {
-            var output = downsampled.slice(0, 320)
-            downsampled.copyWithin(0, 320)
-            downsample_offset -= 320
-            if(ptt == true) {
-                wsa.send(output.buffer)
-            }
+                var output = downsampled.slice(0, 320)
+                downsampled.copyWithin(0, 320)
+                downsample_offset -= 320
+                if(ptt == true) {
+                    wsa.send(output.buffer)
+                }
             }
         }
         var sampleRatio = context.sampleRate / 16000
@@ -78,17 +78,17 @@ function openMicrophone(){
             var inputData = inputBuffer.getChannelData(0)
             var outputData = outputBuffer.getChannelData(0)
             for (var i = 0; i < inputData.length; i += sampleRatio) {
-            var sidx = Math.floor(i)
-            var tidx = Math.floor(i/sampleRatio)
-            downsampled[downsample_offset + tidx] = inputData[sidx] * 32767
+                var sidx = Math.floor(i)
+                var tidx = Math.floor(i/sampleRatio)
+                downsampled[downsample_offset + tidx] = inputData[sidx] * 32767
             }
             downsample_offset += ~~(inputData.length/sampleRatio)
             if(downsample_offset > 320) {
-            process_samples()
+                process_samples()
             }
             for (var sample = 0; sample < inputBuffer.length; sample++) {
-            // Silence the output
-            outputData[sample] = 0
+                // Silence the output
+                outputData[sample] = 0
             }
         }
         source.connect(processor)

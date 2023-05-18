@@ -32,9 +32,11 @@ RESFINDER = None
 NAVCLICKPORT = None
 HEADCLICKPORT = None
 MAPCLICKPORT = None
+MICPORT = None
 NAVCLICKPORTNAME = "/webview/navClick:o"
 HEADCLICKPORTNAME = "/webview/headClick:o"
 MAPCLICKPORTNAME = "/webview/mapClick:o"
+MICPORTNAME = "/webview/microphone:o"
 WEBLOCK = Lock()
 dirname = os.path.dirname(__file__)
 dbPath = os.path.join(dirname, "static/sql_db/users.db")
@@ -70,6 +72,11 @@ if __name__ == "__main__":
         certificates_folder = RESFINDER.find("certificates_path").asString() if RESFINDER.check("certificates_path") else certificates_folder
         certificates_name = RESFINDER.find("certificates_name").asString() if RESFINDER.check("certificates_name") else certificates_name
     if RESFINDER.check("simulate"):
+        NETWORK = yarp.Network()
+        NETWORK.init()
+        MICPORT = yarp.BufferedPortSound()
+        MICPORTNAME = RESFINDER.find("mic_port").asString() if RESFINDER.check("mic_port") else MICPORTNAME
+        MICPORT.open(MICPORTNAME)
         handlersList = [(r'/', IndexHandler,{"inputNetwork": NETWORK,
                                              "cameraPort": "",
                                              "mapPort": "",
@@ -80,7 +87,7 @@ if __name__ == "__main__":
                                              "simulate":True,
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik")}),
                         (r'/auth',AuthHandler),
-                        (r'/wsa',AudioInHandler),
+                        (r'/wsa',AudioInHandler,{"soundPort": MICPORT}),
                         (r'/login', LoginHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb,"adminkey": ADMINKEY}),
@@ -97,14 +104,17 @@ if __name__ == "__main__":
         NAVCLICKPORT = yarp.Port()
         MAPCLICKPORT = yarp.Port()
         HEADCLICKPORT = yarp.Port()
+        MICPORT = yarp.BufferedPortSound()
 
         NAVCLICKPORTNAME = RESFINDER.find("nav_click_port").asString() if RESFINDER.check("nav_click_port") else NAVCLICKPORTNAME
         MAPCLICKPORTNAME = RESFINDER.find("map_click_port").asString() if RESFINDER.check("map_click_port") else MAPCLICKPORTNAME
         HEADCLICKPORTNAME = RESFINDER.find("head_click_port").asString() if RESFINDER.check("head_click_port") else HEADCLICKPORTNAME
+        MICPORTNAME = RESFINDER.find("mic_port").asString() if RESFINDER.check("mic_port") else MICPORTNAME
 
         NAVCLICKPORT.open(NAVCLICKPORTNAME)
         MAPCLICKPORT.open(MAPCLICKPORTNAME)
         HEADCLICKPORT.open(HEADCLICKPORTNAME)
+        MICPORT.open(MICPORTNAME)
 
         if RESFINDER.check("server_port"):
             SERVERPORT = RESFINDER.find("server_port").asInt32()
@@ -154,7 +164,7 @@ if __name__ == "__main__":
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik"),
                                              "simulate": False}),
                         (r'/auth',AuthHandler),
-                        (r'/wsa',AudioInHandler),
+                        (r'/wsa',AudioInHandler,{"soundPort": MICPORT}),
                         (r'/login', LoginHandler,{"absPath": ABSPATH, "aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb,"adminkey": ADMINKEY}),
