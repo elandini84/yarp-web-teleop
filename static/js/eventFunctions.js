@@ -226,15 +226,6 @@ function init() {
     map.mouseup((e) => drag ? manageDrag(e,map) : updateMousePos(false,e.button));
 }
 
-function shout_out(){
-    var shout_list = document.getElementById("shout-select");
-    //window.alert(shout_list[shout_list.selectedIndex].textContent+"\n"+shout_list.value);
-    if (shout_list.value !== "EMPTY") {
-        var msg = {"audio": shout_list.value};
-        wsb.send(JSON.stringify(msg));
-    }
-}
-
 function sendVelocityData(velLeft,velRight,velForward=0.0){
     var msg = {"vel-right":velRight,
         "vel-left":velLeft,
@@ -398,7 +389,7 @@ function resizeMap(onResize){
     var spacer = $("#main-spacer");
     var camera = $("#camera_img");
     var camera_card = $("#camera_card");
-    var shout_card = $("#alarms-controls-gridLO");
+    var user_card = $("#user-controls-gridLO");
     var padding = $("#mainGrid").css("padding");
     if (width > 1000 && !(wider && widerer)) {
         /* MANAGING MAP SIZE */
@@ -415,9 +406,9 @@ function resizeMap(onResize){
         console.log("Checking height map: " + map.height());*/
 
         /* ADAPTING CAMERA COLUMN TO MAP SIZE */
-        shout_card.css("height",100);
-        shout_card.css("max-height",100);
-        camera_card.height(map_card.height() - shout_card.height() - padding);
+        user_card.css("height",100);
+        user_card.css("max-height",100);
+        camera_card.height(map_card.height() - user_card.height() - padding);
         camera.height(camera.width() * (camera.prop("naturalHeight") / camera.prop("naturalWidth")));
         if (camera.height() !== (camera_card.height()-$("#camera_card_title").height())){
             camera.height(camera_card.height()-$("#camera_card_title").height()-20);
@@ -429,8 +420,8 @@ function resizeMap(onResize){
         console.log("Checking height camera: " + camera.height());
         console.log("Checking width camera_card: " + camera_card.width());
         console.log("Checking width camera: " + camera.width());
-        console.log("Checking height shout_card: " + shout_card.height());*/
-        shout_card.width(camera.width()-20);
+        console.log("Checking height user_card: " + user_card.height());*/
+        user_card.width(camera.width()-20);
 
         spacer.width(width - camera_card.width() - map_card.width() - padding*2);
     }
@@ -443,58 +434,60 @@ function resizeMap(onResize){
         camera_card.height('auto')
         camera.css("width",'auto');
         camera.height('auto');
-        shout_card.width('auto');
-        shout_card.height('auto');
+        user_card.width('auto');
+        user_card.height('auto');
     }
 }
 
-function clickedAlarm(){
+function clickedAudio(){
     var instructionBtn = $("#instructionBtn");
-    var alarmBtn = $("#alarmBtn");
+    var audioBtn = $("#audioBtn");
     var rotateBtn = $("#rotateBtn");
 
     instructionBtn.css("color",DARKCOL);
-    alarmBtn.css("color",LIGHTCOL);
+    audioBtn.css("color",LIGHTCOL);
     rotateBtn.css("color",DARKCOL);
     instructionBtn.css("background-color",LIGHTCOL);
-    alarmBtn.css("background-color",DARKCOL);
+    audioBtn.css("background-color",DARKCOL);
     rotateBtn.css("background-color",LIGHTCOL);
 
-    $("#shout_card").css("visibility","visible");
+    $("#audio_card").css("visibility","visible");
     $("#instructionCard").css("visibility","hidden");
     $("#rotate_card").css("visibility","hidden");
+
+    openMicrophone();
 }
 
 function clickedRotate(){
     var instructionBtn = $("#instructionBtn");
-    var alarmBtn = $("#alarmBtn");
+    var audioBtn = $("#audioBtn");
     var rotateBtn = $("#rotateBtn");
 
     instructionBtn.css("color",DARKCOL);
-    alarmBtn.css("color",DARKCOL);
+    audioBtn.css("color",DARKCOL);
     rotateBtn.css("color",LIGHTCOL);
     instructionBtn.css("background-color",LIGHTCOL);
-    alarmBtn.css("background-color",LIGHTCOL);
+    audioBtn.css("background-color",LIGHTCOL);
     rotateBtn.css("background-color",DARKCOL);
 
-    $("#shout_card").css("visibility","hidden");
+    $("#audio_card").css("visibility","hidden");
     $("#instructionCard").css("visibility","hidden");
     $("#rotate_card").css("visibility","visible");
 }
 
 function clickedInstruction(){
     var instructionBtn = $("#instructionBtn");
-    var alarmBtn = $("#alarmBtn");
+    var audioBtn = $("#audioBtn");
     var rotateBtn = $("#rotateBtn");
 
     instructionBtn.css("color",LIGHTCOL);
-    alarmBtn.css("color",DARKCOL);
+    audioBtn.css("color",DARKCOL);
     rotateBtn.css("color",DARKCOL);
     instructionBtn.css("background-color",DARKCOL);
-    alarmBtn.css("background-color",LIGHTCOL);
+    audioBtn.css("background-color",LIGHTCOL);
     rotateBtn.css("background-color",LIGHTCOL);
 
-    $("#shout_card").css("visibility","hidden");
+    $("#audio_card").css("visibility","hidden");
     $("#instructionCard").css("visibility","visible");
     $("#rotate_card").css("visibility","hidden");
 }

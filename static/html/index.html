@@ -67,12 +67,12 @@
                         <img id="map_img" class="stream-img" src="{{porta2}}">
                     </div>
                 </div>
-                <div id="alarms-controls-gridI">
-                    <div id="alarms-controls-gridLO" class="mdl-card info-card mdl-shadow--2dp through mdl-shadow--8dp">
-                        <div id="alarm_after" class="mdl-layout-spacer shout-spacer"></div>
-                        <div id="alarm_before" class="mdl-layout-spacer shout-spacer"></div>
-                        <button id="alarmBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedAlarm()">
-                            WARNING MESSAGES
+                <div id="user-controls-gridI">
+                    <div id="user-controls-gridLO" class="mdl-card info-card mdl-shadow--2dp through mdl-shadow--8dp">
+                        <div id="user_after" class="mdl-layout-spacer user-spacer"></div>
+                        <div id="user_before" class="mdl-layout-spacer user-spacer"></div>
+                        <button id="audioBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedAudio()">
+                            AUDIO CONTROL
                         </button>
                         <button id="rotateBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedRotate()">
                             TURN THE ROBOT
@@ -80,24 +80,18 @@
                         <button id="instructionBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="clickedInstruction()">
                             INSTRUCTIONS
                         </button>
-                        <div id="shout_card" class="info-wide-gridL">
-                            <div id="shout_before" class="mdl-layout-spacer shout-spacer"></div>
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label shout-list">
-                                <select class="mdl-textfield__input bold-text teleop-shout-text data-text common-text" id="shout-select" name="shout-select">
-                                    <option value="EMPTY">Select a warning message</option>
-                                    <option value="FORBID">I'm sorry, this part of the museum is closed. Please get out</option>
-                                    <option value="SAFETY">Please, keep the interpersonal safety distance</option>
-                                    <option value="ALARM">The museum is closed. Nobody is allowed to be in here. Please exit the building.</option>
-                                </select>
-                            </div>
-                            <div id="shout_middle" class="mdl-layout-spacer shout-spacer"></div>
-                            <button id="shoutBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="shout_out()">
-                                <i class="material-icons">volume_up</i>
+                        <div id="audio_card">
+                            <div id="audio_before" class="mdl-layout-spacer user-spacer"></div>
+                            <button id="speakBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn speak-toggle" onclick="pttChange()">
+                                <i class="material-icons">mic</i>
                             </button>
-                            <div id="shout_after" class="mdl-layout-spacer shout-spacer"></div>
+                            <button id="listenBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn">
+                                <i class="material-icons">hearing</i>
+                            </button>
+                            <div id="audio_after" class="mdl-layout-spacer user-spacer"></div>
                         </div>
                         <div id="rotate_card">
-                            <div id="rotate_before" class="mdl-layout-spacer shout-spacer"></div>
+                            <div id="rotate_before" class="mdl-layout-spacer user-spacer"></div>
                             <button id="leftFastBtn"  class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onmousedown="pressedFastLeft()" onmouseup="releasedAll()">
                                 <i class="material-icons">keyboard_double_arrow_left</i>
                             </button>
@@ -113,7 +107,7 @@
                             <button id="rightFastBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn"  onmousedown="pressedFastRight()" onmouseup="releasedAll()">
                                 <i class="material-icons">keyboard_double_arrow_right</i>
                             </button>
-                            <div id="rotate_after" class="mdl-layout-spacer shout-spacer"></div>
+                            <div id="rotate_after" class="mdl-layout-spacer user-spacer"></div>
                         </div>
                         <div id="instructionCard">
                             <ul id="legendList">
@@ -151,7 +145,9 @@
 
         <script>
             let wsType="{{wsType}}";
+            let audioBufferLen="{{audioBufferLen}}";
         </script>
         <script src="../static/js/eventFunctions.js"></script>
+        <script src="../static/js/audioInMng.js"></script>
     </body>
 </html>
