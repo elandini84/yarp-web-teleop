@@ -38,6 +38,7 @@ HEADCLICKPORTNAME = "/webview/headClick:o"
 MAPCLICKPORTNAME = "/webview/mapClick:o"
 MICPORTNAME = "/webview/microphone:o"
 WEBLOCK = Lock()
+AUDIOBUFFLEN = 640
 dirname = os.path.dirname(__file__)
 dbPath = os.path.join(dirname, "static/sql_db/users.db")
 certificates_folder = os.path.join(dirname, "resources/certificates")
@@ -65,6 +66,30 @@ if __name__ == "__main__":
     createUsersTable(loginDb)
     commonAUR = ActiveUsersRegister(True,True)
 
+    if RESFINDER.check("server_port"):
+        SERVERPORT = RESFINDER.find("server_port").asInt32()
+
+    if not RESFINDER.check("no_yarp"):
+        NETWORK = yarp.Network()
+        NETWORK.init()
+
+        AUDIOBUFFLEN = RESFINDER.find("audioBufLen").asInt32() if RESFINDER.check("audioBufLen") else AUDIOBUFFLEN
+
+        MICPORT = yarp.BufferedPortSound()
+        NAVCLICKPORT = yarp.Port()
+        MAPCLICKPORT = yarp.Port()
+        HEADCLICKPORT = yarp.Port()
+
+        MICPORTNAME = RESFINDER.find("mic_port").asString() if RESFINDER.check("mic_port") else MICPORTNAME
+        NAVCLICKPORTNAME = RESFINDER.find("nav_click_port").asString() if RESFINDER.check("nav_click_port") else NAVCLICKPORTNAME
+        MAPCLICKPORTNAME = RESFINDER.find("map_click_port").asString() if RESFINDER.check("map_click_port") else MAPCLICKPORTNAME
+        HEADCLICKPORTNAME = RESFINDER.find("head_click_port").asString() if RESFINDER.check("head_click_port") else HEADCLICKPORTNAME
+
+        MICPORT.open(MICPORTNAME)
+        NAVCLICKPORT.open(NAVCLICKPORTNAME)
+        MAPCLICKPORT.open(MAPCLICKPORTNAME)
+        HEADCLICKPORT.open(HEADCLICKPORTNAME)
+
     if RESFINDER.check("no_ssl") or RESFINDER.check("traefik"):
         certificates_folder = None
         certificates_name = None
@@ -72,17 +97,13 @@ if __name__ == "__main__":
         certificates_folder = RESFINDER.find("certificates_path").asString() if RESFINDER.check("certificates_path") else certificates_folder
         certificates_name = RESFINDER.find("certificates_name").asString() if RESFINDER.check("certificates_name") else certificates_name
     if RESFINDER.check("simulate"):
-        NETWORK = yarp.Network()
-        NETWORK.init()
-        MICPORT = yarp.BufferedPortSound()
-        MICPORTNAME = RESFINDER.find("mic_port").asString() if RESFINDER.check("mic_port") else MICPORTNAME
-        MICPORT.open(MICPORTNAME)
         handlersList = [(r'/', IndexHandler,{"inputNetwork": NETWORK,
                                              "cameraPort": "",
                                              "mapPort": "",
                                              "cameraHost": "",
                                              "resFinder": None,
                                              "absPath": ABSPATH,
+                                             "audioBufferLen": AUDIOBUFFLEN,
                                              "mapHost": "",
                                              "simulate":True,
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik")}),
@@ -98,27 +119,7 @@ if __name__ == "__main__":
                                                    "mapPort": MAPCLICKPORT}),
                         (r"/wsb", ButtonsHandler, {"webLock": WEBLOCK,
                                                    "navPort": NAVCLICKPORT})]
-    else:
-        NETWORK = yarp.Network()
-        NETWORK.init()
-        NAVCLICKPORT = yarp.Port()
-        MAPCLICKPORT = yarp.Port()
-        HEADCLICKPORT = yarp.Port()
-        MICPORT = yarp.BufferedPortSound()
-
-        NAVCLICKPORTNAME = RESFINDER.find("nav_click_port").asString() if RESFINDER.check("nav_click_port") else NAVCLICKPORTNAME
-        MAPCLICKPORTNAME = RESFINDER.find("map_click_port").asString() if RESFINDER.check("map_click_port") else MAPCLICKPORTNAME
-        HEADCLICKPORTNAME = RESFINDER.find("head_click_port").asString() if RESFINDER.check("head_click_port") else HEADCLICKPORTNAME
-        MICPORTNAME = RESFINDER.find("mic_port").asString() if RESFINDER.check("mic_port") else MICPORTNAME
-
-        NAVCLICKPORT.open(NAVCLICKPORTNAME)
-        MAPCLICKPORT.open(MAPCLICKPORTNAME)
-        HEADCLICKPORT.open(HEADCLICKPORTNAME)
-        MICPORT.open(MICPORTNAME)
-
-        if RESFINDER.check("server_port"):
-            SERVERPORT = RESFINDER.find("server_port").asInt32()
-
+    elif not RESFINDER.check("simulate") and NETWORK is not None:
         MAPPORT = None
         CAMERAPORT = None
         MAPHOST = None

@@ -47,7 +47,14 @@ function pttChange(){
     ptt = !ptt;
     if(!ptt){
         wsa.send(JSON.stringify({"goOn":true}));
+        $("#speakBtn").css("color", "#3b7991");
+        $("#speakBtn").css("background-color", "#b7d5e1");
     }
+    else{
+        $("#speakBtn").css("color", "#b7d5e1");
+        $("#speakBtn").css("background-color", "#3b7991");
+    }
+    console.log($("#speakBtn"));
 }
 
 function openMicrophone(){
@@ -62,10 +69,10 @@ function openMicrophone(){
         var downsampled = new Int16Array(2048)
         var downsample_offset = 0
         function process_samples(){
-            while(downsample_offset > 320) {
-                var output = downsampled.slice(0, 320)
-                downsampled.copyWithin(0, 320)
-                downsample_offset -= 320
+            while(downsample_offset > audioBufferLen) {
+                var output = downsampled.slice(0, audioBufferLen)
+                downsampled.copyWithin(0, audioBufferLen)
+                downsample_offset -= audioBufferLen
                 if(ptt == true) {
                     wsa.send(output.buffer)
                 }
@@ -83,7 +90,7 @@ function openMicrophone(){
                 downsampled[downsample_offset + tidx] = inputData[sidx] * 32767
             }
             downsample_offset += ~~(inputData.length/sampleRatio)
-            if(downsample_offset > 320) {
+            if(downsample_offset > audioBufferLen) {
                 process_samples()
             }
             for (var sample = 0; sample < inputBuffer.length; sample++) {

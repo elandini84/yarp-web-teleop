@@ -99,15 +99,15 @@
 
 /*  CONTROLS PART ---------------------------- START */
 
-#alarm_after{
+#user_after{
     grid-area: sa;
 }
 
-#alarm_before{
+#user_before{
     grid-area: sb;
 }
 
-#alarms-controls-gridLO {
+#user-controls-gridLO {
     display: grid;
     grid-template-columns: 5% 30% 30% 30% 5%;
     grid-template-areas:
@@ -121,19 +121,43 @@
     background-color: #519ab8;
 }
 
-.info-wide-gridL {
+/* AUDIO CARD */
+
+#audio_card {
     padding: 10px;
     grid-area: d;
     display: grid;
     visibility: hidden;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-areas: "sb a a a a a a sm b sa";
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas: "sb a b sa sa sa";
     align-items: center;
     max-width: inherit;
     max-height: inherit;
     height: auto;
     width: auto;
     background-color: #519ab8;
+}
+
+#speakBtn {
+    grid-area: a;
+    justify-self: end;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#listenBtn {
+    grid-area: b;
+    justify-self: end;
+    color: #3b7991;
+    background-color: #b7d5e1;
+}
+
+#audio_before{
+    grid-area: sb;
+}
+
+#audio_after{
+    grid-area: sa;
 }
 
 #rotate_card {
@@ -171,7 +195,7 @@
     width: auto;
 }
 
-#alarms-controls-gridI {
+#user-controls-gridI {
     grid-area: c;
     padding: inherit;
     text-align: center;
@@ -217,26 +241,13 @@
     background-color: #b7d5e1;
 }
 
-#shoutBtn {
-    grid-area: a;
-    justify-self: end;
-    color: #3b7991;
-    background-color: #b7d5e1;
-}
 
-#quietBtn {
-    grid-area: b;
-    justify-self: end;
-    color: #3b7991;
-    background-color: #b7d5e1;
-}
-
-#shoutBtn:active, #quietBtn:active, #leftFastBtn:active, #leftBtn:active, #rightBtn:active, #rightFastBtn:active, #forwardBtn:active {
+#listenBtn:active, #leftFastBtn:active, #leftBtn:active, #rightBtn:active, #rightFastBtn:active, #forwardBtn:active {
     color: #b7d5e1;
     background-color: #3b7991;
 }
 
-#alarmBtn {
+#audioBtn {
     grid-area: c;
     justify-self: center;
     color: #3b7991;
@@ -257,26 +268,8 @@
     background-color: #3b7991;
 }
 
-.shout-list{
-    grid-area: a;
+.user-spacer{
     justify-self: start;
-    width: 100%;
-}
-
-.shout-spacer{
-    justify-self: start;
-}
-
-#shout_before{
-    grid-area: sb;
-}
-
-#shout_after{
-    grid-area: sa;
-}
-
-#shout_middle{
-    grid-area: sm;
 }
 
 /*  CONTROLS PART ---------------------------- END */

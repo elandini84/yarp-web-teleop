@@ -39,17 +39,18 @@ class AudioInHandler(WebSocketHandler):
                     self._data = b''
         else:
             self._data += message
-            tempSound = self._soundPort.prepare()
-            tempSound.resize(int(len(message)/self._sampleWidth),1)
-            tempSound.setFrequency(self._sampleRate)
-            for i in range(int(len(message)/self._sampleWidth)):
-                ind = i+i*(self._sampleWidth-1)
-                b = int(frombuffer(message[ind:(ind+self._sampleWidth)],int16)[0])
-                try:
-                    tempSound.set(b,i,0)
-                except Exception as e:
-                    print("{0}-{1} = {2} ({3} - {4})".format(ind,ind+self._sampleWidth,b,type(b),byteorder))
-                    print("{0} - {1}".format(type(message[i]), message[ind:(ind+self._sampleWidth)]))
-                    print(e)
-            self._soundPort.write()
-            self._sentData += int(len(message)/self._sampleWidth)
+            if self._soundPort is not None:
+                tempSound = self._soundPort.prepare()
+                tempSound.resize(int(len(message)/self._sampleWidth),1)
+                tempSound.setFrequency(self._sampleRate)
+                for i in range(int(len(message)/self._sampleWidth)):
+                    ind = i+i*(self._sampleWidth-1)
+                    b = int(frombuffer(message[ind:(ind+self._sampleWidth)],int16)[0])
+                    try:
+                        tempSound.set(b,i,0)
+                    except Exception as e:
+                        print("{0}-{1} = {2} ({3} - {4})".format(ind,ind+self._sampleWidth,b,type(b),byteorder))
+                        print("{0} - {1}".format(type(message[i]), message[ind:(ind+self._sampleWidth)]))
+                        print(e)
+                self._soundPort.write()
+                self._sentData += int(len(message)/self._sampleWidth)
