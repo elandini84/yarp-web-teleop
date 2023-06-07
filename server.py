@@ -161,6 +161,7 @@ if __name__ == "__main__":
                                              "cameraHost": CAMERAHOST,
                                              "resFinder": RESFINDER,
                                              "absPath": ABSPATH,
+                                             "audioBufferLen": AUDIOBUFFLEN,
                                              "mapHost": MAPHOST,
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik"),
                                              "simulate": False}),
