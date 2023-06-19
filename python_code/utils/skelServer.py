@@ -17,7 +17,7 @@ class SkelServer(object):
 
 
     def configApp(self):
-        self.tornadoApp = Application(self.handlers, autoreload=self.autoReload)
+        self.tornadoApp = Application(self.handlers, autoreload=self.autoReload, debug=True)
 
 
     def start(self):

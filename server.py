@@ -7,16 +7,20 @@ import json
 import os
 import signal, sys, threading
 import secrets
+import asyncio
+from threading import Thread
 
 from python_code.internal_handlers.generic_handlers.NavClickHandler import NavClickHandler
 from python_code.internal_handlers.generic_handlers.ButtonsHandler import ButtonsHandler
 from python_code.internal_handlers.generic_handlers.IndexHandler import IndexHandler
 from python_code.internal_handlers.media_handlers.AudioInHandler import AudioInHandler
+from python_code.internal_handlers.media_handlers.AudioOutHandler import AudioOutHandler
 from python_code.internal_handlers.credential_handlers.LoginHandler import LoginHandler, ActiveUsersRegister
 from python_code.internal_handlers.credential_handlers.RegisterHandler import RegisterHandler
 from python_code.internal_handlers.credential_handlers.LogoutHandler import LogoutHandler
 from python_code.internal_handlers.credential_handlers.AuthHandler import AuthHandler
 from python_code.utils.cookieServer import CookieServer
+from python_code.utils.Yarp2WebSoundRedirect import Yarp2WebSoundRedirect
 
 ## Execution example
 # python3 server.py --camera_port 10009 --camera_host 192.168.92.109 --map_port 10014 --no_ssl
@@ -33,17 +37,20 @@ NAVCLICKPORT = None
 HEADCLICKPORT = None
 MAPCLICKPORT = None
 MICPORT = None
+SPEAKPORT = None
 NAVCLICKPORTNAME = "/webview/navClick:o"
 HEADCLICKPORTNAME = "/webview/headClick:o"
 MAPCLICKPORTNAME = "/webview/mapClick:o"
 MICPORTNAME = "/webview/microphone:o"
+SPEAKPORTNAME = "/webview/speaker:i"
+REDIRECTOR = None
 WEBLOCK = Lock()
 AUDIOBUFFLEN = 640
 dirname = os.path.dirname(__file__)
 dbPath = os.path.join(dirname, "static/sql_db/users.db")
 certificates_folder = os.path.join(dirname, "resources/certificates")
 certificates_name = "host"
-loginDb = sl.connect(dbPath)
+loginDb = sl.connect(dbPath,check_same_thread=False)
 
 
 def createUsersTable(inputDb):
@@ -76,16 +83,22 @@ if __name__ == "__main__":
         AUDIOBUFFLEN = RESFINDER.find("audioBufLen").asInt32() if RESFINDER.check("audioBufLen") else AUDIOBUFFLEN
 
         MICPORT = yarp.BufferedPortSound()
+        SPEAKPORT = yarp.BufferedPortSound()
         NAVCLICKPORT = yarp.Port()
         MAPCLICKPORT = yarp.Port()
         HEADCLICKPORT = yarp.Port()
 
         MICPORTNAME = RESFINDER.find("mic_port").asString() if RESFINDER.check("mic_port") else MICPORTNAME
+        SPEAKPORTNAME = RESFINDER.find("speak_port").asString() if RESFINDER.check("speak_port") else SPEAKPORTNAME
         NAVCLICKPORTNAME = RESFINDER.find("nav_click_port").asString() if RESFINDER.check("nav_click_port") else NAVCLICKPORTNAME
         MAPCLICKPORTNAME = RESFINDER.find("map_click_port").asString() if RESFINDER.check("map_click_port") else MAPCLICKPORTNAME
         HEADCLICKPORTNAME = RESFINDER.find("head_click_port").asString() if RESFINDER.check("head_click_port") else HEADCLICKPORTNAME
 
+        # REDIRECTOR = Yarp2WebSoundRedirect()
+        # SPEAKPORT.useCallback(REDIRECTOR)
+
         MICPORT.open(MICPORTNAME)
+        SPEAKPORT.open(SPEAKPORTNAME)
         NAVCLICKPORT.open(NAVCLICKPORTNAME)
         MAPCLICKPORT.open(MAPCLICKPORTNAME)
         HEADCLICKPORT.open(HEADCLICKPORTNAME)
@@ -108,7 +121,8 @@ if __name__ == "__main__":
                                              "simulate":True,
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik")}),
                         (r'/auth',AuthHandler),
-                        (r'/wsa',AudioInHandler,{"soundPort": MICPORT}),
+                        (r'/wsmic',AudioInHandler,{"soundPort": MICPORT}),
+                        (r'/wsspeak',AudioOutHandler,{"soundPort": SPEAKPORT}),
                         (r'/login', LoginHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb,"adminkey": ADMINKEY}),
@@ -166,7 +180,8 @@ if __name__ == "__main__":
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik"),
                                              "simulate": False}),
                         (r'/auth',AuthHandler),
-                        (r'/wsa',AudioInHandler,{"soundPort": MICPORT}),
+                        (r'/wsmic',AudioInHandler,{"soundPort": MICPORT}),
+                        #(r'/wsspeak',AudioOutHandler,{"soundPort": SPEAKPORT}),
                         (r'/login', LoginHandler,{"absPath": ABSPATH, "aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb,"adminkey": ADMINKEY}),
@@ -191,5 +206,16 @@ if __name__ == "__main__":
 
     print('Running on port %d' % SERVERPORT)
     print('Press Ctrl+C to stop')
-    #signal.pause()
+
     server.start()
+    # def start_server():
+    #     asyncio.set_event_loop(asyncio.new_event_loop())
+    #     server.start()
+
+
+    # from threading import Thread
+    # t = Thread(target=start_server, args=())
+    # t.daemon = True
+    # t.start()
+
+    # t.join()

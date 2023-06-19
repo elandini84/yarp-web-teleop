@@ -1,4 +1,3 @@
-import io
 from tornado.websocket import WebSocketHandler
 import wave
 import json
