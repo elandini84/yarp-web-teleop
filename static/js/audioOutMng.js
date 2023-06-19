@@ -7,7 +7,8 @@ var context = new AudioContext()
 var time;
 
 wsspeak.onmessage = function(event){
-    console.log(JSON.stringify(event));
+    message = JSON.parse(event.data);
+    //console.log(message);
 }
 
 
