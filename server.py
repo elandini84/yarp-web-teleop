@@ -1,14 +1,10 @@
 from tornado.web import StaticFileHandler
-import tornado.httpserver
 import yarp
 from threading import Lock
 import sqlite3 as sl
-import json
 import os
-import signal, sys, threading
+import signal, sys
 import secrets
-import asyncio
-from threading import Thread
 
 from python_code.internal_handlers.generic_handlers.NavClickHandler import NavClickHandler
 from python_code.internal_handlers.generic_handlers.ButtonsHandler import ButtonsHandler
@@ -181,7 +177,7 @@ if __name__ == "__main__":
                                              "simulate": False}),
                         (r'/auth',AuthHandler),
                         (r'/wsmic',AudioInHandler,{"soundPort": MICPORT}),
-                        #(r'/wsspeak',AudioOutHandler,{"soundPort": SPEAKPORT}),
+                        (r'/wsspeak',AudioOutHandler,{"soundPort": SPEAKPORT}),
                         (r'/login', LoginHandler,{"absPath": ABSPATH, "aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb,"adminkey": ADMINKEY}),
@@ -208,14 +204,3 @@ if __name__ == "__main__":
     print('Press Ctrl+C to stop')
 
     server.start()
-    # def start_server():
-    #     asyncio.set_event_loop(asyncio.new_event_loop())
-    #     server.start()
-
-
-    # from threading import Thread
-    # t = Thread(target=start_server, args=())
-    # t.daemon = True
-    # t.start()
-
-    # t.join()

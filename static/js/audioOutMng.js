@@ -8,7 +8,7 @@ var time;
 
 wsspeak.onmessage = function(event){
     message = JSON.parse(event.data);
-    //console.log(message);
+    console.log(message);
 }
 
 
