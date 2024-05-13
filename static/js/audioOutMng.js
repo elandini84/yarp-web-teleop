@@ -1,34 +1,60 @@
 let wsc = new WebSocket(wsType+window.location.host+"/wsc");
 wsc.binaryType = 'arraybuffer';
 
-let audioContext = new AudioContext();
-let myArrayBuffer = audioContext.createBuffer(
-    1,
-    16000 * 3,
-    16000,
-  );
 
+let audioHandler = {
+  audioContext: new AudioContext(),
+  playing: false,
+  myArrayBuffer: null,
+  numChannels: 0,
+  numSamples: 0,
 
-function int16ArrayToAudioBuffer(int16Array, arrayBuffer) {
-  const numberOfChannels = 1;
-  const numberOfFrames = int16Array.length;
+  setup(numChannels, numSamples, frequency) {
+    this.numChannels = numChannels
+    this.numSamples = numSamples
+    this.myArrayBuffer = this.audioContext.createBuffer(numChannels, numSamples, frequency)
+  },
 
-  for (let channel = 0; channel < numberOfChannels; channel++) {
-    const channelData = arrayBuffer.getChannelData(channel);
-    for (let i = 0; i < numberOfFrames; i++) {
-      channelData[i] = int16Array[i * numberOfChannels + channel] / 32768.0;
+  int16ArrayToAudioBuffer(int16Array) {
+  
+    for (let channel = 0; channel < this.numChannels; channel++) {
+      const channelData = this.myArrayBuffer.getChannelData(channel)
+  
+      for (let i = 0; i < this.numSamples; i++) {
+        channelData[i] = int16Array[i + (channel * this.numSamples)] / 32768.0
+      }
     }
-  }
+  },
 
-}
-
-
-wsc.onmessage = function(event){
-    rawAudio = new Int16Array(event.data)
-    int16ArrayToAudioBuffer(rawAudio, myArrayBuffer)
-    let source = audioContext.createBufferSource();
-    source.buffer = myArrayBuffer;
-    source.connect(audioContext.destination);
+  playAudio(audioData) {
+    rawAudio = new Int16Array(audioData)
+    this.int16ArrayToAudioBuffer(rawAudio)
+    let source = this.audioContext.createBufferSource()
+    source.buffer = this.myArrayBuffer
+    source.connect(this.audioContext.destination)
     source.start();
-    console.log(rawAudio)
+  }
 }
+
+
+function toggleAudio() {
+  audioHandler.playing = !audioHandler.playing
+  wsc.send(audioHandler.playing.toString())
+
+  if (audioHandler.playing) {
+    $("#listenBtn").css({ color: "#b7d5e1", backgroundColor: "#3b7991" })
+  } else {
+    $("#listenBtn").css({ color: "#3b7991", backgroundColor: "#b7d5e1" })
+  }
+}
+
+
+wsc.addEventListener("message", (event) => {
+  if (event.data instanceof ArrayBuffer) {
+    audioHandler.playAudio(event.data)
+  } 
+  else {
+    config = JSON.parse(event.data)
+    audioHandler.setup(config.numChannels, config.numSamples, config.frequency)
+  }
+})
