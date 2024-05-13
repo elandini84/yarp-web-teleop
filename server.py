@@ -107,12 +107,11 @@ if __name__ == "__main__":
                                              "absPath": ABSPATH,
                                              "audioBufferLen": AUDIOBUFFLEN,
                                              "mapHost": "",
-                                             "audioHost": "",
                                              "simulate":True,
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik")}),
                         (r'/auth',AuthHandler),
                         (r'/wsa',AudioInHandler,{"soundPort": MICPORT}),
-                        (r'/wsc',AudioOutHandler,{"soundPort": ""}),
+                        (r'/wsc',AudioOutHandler,{"network": NETWORK, "audioPort": ""}),
                         (r'/login', LoginHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb,"adminkey": ADMINKEY}),
@@ -129,7 +128,6 @@ if __name__ == "__main__":
         AUDIOPORT = None
         MAPHOST = None
         CAMERAHOST = None
-        AUDIOHOST = None
 
         if RESFINDER.check("camera_name"):
             tempConn = yarp.NetworkBase_queryName(RESFINDER.find("camera_name").toString())
@@ -140,9 +138,7 @@ if __name__ == "__main__":
             MAPPORT = str(tempConn.getPort())
             MAPHOST = tempConn.getHost()
         if RESFINDER.check("audio_name"):
-            tempConn = yarp.NetworkBase_queryName(RESFINDER.find("audio_name").toString())
-            AUDIOPORT = str(tempConn.getPort())
-            AUDIOHOST = tempConn.getHost()
+            AUDIOPORT = RESFINDER.find("audio_name").toString()
 
         if RESFINDER.check("camera_port"):
             CAMERAPORT = RESFINDER.find("camera_port").toString()
@@ -174,12 +170,11 @@ if __name__ == "__main__":
                                              "absPath": ABSPATH,
                                              "audioBufferLen": AUDIOBUFFLEN,
                                              "mapHost": MAPHOST,
-                                             "audioHost": AUDIOHOST,
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik"),
                                              "simulate": False}),
                         (r'/auth',AuthHandler),
                         (r'/wsa',AudioInHandler,{"soundPort": MICPORT}),
-                        (r'/wsc',AudioOutHandler,{"network": NETWORK}),
+                        (r'/wsc',AudioOutHandler,{"network": NETWORK, "audioPort": AUDIOPORT}),
                         (r'/login', LoginHandler,{"absPath": ABSPATH, "aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb,"adminkey": ADMINKEY}),
