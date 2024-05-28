@@ -22,11 +22,18 @@ class AudioOutHandler(WebSocketHandler):
         self.portIn = yarp.BufferedPortSound()
         self.portIn.open('/webAudio:i')
         self.network = network
-        if len(audioPort) > 0:
-            self.network.connect(audioPort, '/webAudio:i')
-            self.connected = True
-        else:
+        self.audioPort = audioPort
+        self.connect_to_port()
+
+
+    def connect_to_port(self):
+        if self.audioPort is None or len(self.audioPort) == 0:
             self.connected = False
+            print("No valid audio port provided")
+        else:
+            self.network.connect(self.audioPort, '/webAudio:i')
+            self.connected = True
+
 
     def periodic_call(self):
         self.sound = self.portIn.read()
@@ -34,15 +41,29 @@ class AudioOutHandler(WebSocketHandler):
 
         self.write_message(audioBuffer.tobytes(), binary=True)
 
+
+    def play(self, audioPort):
+        # Connect to new audio port if it has changed
+        if audioPort != self.audioPort:
+            self.network.disconnect(self.audioPort, '/webAudio:i')
+            self.audioPort = audioPort
+            self.connect_to_port()
+
+        self.sound = self.portIn.read()
+        audioContextConfig = {"numSamples": self.sound.getSamples(), "numChannels": self.sound.getChannels(), "frequency": self.sound.getFrequency()}
+        self.write_message(json.dumps(audioContextConfig))
+
+        self.callback.callback_time = (self.sound.getSamples() / self.sound.getFrequency()) * 1000
+        self.callback.start() # start streaming
+        
+
     def on_message(self, message):
         if not self.connected:
             pass
-        elif message == "true":
-            self.sound = self.portIn.read()
-            config = {"numSamples": self.sound.getSamples(), "numChannels": self.sound.getChannels(), "frequency": self.sound.getFrequency()}
-            self.write_message(json.dumps(config)) # to configure audio context
 
-            self.callback.callback_time = (self.sound.getSamples() / self.sound.getFrequency()) * 1000
-            self.callback.start()
+        args = json.loads(message)
+        
+        if args["play"]:
+            self.play(args["audioPort"])
         else:
             self.callback.stop()

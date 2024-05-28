@@ -3,7 +3,7 @@ wsc.binaryType = 'arraybuffer';
 
 
 let audioHandler = {
-  audioContext: new AudioContext(),
+  audioContext: null,
   playing: false,
   myArrayBuffer: null,
   numChannels: 0,
@@ -39,7 +39,16 @@ let audioHandler = {
 
 function toggleAudio() {
   audioHandler.playing = !audioHandler.playing
-  wsc.send(audioHandler.playing.toString())
+  args = {
+    play: audioHandler.playing,
+    audioPort: document.getElementById("audioListenBox").value
+  }
+  
+  if (audioHandler.playing) {
+    audioHandler.audioContext = new AudioContext()
+  }
+  
+  wsc.send(JSON.stringify(args))
 
   if (audioHandler.playing) {
     $("#listenBtn").css({ color: "#b7d5e1", backgroundColor: "#3b7991" })
