@@ -18,7 +18,6 @@ const ROBOT = "camera_img";
 const MAP = "map_img";
 const LIGHTCOL = "#b7d5e1";
 const DARKCOL = "#3b7991";
-console.log(window.location.host);
 
 function convertMousePos(x,y,elem){
     var conversionX = elem.prop("naturalWidth")/elem.width();
@@ -348,6 +347,8 @@ function clickedAudio(){
 }
 
 function clickedRotate(){
+    closeMicrophone();
+
     var instructionBtn = $("#instructionBtn");
     var audioBtn = $("#audioBtn");
     var rotateBtn = $("#rotateBtn");
@@ -365,6 +366,8 @@ function clickedRotate(){
 }
 
 function clickedInstruction(){
+    closeMicrophone();
+
     var instructionBtn = $("#instructionBtn");
     var audioBtn = $("#audioBtn");
     var rotateBtn = $("#rotateBtn");

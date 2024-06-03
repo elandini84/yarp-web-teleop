@@ -3,6 +3,7 @@ class DownsamplingProcessor extends AudioWorkletProcessor {
         super();
         this.downsampled = new Int16Array(2048);
         this.downsample_offset = 0;
+        this.audioBufferLen = 640;
         this.sampleRateRatio = sampleRate / 16000;
     }
 
@@ -16,7 +17,7 @@ class DownsamplingProcessor extends AudioWorkletProcessor {
                 this.downsampled[this.downsample_offset + tidx] = inputData[sidx] * 32767;
             }
             this.downsample_offset += Math.floor(inputData.length / this.sampleRateRatio);
-            if (this.downsample_offset > audioBufferLen) {
+            if (this.downsample_offset > this.audioBufferLen) {
                 this.processSamples();
             }
         }
@@ -24,13 +25,11 @@ class DownsamplingProcessor extends AudioWorkletProcessor {
     }
 
     processSamples() {
-        while (this.downsample_offset > audioBufferLen) {
-            const output = this.downsampled.slice(0, audioBufferLen);
-            this.downsampled.copyWithin(0, audioBufferLen);
-            this.downsample_offset -= audioBufferLen;
-            if (self.ptt === true) {
-                self.port.postMessage(output.buffer);
-            }
+        while (this.downsample_offset > this.audioBufferLen) {
+            const output = this.downsampled.slice(0, this.audioBufferLen);
+            this.downsampled.copyWithin(0, this.audioBufferLen);
+            this.downsample_offset -= this.audioBufferLen;
+            this.port.postMessage(output.buffer);
         }
     }
 }

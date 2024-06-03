@@ -3,8 +3,15 @@ let context;
 let downsamplingNode;
 let source;
 let stream;
+let wsa = new WebSocket(wsType+window.location.host+"/wsa");
+wsa.binaryType = 'arraybuffer';
 
 async function openMicrophone() {
+
+    // Create an AudioWorkletNode to handle the audio processing
+    context = new AudioContext();
+    await context.audioWorklet.addModule('static/js/downsampling-processor.js');
+    let downsamplingNode = new AudioWorkletNode(context, 'downsampling-processor');
     // Send sample rate to the server
     wsa.send(JSON.stringify({ "sampleRate": context.sampleRate }));
 
@@ -13,10 +20,6 @@ async function openMicrophone() {
         video: false,
         audio: true
     });
-
-    // Create an AudioWorkletNode to handle the audio processing
-    await context.audioWorklet.addModule('downsampling-processor.js');
-    downsamplingNode = new AudioWorkletNode(context, 'downsampling-processor');
 
     // Listen for messages from the AudioWorkletProcessor
     downsamplingNode.port.onmessage = (event) => {
@@ -49,10 +52,6 @@ function closeMicrophone() {
         context.close();
     }
 }
-
-context = new AudioContext();
-let wsa = new WebSocket(wsType+window.location.host+"/wsa");
-wsa.binaryType = 'arraybuffer';
 
 // Function to toggle the PTT state
 function togglePTT() {
