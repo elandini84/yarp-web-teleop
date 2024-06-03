@@ -82,7 +82,7 @@
                         </button>
                         <div id="audio_card">
                             <div id="audio_before" class="mdl-layout-spacer user-spacer"></div>
-                            <button id="speakBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn speak-toggle" onclick="pttChange()">
+                            <button id="speakBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn speak-toggle" onclick="togglePTT()">
                                 <i class="material-icons">mic</i>
                             </button>
                             <div class="listen-container">
@@ -151,7 +151,8 @@
             let audioBufferLen="{{audioBufferLen}}";
         </script>
         <script src="../static/js/eventFunctions.js"></script>
-        <script src="../static/js/audioInMng.js"></script>
+        <script src="../static/js/downsampling-processor.js"></script>
+        <script src="../static/js/audioInMng_modern.js"></script>
         <script src="../static/js/audioOutMng.js"></script>
     </body>
 </html>
