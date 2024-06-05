@@ -31,6 +31,7 @@ class AudioOutHandler(WebSocketHandler):
             self.connected = False
             print("No valid audio port provided")
         else:
+            print("Connecting: {0} with /webAudio:i".format(self.audioPort))
             self.network.connect(self.audioPort, '/webAudio:i')
             self.connected = True
 
@@ -45,7 +46,8 @@ class AudioOutHandler(WebSocketHandler):
     def play(self, audioPort):
         # Connect to new audio port if it has changed
         if audioPort != self.audioPort:
-            self.network.disconnect(self.audioPort, '/webAudio:i')
+            if self.connected:
+                self.network.disconnect(self.audioPort, '/webAudio:i')
             self.audioPort = audioPort
             self.connect_to_port()
 

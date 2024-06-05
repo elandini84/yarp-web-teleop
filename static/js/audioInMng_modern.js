@@ -8,14 +8,19 @@ wsa.binaryType = 'arraybuffer';
 
 async function openMicrophone() {
 
+    console.log("Opening mic");
     // Create an AudioWorkletNode to handle the audio processing
     context = new AudioContext();
+    console.log("Audiocontext created");
     await context.audioWorklet.addModule('static/js/downsampling-processor.js');
+    console.log("Donwsampling module added");
     let downsamplingNode = new AudioWorkletNode(context, 'downsampling-processor');
+    console.log("Node created");
     // Send sample rate to the server
     wsa.send(JSON.stringify({ "sampleRate": context.sampleRate }));
 
     // Request access to the microphone
+    console.log("Asking for the audio");
     stream = await navigator.mediaDevices.getUserMedia({
         video: false,
         audio: true

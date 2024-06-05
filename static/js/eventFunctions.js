@@ -343,7 +343,9 @@ function clickedAudio(){
     $("#instructionCard").css("visibility","hidden");
     $("#rotate_card").css("visibility","hidden");
 
+    console.log("Audio tab opened");
     openMicrophone();
+    console.log("Microphone opened");
 }
 
 function clickedRotate(){
