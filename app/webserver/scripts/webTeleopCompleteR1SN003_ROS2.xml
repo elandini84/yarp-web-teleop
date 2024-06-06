@@ -9,12 +9,12 @@
    </application>
 
    <application>
-      <name>web_teleop_server</name>
+      <name>Speech_Pipeline_teleop</name>
       <prefix></prefix>
    </application>
 
    <application>
-      <name>Speech_Pipeline_teleop</name>
+      <name>web_teleop_server</name>
       <prefix></prefix>
    </application>
 

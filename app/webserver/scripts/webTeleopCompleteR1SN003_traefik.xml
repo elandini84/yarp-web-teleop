@@ -9,6 +9,11 @@
    </application>
 
    <application>
+      <name>Speech_Pipeline_teleop</name>
+      <prefix></prefix>
+   </application>
+
+   <application>
       <name>traefik_for_webgui_teleop</name>
       <prefix></prefix>
    </application>
