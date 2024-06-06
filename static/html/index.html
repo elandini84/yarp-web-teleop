@@ -8,7 +8,7 @@
         <meta name="description" content="A YARP + Web based remote surveillance tool">
         <meta name="author" content="Ettore Landini">
 
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
         <link rel="stylesheet" href="../static/css/mdl/material.min.css">
         <link rel="stylesheet" href="../static/css/layout.style.css">
         <link rel="stylesheet" href="../static/css/common.style.css">
@@ -82,12 +82,15 @@
                         </button>
                         <div id="audio_card">
                             <div id="audio_before" class="mdl-layout-spacer user-spacer"></div>
-                            <button id="speakBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn speak-toggle" onclick="pttChange()">
+                            <button id="speakBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn speak-toggle" onclick="togglePTT()">
                                 <i class="material-icons">mic</i>
                             </button>
-                            <button id="listenBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn">
-                                <i class="material-icons">hearing</i>
-                            </button>
+                            <div class="listen-container">
+                                <button id="listenBtn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect round-btn" onclick="toggleAudio()">
+                                    <i class="material-icons">hearing</i>
+                                </button>
+                                <input type="text" id="audioListenBox" value="/audioRecorder_nws/audio:o">
+                            </div>
                             <div id="audio_after" class="mdl-layout-spacer user-spacer"></div>
                         </div>
                         <div id="rotate_card">
@@ -148,6 +151,7 @@
             let audioBufferLen="{{audioBufferLen}}";
         </script>
         <script src="../static/js/eventFunctions.js"></script>
-        <script src="../static/js/audioInMng.js"></script>
+        <script src="../static/js/audioInMng_modern.js"></script>
+        <script src="../static/js/audioOutMng.js"></script>
     </body>
 </html>

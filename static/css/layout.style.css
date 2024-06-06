@@ -152,6 +152,10 @@
     background-color: #b7d5e1;
 }
 
+#audioListenBox {
+    margin-top: 10px;
+}
+
 #audio_before{
     grid-area: sb;
 }

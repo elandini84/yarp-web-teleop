@@ -12,6 +12,7 @@ from python_code.internal_handlers.generic_handlers.NavClickHandler import NavCl
 from python_code.internal_handlers.generic_handlers.ButtonsHandler import ButtonsHandler
 from python_code.internal_handlers.generic_handlers.IndexHandler import IndexHandler
 from python_code.internal_handlers.media_handlers.AudioInHandler import AudioInHandler
+from python_code.internal_handlers.media_handlers.AudioOutHandler import AudioOutHandler
 from python_code.internal_handlers.credential_handlers.LoginHandler import LoginHandler, ActiveUsersRegister
 from python_code.internal_handlers.credential_handlers.RegisterHandler import RegisterHandler
 from python_code.internal_handlers.credential_handlers.LogoutHandler import LogoutHandler
@@ -100,6 +101,7 @@ if __name__ == "__main__":
         handlersList = [(r'/', IndexHandler,{"inputNetwork": NETWORK,
                                              "cameraPort": "",
                                              "mapPort": "",
+                                             "audioPort": "",
                                              "cameraHost": "",
                                              "resFinder": None,
                                              "absPath": ABSPATH,
@@ -109,6 +111,7 @@ if __name__ == "__main__":
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik")}),
                         (r'/auth',AuthHandler),
                         (r'/wsa',AudioInHandler,{"soundPort": MICPORT}),
+                        (r'/wsc',AudioOutHandler,{"network": NETWORK, "audioPort": ""}),
                         (r'/login', LoginHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb,"adminkey": ADMINKEY}),
@@ -122,6 +125,7 @@ if __name__ == "__main__":
     elif not RESFINDER.check("simulate") and NETWORK is not None:
         MAPPORT = None
         CAMERAPORT = None
+        AUDIOPORT = None
         MAPHOST = None
         CAMERAHOST = None
 
@@ -133,6 +137,8 @@ if __name__ == "__main__":
             tempConn = yarp.NetworkBase_queryName(RESFINDER.find("map_name").toString())
             MAPPORT = str(tempConn.getPort())
             MAPHOST = tempConn.getHost()
+        if RESFINDER.check("audio_name"):
+            AUDIOPORT = RESFINDER.find("audio_name").toString()
 
         if RESFINDER.check("camera_port"):
             CAMERAPORT = RESFINDER.find("camera_port").toString()
@@ -158,14 +164,17 @@ if __name__ == "__main__":
         handlersList = [(r'/', IndexHandler,{"inputNetwork": NETWORK,
                                              "cameraPort": CAMERAPORT,
                                              "mapPort": MAPPORT,
+                                             "audioPort": AUDIOPORT,
                                              "cameraHost": CAMERAHOST,
                                              "resFinder": RESFINDER,
                                              "absPath": ABSPATH,
+                                             "audioBufferLen": AUDIOBUFFLEN,
                                              "mapHost": MAPHOST,
                                              "isSsl": (not RESFINDER.check("no_ssl")) or RESFINDER.check("traefik"),
                                              "simulate": False}),
                         (r'/auth',AuthHandler),
                         (r'/wsa',AudioInHandler,{"soundPort": MICPORT}),
+                        (r'/wsc',AudioOutHandler,{"network": NETWORK, "audioPort": AUDIOPORT}),
                         (r'/login', LoginHandler,{"absPath": ABSPATH, "aur": commonAUR,"my_db": loginDb}),
                         (r'/logout', LogoutHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb}),
                         (r'/register', RegisterHandler,{"absPath": ABSPATH,"aur": commonAUR,"my_db": loginDb,"adminkey": ADMINKEY}),
@@ -176,6 +185,7 @@ if __name__ == "__main__":
                                                    "mapPort": MAPCLICKPORT}),
                         (r"/wsb", ButtonsHandler, {"webLock": WEBLOCK,
                                                    "navPort": NAVCLICKPORT})]
+    
     server = CookieServer(handlersList,SERVERPORT,certificates_folder,certificates_name,True,secrets.token_urlsafe())
 
     def signal_handler(signal, frame):

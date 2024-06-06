@@ -3,12 +3,13 @@ import os
 
 class IndexHandler(RequestHandler):
 
-    def initialize(self,inputNetwork,cameraPort,mapPort,cameraHost,resFinder,absPath,audioBufferLen,mapHost=None,isSsl=False,simulate=False):
+    def initialize(self,inputNetwork,cameraPort,mapPort,audioPort,cameraHost,resFinder,absPath,audioBufferLen,mapHost=None,isSsl=False,simulate=False):
         self.yarpNet = inputNetwork
         self.cameraPort = cameraPort
         self.cameraHost = cameraHost
         self.mapPort = mapPort
         self.mapHost = mapHost if mapHost is not None else cameraHost
+        self.audioPort = audioPort
         self.resFinder = resFinder
         self.absPath = absPath
         self.simulate = simulate

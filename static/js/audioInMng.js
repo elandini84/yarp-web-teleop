@@ -14,7 +14,6 @@ function connect(){
     wsa.onopen = function(){
         document.getElementById("conn").innerHTML=status_on;
         var evt = {"event": "connect", "id" : "test"};
-        console.log(JSON.stringify(evt));
         wsa.send(JSON.stringify(evt));
         console.log('connected');
     }
@@ -54,7 +53,6 @@ function pttChange(){
         $("#speakBtn").css("color", "#b7d5e1");
         $("#speakBtn").css("background-color", "#3b7991");
     }
-    console.log($("#speakBtn"));
 }
 
 function openMicrophone(){
