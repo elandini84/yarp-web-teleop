@@ -2,6 +2,7 @@ from tornado.websocket import WebSocketHandler
 from yarp import Bottle
 import json
 import subprocess
+from datetime import datetime
 
 class ButtonsHandler(WebSocketHandler):
 
@@ -19,7 +20,7 @@ class ButtonsHandler(WebSocketHandler):
     def on_message(self,message):
 
         self.webLock.acquire()
-        self.innerPrint("Received {0}".format(message))
+        self.innerPrint("Received {0} - {1}".format(message,datetime.now()))
         options = json.loads(message)
         if not self._simulating:
             b = Bottle()
